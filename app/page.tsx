@@ -1,445 +1,557 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import { CheckCircle, Lock, BookOpen, Award, ArrowRight, RotateCcw } from "lucide-react";
 
-const COURSES_DATA = [
+interface Question {
+  id: number;
+  question: string;
+  options: string[];
+  answer: number;
+  explanation: string;
+}
+
+interface Chapter {
+  id: number;
+  title: string;
+  subtitle: string;
+  summary: string;
+  details: string[];
+  quiz: Question[];
+}
+
+const CHAPTERS: Chapter[] = [
   {
-    chapterId: 1,
-    chapterTitleFr: 'Chapitre 1 : La Purification (At-Tahara)',
-    chapterTitleAr: 'الطهارة',
-    lessons: [
+    id: 1,
+    title: "Chapitre 1 : L'Obligation de l'Apprentissage et du Repentir",
+    subtitle: "Les fondements de la responsabilité du musulman (At-Tawbah)",
+    summary:
+      "Ce premier chapitre aborde les obligations fondamentales de tout musulman pubère et doué de raison (Mukallaf). Il traite de l'obligation d'apprendre les règles de la religion nécessaires au quotidien et de l'impératif du repentir immédiat.",
+    details: [
+      "1. La responsabilité légale (Al-Taklif) : Elle incombe à toute personne ayant atteint la majorité légale (la puberté) et jouissant de ses facultés mentales.",
+      "2. L'obligation de la science individuelle (Fard 'Ayn) : Il est obligatoire pour chaque croyant d'apprendre les règles qui régissent ses obligations quotidiennes (prière, purification, jeûne, ainsi que les règles du commerce s'il est commerçant).",
+      "3. La réalité du Repentir (At-Tawbah) : Le repentir est une obligation immédiate pour tout péché. Il ne s'agit pas seulement d'une formule verbale.",
+      "4. Les conditions du Repentir sincère : 1) Le regret du péché commis, 2) L'arrêt immédiat du péché, 3) La ferme résolution de ne plus jamais y revenir.",
+      "5. La restitution des droits : Si le péché implique le droit d'un être humain (vol, injustice), le repentir n'est complet qu'après avoir rendu le droit à son propriétaire ou demandé son pardon."
+    ],
+    quiz: [
       {
-        id: 'lesson-1-1',
-        number: '1.1',
-        titleFr: 'Les types d\'eau et la purification',
-        titleAr: 'أنواع المياه وأحكام الطهارة',
-        matnArabe: 'فَصْلٌ: أَنْوَاعُ المِيَاهِ وَأَحْكَامُ الطَّهَارَةِ. لاَ يَجُوزُ إِزَالَةُ النَّجَاسَةِ وَلاَ رَفْعُ الحَدَثِ إِلاَّ بِالمَاءِ المُطْلَقِ الَّذِي لَمْ يَتَغَيَّرْ لَوْنُهُ أَوْ طَعْمُهُ أَوْ رَائِحَتُهُ بِمَا يُفَارِقُهُ غَالِبًا.',
-        content: [
-          'Il est obligatoire d\'utiliser une eau pure et purifiante (Al-Ma\' Al-Moutlaq) pour enlever une impureté ou lever l\'état d\'impureté rituelle.',
-          'L\'eau perd sa qualité purifiante si l\'un de ses 3 attributs (couleur, goût ou odeur) est altéré par une substance étrangère.'
+        id: 1,
+        question: "À partir de quand une personne devient-elle légalement responsable (Mukallaf) en Islam ?",
+        options: [
+          "Dès l'âge de 7 ans",
+          "Lorsqu'elle atteint la puberté et possède la raison",
+          "À partir de 18 ans révolus",
+          "Uniquement lorsqu'elle a accompli le Hajj"
         ],
-        quiz: {
-          question: 'Quelle est la règle concernant l\'eau dont l\'odeur ou la couleur est altérée par une impureté ?',
-          options: [
-            'Elle demeure pure et utilisable pour le Woudou.',
-            'Elle devient impure (Najis) et ne peut pas être utilisée.',
-            'Elle est détestable (Makrouh) mais valide.'
-          ],
-          correctIndex: 1,
-          explanation: 'Toute eau dont une des qualités est altérée par une impureté devient impure et inutilisable.'
-        }
+        answer: 1,
+        explanation: "La responsabilité légale (Al-Taklif) commence à la puberté pour toute personne jouissant de sa raison."
       },
       {
-        id: 'lesson-1-2',
-        number: '1.2',
-        titleFr: 'Les 7 Obligations (Fara\'id) du Woudou',
-        titleAr: 'فرائض الوضوء',
-        matnArabe: 'فَصْلٌ: وَفَرَائِضُ الْوُضُوءِ سَبْعَةٌ: النِّيَّةُ، وَغَسْلُ الْوَجْهِ، وَغَسْلُ الْيَدَيْنِ إِلَى الْمِرْفَقَيْنِ، وَمَسْحُ جَمِيعِ الرَّأْسِ، وَغَسْلُ الرِّجْلَيْنِ إِلَى الْكَعْبَيْنِ، وَالدَّلْكُ، وَالْمُوَالاَةُ.',
-        content: [
-          'Les 7 obligations sont : L\'Intention (Niyyah), le lavage du visage, le lavage des bras jusqu\'aux coudes, l\'essuyage de TOUTE la tête, le lavage des pieds avec les chevilles, le frotter (Ad-Dalk) et la continuité (Al-Muwalah).',
-          'Dans le madhhab Malikite, Ad-Dalk (frotter la main sur le membre avec l\'eau) et le Mas\'h complet de la tête sont obligatoires.'
+        id: 2,
+        question: "Qu'appelle-t-on la science dont l'apprentissage est une obligation individuelle (Fard 'Ayn) ?",
+        options: [
+          "L'apprentissage de l'astronomie et des sciences profanes",
+          "L'apprentissage complet de la mémorisation du Coran",
+          "L'apprentissage des règles nécessaires pour accomplir correctement ses obligations quotidiennes (prière, purification...)",
+          "La maîtrise approfondie de l'héritage légal"
         ],
-        quiz: {
-          question: 'Combien d\'obligations (Fara\'id) le Matn Al-Akhdari fixe-t-il pour le Woudou ?',
-          options: ['5 obligations', '7 obligations', '10 obligations'],
-          correctIndex: 1,
-          explanation: 'Le Matn Al-Akhdari établit exactement 7 obligations pour la validité du Woudou.'
-        }
+        answer: 2,
+        explanation: "Chaque musulman doit obligatoirement apprendre la science nécessaire à la pratique de ses devoirs quotidiens."
       },
       {
-        id: 'lesson-1-3',
-        number: '1.3',
-        titleFr: 'Les Annulations du Woudou (Nawaqid)',
-        titleAr: 'نواقض الوضوء',
-        matnArabe: 'فَصْلٌ: نَوَاقِضُ الْوُضُوءِ فَأَحْدَاثٌ وَأَسْبَابٌ؛ فَالأَحْدَاثُ: الْبَوْلُ، وَالْغَائِطُ، وَالرِّيحُ، وَالْمَذْيُ، وَالْوَدْيُ. وَالأَسْبَابُ: النَّوْمُ الثَّقِيلُ، وَالإِغْمَاءُ، وَالسُّكْرُ، وَالْجُنُونُ، وَالَّذَّةُ بِمَسِّ أَوْ قُبْلَةٍ، وَمَسُّ الذَّكَرِ بِبَطْنِ الْكَفِّ، وَالشَّكُّ فِي الْحَدَثِ.',
-        content: [
-          'Les annulations se divisent en Événements directs (urine, selles, gaz, madhy, wady) et Causes de perte de conscience (sommeil lourd, évanouissement, ivresse, folie).',
-          'Le contact direct avec désir, le toucher de la partie intime avec la paume de la main ou le plat des doigts, ainsi que le doute sur la rupture (Ash-Shakk) annulent également le Woudou.'
+        id: 3,
+        question: "Quelles sont les trois conditions principales du repentir vis-à-vis d'Allah ?",
+        options: [
+          "Le regret, l'arrêt du péché et la ferme résolution de ne pas y revenir",
+          "Jeûner trois jours, donner l'aumône et demander pardon",
+          "Faire les grandes ablutions et prier deux rak'ahs",
+          "Attendre le mois de Ramadan pour demander le pardon"
         ],
-        quiz: {
-          question: 'Que doit faire un fidèle qui est certain d\'avoir fait son Woudou mais a un doute sur son annulation ?',
-          options: [
-            'Ignorer le doute et accomplir sa prière.',
-            'Refaire son Woudou par précaution.',
-            'Faire un simple Tayammum.'
-          ],
-          correctIndex: 1,
-          explanation: 'Dans l\'école Malikite, le doute sur l\'annulation (Ash-Shakk fi Al-Hadath) oblige à refaire le Woudou.'
-        }
+        answer: 0,
+        explanation: "Le repentir sincère envers Allah requiert le regret, la cessation immédiate du péché et l'intention ferme de ne plus le commettre."
+      },
+      {
+        id: 4,
+        question: "Si le péché concerne le droit d'une personne (ex: un vol), quelle est la condition supplémentaire ?",
+        options: [
+          "Multiplier les prières surérogatoires",
+          "Rendre le droit à son propriétaire ou obtenir son pardon",
+          "Demander pardon uniquement à Allah dans le secret",
+          "Donner le double du montant volé aux pauvres"
+        ],
+        answer: 1,
+        explanation: "Les injustices envers les créatures nécessitent la restitution du droit ou l'absolution accordée par la victime."
       }
     ]
   },
   {
-    chapterId: 2,
-    chapterTitleFr: 'Chapitre 2 : La Prière (At-Salat)',
-    chapterTitleAr: 'الصلاة',
-    lessons: [
+    id: 2,
+    title: "Chapitre 2 : Les Grandes Ablutions et la Purification Majeure",
+    subtitle: "Règles du Ghusl et des impuretés majeures (Al-Janabah)",
+    summary:
+      "Ce chapitre détaille les causes qui rendent le lavage mortuaire ou rituel obligatoire (Ghusl), les obligations (Fara'id) et traditions (Sunan) liées à cette purification majeure selon l'école Malikite.",
+    details: [
+      "1. Les causes rendant le Ghusl obligatoire : La grande impureté (Janabah) causée par les rapports intimes ou l'émission de liquide séminal, ainsi que la fin de la période des menstrues (Hayd) et des lochies (Nifas).",
+      "2. Les obligations du Ghusl (Fara'id) : 1) L'intention (Niyyah), 2) Le fait de faire couler l'eau sur tout le corps, 3) Le frottement du corps avec la main (Dalk), 4) La continuité sans interruption prolongée (Muwalah).",
+      "3. Les Sunan du Ghusl : Le lavage initial des mains jusqu'aux poignets, le rinçage de la bouche (Madmadah), l'aspiration/expiration de l'eau par le nez (Istinshaq), et le lavage des oreilles.",
+      "4. L'ordre recommandé : Commencer par laver les parties intimes, accomplir les ablutions mineures (sans laver les pieds ou en les lavant), puis verser l'eau sur la tête trois fois en frottant le cuir chevelu, puis laver le côté droit du corps, puis le côté gauche."
+    ],
+    quiz: [
       {
-        id: 'lesson-2-1',
-        number: '2.1',
-        titleFr: 'Conditions et Horaires de la Prière',
-        titleAr: 'شروط الصلاة ومواقيتها',
-        matnArabe: 'فَصْلٌ: وَمَوَاقِيتُ الصَّلاَةِ: الظُّهْرُ مِنْ زَوَالِ الشَّمْسِ إِلَى آخِرِ الْقَامَةِ، وَالْعَصْرُ مِنْ آخِرِ الْقَامَةِ إِلَى الاِصْفِرَارِ، وَالْمَغْرِبُ غُرُوبُ الشَّمْسِ، وَالْعِشَاءُ مِنْ غُِيُوبِ الشَّفَقِ الأَحْمَرِ إِلَى ثُلُثِ اللَّيْلِ، وَالصُّبْحُ مِنْ طُلُوعِ الْفَجْرِ الصَّادِقِ إِلَى الإِسْفَارِ.',
-        content: [
-          'Les 4 conditions de validité : Purification rituelle, propreté du corps/vêtements/lieu, couverture de la \'Awrah, orientation vers la Qibla.',
-          'Le temps de chaque prière doit être respecté strictement selon les repères naturels du soleil et de la lumière.'
+        id: 1,
+        question: "Parmi les actes suivants, lequel est une obligation (Fard) du Ghusl selon l'école Malikite ?",
+        options: [
+          "Le rinçage de la bouche (Madmadah)",
+          "Le frottement du corps avec la main (Dalk)",
+          "Commencer par le côté droit",
+          "Répéter le lavage trois fois"
         ],
-        quiz: {
-          question: 'Quel repère marque le début du temps de la prière de l\'Isha selon Al-Akhdari ?',
-          options: [
-            'Le coucher du soleil.',
-            'La disparition de la lueur rouge du crépuscule (Ash-Shafaq Al-Ahmar).',
-            'Le milieu de la nuit.'
-          ],
-          correctIndex: 1,
-          explanation: 'Le temps de l\'Isha débute avec la disparition de la lueur rougeâtre à l\'horizon.'
-        }
+        answer: 1,
+        explanation: "Le Dalk (frottement du corps avec la main pendant que l'eau coule) est une obligation dans le madhhab malikite."
       },
       {
-        id: 'lesson-2-2',
-        number: '2.2',
-        titleFr: 'Les Piliers (Arkan) et Sunan de la prière',
-        titleAr: 'أركان الصلاة وسننها',
-        matnArabe: 'فَصْلٌ: وَفَرَائِضُ الصَّلاَةِ: النِّيَّةُ، وَتَكْبِيرَةُ الإِحْرَامِ، وَالْقِيَامُ لَهَا، وَالْفَاتِحَةُ، وَالْقِيَامُ لَهَا، وَالرُّكُوعُ، وَالرَّفْعُ مِنْهُ، وَالسُّجُودُ، وَالرَّفْعُ مِنْهُ، وَالاِعْتِدَالُ، وَالطُّمَأْنِينَةُ، وَالتَّسْلِيمُ، وَالْجُلُوسُ لَهُ، وَتَرْتِيبُ الأَدَاءِ.',
-        content: [
-          'Les 14 piliers obligatoires (Fara\'id) : L\'Intention, le Takbir d\'ouverture et sa station debout, la récitation de la Fatiha et sa station debout, le Ruku\', le Sujud, la quiétude (Tuma\'ninah), et le Salam final.',
-          'La quiétude (marquer un temps d\'arrêt dans chaque position) est une obligation stricte.'
+        id: 2,
+        question: "Quelle est la première chose à formuler intérieurement avant de commencer le Ghusl ?",
+        options: [
+          "La récitation à haute voix de la Fatiha",
+          "L'intention (Niyyah) de se purifier de la grande impureté",
+          "L'invocation de clôture des ablutions",
+          "Le Takbir"
         ],
-        quiz: {
-          question: 'Selon Al-Akhdari, quelle est la règle concernant la quiétude (Tuma\'ninah) pendant la prière ?',
-          options: [
-            'C\'est un pilier obligatoire (Fard) dont l\'omission annule la prière.',
-            'C\'est une simple Sunnah facultative.',
-            'Elle n\'est recommandée que pour les prières obligatoires.'
-          ],
-          correctIndex: 0,
-          explanation: 'Dans le madhhab Malikite, At-Tuma\'ninah est un pilier de la prière.'
-        }
+        answer: 1,
+        explanation: "L'intention est une condition et une obligation indispensable pour la validité du Ghusl."
       },
       {
-        id: 'lesson-2-3',
-        number: '2.3',
-        titleFr: 'La Prosternation de l\'oubli (Sajdat As-Sahw)',
-        titleAr: 'سجود السهو',
-        matnArabe: 'فَصْلٌ: وَلِلسَّهْوِ فِي الصَّلاَةِ سَجْدَتَانِ؛ فَلِلنَّقْصِ قَبْلَ السَّلاَمِ بَعْدَ التَّشَهُّدَيْنِ، وَلِلزِّيَادَةِ بَعْدَ السَّلاَمِ. وَمَنْ نَقَصَ وَزَادَ سَجَدَ قَبْلَ السَّلاَمِ.',
-        content: [
-          'En cas de manque (omission de 2 Sunnan ou plus) : Deux prosternations AVANT le Salam final (Al-Qabli).',
-          'En cas d\'ajout involontaire : Deux prosternations APRÈS le Salam final (Al-Ba\'di).',
-          'En cas de cumul (omission + ajout) : La prosternation se fait AVANT le Salam.'
+        id: 3,
+        question: "Laquelle de ces situations rend le Ghusl obligatoire ?",
+        options: [
+          "Le sommeil profond allongé",
+          "L'émission de gaz",
+          "La fin de la période des menstrues",
+          "Le fait de toucher une impureté avec la main"
         ],
-        quiz: {
-          question: 'Si un fidèle ajoute un Ruku\' par oubli ET oublie une Sunnah dans la même prière, que doit-il faire ?',
-          options: [
-            'Prosterner deux fois AVANT le Salam (Al-Qabli).',
-            'Prosterner deux fois APRÈS le Salam (Al-Ba\'di).',
-            'Refaire entièrement sa prière.'
-          ],
-          correctIndex: 0,
-          explanation: 'Lorsque l\'ajout et l\'omission se combinent, la prosternation AVANT le Salam (Al-Qabli) s\'applique.'
-        }
+        answer: 2,
+        explanation: "La fin des menstrues et des lochies impose la réalisation du Ghusl pour pouvoir reprendre la prière."
+      },
+      {
+        id: 4,
+        question: "Que signifie la 'Muwalah' dans le cadre du Ghusl ?",
+        options: [
+          "Sécher le corps avec une serviette propre",
+          "Faire couler l'eau trois fois sur chaque membre",
+          "L'enchaînement continu des actes sans interruption prolongée",
+          "Utiliser au minimum un litre d'eau"
+        ],
+        answer: 2,
+        explanation: "La Muwalah consiste à réaliser la purification d'un seul trait sans laisser les membres sécher entre les étapes."
       }
     ]
   },
   {
-    chapterId: 3,
-    chapterTitleFr: 'Chapitre 3 : Omissions Majeures et Réparations',
-    chapterTitleAr: 'سهو الفروض والسنن',
-    lessons: [
+    id: 3,
+    title: "Chapitre 3 : Les Conditions et Piliers de la Prière",
+    subtitle: "Shuroot wa Arkan As-Salah",
+    summary:
+      "Ce chapitre présente les conditions préalables indispensables avant de commencer la prière ainsi que les piliers (éléments fondamentaux) qui composent la prière elle-même.",
+    details: [
+      "1. Les conditions de validité (Shuroot As-Sihhah) : 1) La purification des impuretés rituelles et matérielles (corps, habits, lieu), 2) Le recouvrement de la 'Awrah, 3) L'orientation vers la Qibla, 4) L'entrée du temps prescrit.",
+      "2. La 'Awrah dans la prière : Pour l'homme, du nombril aux genoux. Pour la femme libre, tout le corps à l'exception du visage et des mains.",
+      "3. Les Piliers de la prière (Arkan As-Salah) : Ce sont les éléments sans lesquels la prière est invalide. Ils incluent : L'intention, le Takbir d'ouverture (Takbirat Al-Ihram), la station debout pour ce Takbir, la récitation de la Fatiha pour l'imam et celui qui prie seul, le Ruku' (inclinaison), le Sujud (prosternation) sur le front, le redressement de ces postures, et le Salam final.",
+      "4. Le respect du rythme (At-Tuma'ninah) : Le repos marqué dans chaque position (Ruku', Sujud) est un pilier essentiel. Prier de manière précipitée annule la prière."
+    ],
+    quiz: [
       {
-        id: 'lesson-3-1',
-        number: '3.1',
-        titleFr: 'L\'omission d\'un Fard et la levée du premier Tashahhud',
-        titleAr: 'سهو الفرض والقيام عن التشهد الأول',
-        matnArabe: 'فَصْلٌ: وَمَنْ نَسِيَ فَرْضًا فَلاَ تُجْزِيهِ السَّجْدَتَانِ عَنْهُ، بَلْ يَعُودُ إِلَيْهِ مَا لَمْ يَرْكَعْ فِي الرَّكْعَةِ الَّتِي تَلِيهَا، فَيُبْطِلُ مَا فَعَلَهُ بَعْدَهُ وَيَعُودُ إِلَى الفَرْضِ. وَمَنْ قَامَ مِنْ رَكْعَتَيْنِ قَبْلَ أَنْ يَجْلِسَ يَرْجِعُ مَا لَمْ تُفَارِقْ يَدَاهُ وَرُكْبَتَاهُ الأَرْضَ.',
-        content: [
-          'L\'omission d\'un pilier (Fard) ne peut jamais être réparée par Sajdat As-Sahw : il faut réaccomplir le Fard omis tant qu\'on ne s\'est pas incliné (Ruku\') dans la raka\'ah suivante.',
-          'En cas d\'oubli de la première assise (Tashahhud) : on se rassied si les mains/genoux n\'ont pas quitté le sol.',
-          'Si l\'on s\'est déjà redressé debout, on ne se rassied plus et on effectue Sajdat Al-Qabli à la fin.'
+        id: 1,
+        question: "Quelle est la 'Awrah de l'homme à couvrir obligatoirement durant la prière ?",
+        options: [
+          "Des épaules jusqu'aux chevilles",
+          "Du nombril jusqu'aux genoux",
+          "Seulement le buste",
+          "Tout le corps sauf la tête"
         ],
-        quiz: {
-          question: 'Si un fidèle oublie un Fard (comme la Fatiha ou un Ruku\'), la prosternation de l\'oubli suffit-elle ?',
-          options: [
-            'Oui, Sajdat As-Sahw compense tout oubli.',
-            'Non, Sajdat As-Sahw ne remplace jamais un Fard (pilier obligatoire).',
-            'Oui, si l\'on fait Sajdat Al-Ba\'di.'
-          ],
-          correctIndex: 1,
-          explanation: 'Un Fard omis doit obligatoirement être rattrapé. Sajdat As-Sahw ne remplace pas un pilier.'
-        }
+        answer: 1,
+        explanation: "La 'Awrah minimale de l'homme dans la prière s'étend du nombril jusqu'aux genoux."
       },
       {
-        id: 'lesson-3-2',
-        number: '3.2',
-        titleFr: 'Le doute sur le nombre de Rak\'at (Ash-Shakk)',
-        titleAr: 'الشك في عدد الركعات',
-        matnArabe: 'فَصْلٌ: وَمَنْ شَكَّ فِي صَلاَتِهِ فَلْيَبْنِ عَلَى مَا اسْتَيْقَنَ وَهُوَ الأَقَلُّ، وَيَأْتِي بِمَا شَكَّ فِيهِ، ثُمَّ يَسْجُدُ بَعْدَ السَّلاَمِ.',
-        content: [
-          'En cas de doute sur le nombre de rak\'at accomplies, le fidèle doit se baser sur le nombre minimum certain.',
-          'Il complète ensuite sa prière en accomplissant la rak\'ah manquante.',
-          'Après le Salam final, il effectue la prosternation d\'oubli (Sajdat Al-Ba\'di).'
+        id: 2,
+        question: "Quel est le statut du respect du rythme et du repos (Tuma'ninah) dans chaque posture ?",
+        options: [
+          "C'est une simple recommandation (Fadilah)",
+          "C'est une tradition appuyée (Sunnah Mu'akkadah)",
+          "C'est un pilier obligatoire (Rukn) sans lequel la prière est nulle",
+          "C'est facultatif si l'on est pressé"
         ],
-        quiz: {
-          question: 'Si un prieur hésite pendant sa prière entre avoir accompli 2 ou 3 rak\'at, que doit-il faire ?',
-          options: [
-            'Considérer qu\'il a fait 3 rak\'at et terminer sa prière.',
-            'Considérer qu\'il a fait 2 rak\'at, compléter sa prière puis faire Sajdat Al-Ba\'di après le Salam.',
-            'Annuler sa prière et la recommencer depuis le début.'
-          ],
-          correctIndex: 1,
-          explanation: 'Il se base sur le minimum certain (2 rak\'at), complète la prière puis fait Sajdat Al-Ba\'di.'
-        }
+        answer: 2,
+        explanation: "La Tuma'ninah (s'immobiliser un instant dans chaque position) est un pilier fondamental de la prière."
+      },
+      {
+        id: 3,
+        question: "Laquelle de ces propositions est une condition préalable (Shart) et non un pilier interne de la prière ?",
+        options: [
+          "La prosternation (Sujud)",
+          "L'orientation vers la Qibla",
+          "La récitation de la sourate Al-Fatiha",
+          "L'inclinaison (Ruku')"
+        ],
+        answer: 1,
+        explanation: "S'orienter vers la Qibla est une condition de validité qui doit être réalisée avant même de commencer la prière."
+      },
+      {
+        id: 4,
+        question: "Que se passe-t-il si une personne prie sciemment avant l'entrée du temps prescrit ?",
+        options: [
+          "Sa prière est valide mais détestable",
+          "Sa prière compte comme une prière surérogatoire et valide son obligation",
+          "Sa prière est totalement invalide et doit être refaite dans son temps",
+          "Elle doit simplement faire deux prosternations d'oubli"
+        ],
+        answer: 2,
+        explanation: "L'entrée du temps prescrit est une condition obligatoire. Prier avant l'heure rend la prière nulle."
       }
     ]
   },
   {
-    chapterId: 4,
-    chapterTitleFr: 'Chapitre 4 : La Prière en Groupe et le Retardataire',
-    chapterTitleAr: 'صلاة الجماعة والمسبوق',
-    lessons: [
+    id: 4,
+    title: "Chapitre 4 : Les Erreurs et la Prosternation d'Oubli",
+    subtitle: "Sujud As-Sahw (Sujud Al-Qabli et Al-Ba'di)",
+    summary:
+      "Ce chapitre explique comment corriger les erreurs, omissions ou ajouts involontaires commis pendant la prière grâce aux prosternations de réparation.",
+    details: [
+      "1. La prosternation antérieure (Sujud Al-Qabli) : Elle s'effectue AVANT le Salam final. Elle est requise en cas d'omission involontaire de deux Sunnan ou plus (par exemple oublier le premier Tashahhud).",
+      "2. La prosternation postérieure (Sujud Al-Ba'di) : Elle s'effectue APPRÈS le Salam final. Elle est requise en cas d'ajout involontaire dans la prière (par exemple faire une inclinaison ou une Raka'ah supplémentaire).",
+      "3. Cumul de l'omission et de l'ajout : Si le prieur commet à la fois un oubli (omission de Sunnah) et un ajout, la prosternation antérieure (Qabli) prime et s'effectue avant le Salam.",
+      "4. Omission d'un Pilier (Rukn) : Le Sujud As-Sahw ne peut JAMAIS remplacer un pilier oublié (comme la Fatiha ou le Ruku'). Si un pilier est omis, la Raka'ah entière est nulle et doit être remplacée, puis suivie d'un Sujud Ba'di."
+    ],
+    quiz: [
       {
-        id: 'lesson-4-1',
-        number: '4.1',
-        titleFr: 'Le statut du retardataire (Al-Masbūq)',
-        titleAr: 'أحكام المسبوق',
-        matnArabe: 'فَصْلٌ: وَمَنْ أَدْرَكَ مَعَ الإِمَامِ رَكْعَةً فَأَكْثَرَ فَهُوَ مُدْرِكٌ لِلْجَمَاعَةِ، وَمَنْ أَدْرَكَ دُونَهَا فَلاَ يُدْرِكُ الْجَمَاعَةَ. وَالْمَسْبُوقُ يُقَضِّي مَا فَاتَهُ فِي الْقَوْلِ وَيَبْنِي فِي الْفِعْلِ.',
-        content: [
-          'On rattrape la prière en groupe en attrapant au moins une rak\'ah complète avec l\'imam (s\'incliner avant qu\'il ne se redresse).',
-          'Règle fondamentale malikite : On rattrape les paroles (récitations) et on construit sur les actes (gestes).',
-          'Les rak\'at rattrapées après le Salam de l\'imam sont considérées comme le début pour la récitation (Fatiha + Sourate).'
+        id: 1,
+        question: "Quand doit-on effectuer le Sujud Al-Qabli (prosternation antérieure) ?",
+        options: [
+          "Après avoir prononcé le Salam final",
+          "Avant la récitation de la Fatiha",
+          "Juste avant de prononcer le Salam final",
+          "Au tout début de la prière"
         ],
-        quiz: {
-          question: 'Selon l\'école Malikite, quelle est la règle d\'or pour le retardataire (Al-Masbūq) qui rattrape ses rak\'at manquantes ?',
-          options: [
-            'Il refait tout depuis le début sans tenir compte de l\'imam.',
-            'Il rattrape les paroles (Qawl) et construit sur les actes (Fi\'l).',
-            'Il imite l\'imam uniquement pour la prosternation d\'oubli.'
-          ],
-          correctIndex: 1,
-          explanation: 'Le Masbūq applique la règle : "Yaqḍī fī al-qawl wa yabnī fī al-fi\'l" (Rattraper la récitation comme le début, et suivre la continuité des gestes).'
-        }
+        answer: 2,
+        explanation: "Le Sujud Al-Qabli s'accomplit juste avant le Salam final pour réparer une omission de Sunnan."
       },
       {
-        id: 'lesson-4-2',
-        number: '4.2',
-        titleFr: 'Le suivi des prosternations d\'oubli de l\'Imam par le Masbūq',
-        titleAr: 'متابعة المسبوق للإمام في سجود السهو',
-        matnArabe: 'فَصْلٌ: وَإِذَا سَجَدَ الإِمَامُ قَبْلَ السَّلاَمِ سَجَدَ مَعَهُ الْمَسْبُوقُ، وَإِنْ كَانَ لَمْ يَدْرُكْ مَعَهُ رَكْعَةً فَلاَ يَسْجُدُ مَعَهُ. وَإِنْ سَجَدَ الإِمَامُ بَعْدَ السَّلاَمِ لَمْ يَسْجُدْ مَعَهُ الْمَسْبُوقُ حَتَّى يُتِمَّ صَلاَتَهُ فَيَسْجُدَ بَعْدَ سَلاَمِهِ.',
-        content: [
-          'Sajdat Al-Qabli (avant Salam) : Le Masbūq se prosterne avec l\'imam s\'il a attrapé au moins une rak\'ah complète.',
-          'Si le Masbūq n\'a attrapé aucune rak\'ah (joint après le dernier Ruku\'), il ne suit pas l\'imam dans Sajdat Al-Qabli.',
-          'Sajdat Al-Ba\'di (après Salam) : Le Masbūq ne le fait pas avec l\'imam ; il se relève, termine ses rak\'at manquantes et l\'effectue après son propre Salam.'
+        id: 2,
+        question: "Quelle prosternation doit-on faire si l'on a ajouté par erreur une 5ème Raka'ah dans une prière de 4 Raka'at ?",
+        options: [
+          "Sujud Al-Qabli (avant le Salam)",
+          "Sujud Al-Ba'di (après le Salam)",
+          "Aucune prosternation n'est nécessaire",
+          "Il faut recommencer toute la prière"
         ],
-        quiz: {
-          question: 'Si l\'imam fait une prosternation d\'oubli APRÈS le Salam (Al-Ba\'di), quand le Masbūq doit-il la faire ?',
-          options: [
-            'Il la fait immédiatement avec l\'imam avant de se relever.',
-            'Il se relève sans la faire avec l\'imam, termine sa prière, puis l\'effectue après son propre Salam.',
-            'Il l\'annule car il est en retard.'
-          ],
-          correctIndex: 1,
-          explanation: 'Le Masbūq se relève directement après le Salam de l\'imam, termine sa prière puis fait Al-Ba\'di après son propre Salam.'
-        }
+        answer: 1,
+        explanation: "Un ajout involontaire dans la prière se répare au moyen du Sujud Al-Ba'di, effectué après le Salam."
+      },
+      {
+        id: 3,
+        question: "Si l'on oublie un pilier fondamental (Rukn) comme le Ruku', le Sujud As-Sahw suffit-il à réparer ?",
+        options: [
+          "Oui, deux prosternations suffisent",
+          "Non, le pilier omis doit obligatoirement être rattrapé",
+          "Oui, à condition de donner une aumône",
+          "Non, la prière est définitivement annulée sans rattrapage possible"
+        ],
+        answer: 1,
+        explanation: "Un pilier (Rukn) ne peut jamais être compensé par une simple prosternation. La Raka'ah doit être reconstruite."
+      },
+      {
+        id: 4,
+        question: "Que fait-on si l'on a à la fois omis une Sunnah et commis un ajout involontaire ?",
+        options: [
+          "On fait deux prosternations avant le Salam et deux après le Salam",
+          "La prosternation antérieure (Qabli) prend le dessus et s'effectue avant le Salam",
+          "La prosternation postérieure (Ba'di) s'impose",
+          "On annule la prière"
+        ],
+        answer: 1,
+        explanation: "En cas de combinaison d'omission et d'ajout, la règle prioritaire est d'accomplir le Sujud Al-Qabli."
       }
     ]
   }
 ];
 
-export default function AkhdariCourse() {
-  const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
-  const [lessonIndex, setLessonIndex] = useState(0);
-  const [viewState, setViewState] = useState<'lesson' | 'quiz' | 'recap'>('lesson');
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [completedLessons, setCompletedLessons] = useState<string[]>([]);
+export default function FiqhApp() {
+  const [unlockedChapter, setUnlockedChapter] = useState<number>(1);
+  const [selectedChapterId, setSelectedChapterId] = useState<number>(1);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false);
+  const [score, setScore] = useState<number>(0);
+  const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
 
-  const currentChapter = COURSES_DATA[currentChapterIndex];
-  const currentLesson = currentChapter.lessons[lessonIndex];
+  const currentChapter = CHAPTERS.find((ch) => ch.id === selectedChapterId) || CHAPTERS[0];
+  const currentQuestion = currentChapter.quiz[currentQuestionIndex];
 
-  const saveProgressToApi = async (lessonId: string) => {
-    try {
-      await fetch('/api/progress', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 'user-demo-id', lessonId }),
-      });
-    } catch (e) {
-      console.error('Erreur de sauvegarde API', e);
+  // Sauvegarder la progression
+  const handleAnswerSelect = (index: number) => {
+    if (!isAnswerSubmitted) {
+      setSelectedAnswer(index);
     }
   };
 
-  const handleQuizValidation = () => {
-    if (selectedOption === null) {
-      setErrorMsg('Veuillez sélectionner une réponse.');
-      return;
+  const handleValidateAnswer = () => {
+    if (selectedAnswer === null) return;
+
+    const isCorrect = selectedAnswer === currentQuestion.answer;
+    if (isCorrect) {
+      setScore((prev) => prev + 1);
     }
+    setIsAnswerSubmitted(true);
+  };
 
-    if (selectedOption === currentLesson.quiz.correctIndex) {
-      const updatedList = [...new Set([...completedLessons, currentLesson.id])];
-      setCompletedLessons(updatedList);
-      saveProgressToApi(currentLesson.id);
-      setErrorMsg('');
-
-      if (lessonIndex === currentChapter.lessons.length - 1) {
-        setViewState('recap');
-      } else {
-        setSelectedOption(null);
-        setLessonIndex((prev) => prev + 1);
-        setViewState('lesson');
+  const handleNextQuestion = async () => {
+    if (currentQuestionIndex + 1 < currentChapter.quiz.length) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+      setSelectedAnswer(null);
+      setIsAnswerSubmitted(false);
+    } else {
+      setIsQuizCompleted(true);
+      
+      // Si le score est >= 75% (ex: 3 sur 4)
+      const passed = score >= Math.ceil(currentChapter.quiz.length * 0.75);
+      if (passed && currentChapter.id === unlockedChapter) {
+        const nextLevel = unlockedChapter + 1;
+        setUnlockedChapter(nextLevel);
       }
-    } else {
-      setErrorMsg('Réponse incorrecte. Relisez attentivement le texte avant de réessayer.');
+
+      // Appel API de sauvegarde du progrès
+      try {
+        await fetch("/api/progress", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chapterId: currentChapter.id,
+            score: score,
+            totalQuestions: currentChapter.quiz.length,
+            passed: passed
+          })
+        });
+      } catch (error) {
+        console.error("Erreur lors de la sauvegarde du progrès :", error);
+      }
     }
   };
 
-  const handleNextChapter = () => {
-    if (currentChapterIndex + 1 < COURSES_DATA.length) {
-      setCurrentChapterIndex((prev) => prev + 1);
-      setLessonIndex(0);
-      setSelectedOption(null);
-      setViewState('lesson');
-    } else {
-      alert('Félicitations ! Vous avez terminé toutes les leçons actuellement disponibles.');
+  const handleResetQuiz = () => {
+    setCurrentQuestionIndex(0);
+    setSelectedAnswer(null);
+    setIsAnswerSubmitted(false);
+    setScore(0);
+    setIsQuizCompleted(false);
+  };
+
+  const handleSelectChapter = (id: number) => {
+    if (id <= unlockedChapter) {
+      setSelectedChapterId(id);
+      setCurrentQuestionIndex(0);
+      setSelectedAnswer(null);
+      setIsAnswerSubmitted(false);
+      setScore(0);
+      setIsQuizCompleted(false);
     }
   };
+
+  const isPassed = score >= Math.ceil(currentChapter.quiz.length * 0.75);
 
   return (
-    <main className="min-h-screen bg-slate-100 text-slate-900 py-10 px-4 md:px-8">
-      <div className="max-w-3xl mx-auto space-y-6">
-
-        {/* HEADER */}
-        <header className="bg-emerald-950 text-white p-6 rounded-2xl shadow-lg border-b-4 border-emerald-500">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-emerald-400 text-xs font-bold uppercase tracking-wider">
-              Fiqh Malikite — Matn Al-Akhdari
-            </span>
-            <span className="text-xs bg-emerald-800 text-emerald-200 px-3 py-1 rounded-full font-medium">
-              {currentChapter.chapterTitleFr}
-            </span>
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+      {/* Header */}
+      <header className="bg-emerald-800 text-white py-6 shadow-md">
+        <div className="max-w-5xl mx-auto px-4 flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold flex items-center gap-2">
+              <BookOpen className="w-7 h-7 text-emerald-300" />
+              Fiqh App - Matn Al-Akhdari
+            </h1>
+            <p className="text-emerald-200 text-sm mt-1">
+              Apprenez les règles essentielles de la purification et de la prière
+            </p>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold">
-            {viewState === 'recap'
-              ? `Validation du Chapitre ${currentChapter.chapterId}`
-              : `Leçon ${currentLesson.number} : ${currentLesson.titleFr}`}
-          </h1>
-        </header>
-
-        {/* LEÇON */}
-        {viewState === 'lesson' && (
-          <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
-            <div className="bg-emerald-50 border-r-4 border-emerald-600 p-5 rounded-r-xl text-right dir-rtl font-serif text-xl leading-loose text-emerald-950">
-              {currentLesson.matnArabe}
-            </div>
-
-            <div className="space-y-4 text-slate-700 leading-relaxed">
-              <h3 className="font-bold text-slate-900 text-lg">Points clés à retenir :</h3>
-              <ul className="space-y-2">
-                {currentLesson.content.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm md:text-base">
-                    <span className="text-emerald-600 font-bold">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <button
-              onClick={() => setViewState('quiz')}
-              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow transition-all"
-            >
-              Étape suivante : Passer au Quiz ({currentLesson.number}) &rarr;
-            </button>
+          <div className="bg-emerald-900 px-4 py-2 rounded-lg border border-emerald-700 text-sm">
+            Niveau débloqué : <span className="font-bold text-emerald-300">{unlockedChapter} / {CHAPTERS.length}</span>
           </div>
-        )}
+        </div>
+      </header>
 
-        {/* QUIZ */}
-        {viewState === 'quiz' && (
-          <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
-            <div className="border-b pb-3">
-              <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">Contrôle de connaissances</span>
-              <h2 className="text-lg font-bold text-slate-900 mt-1">{currentLesson.quiz.question}</h2>
-            </div>
+      {/* Main Content */}
+      <main className="max-w-5xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        {/* Navigation des Chapitres */}
+        <aside className="md:col-span-1 space-y-3">
+          <h2 className="text-lg font-semibold text-slate-800 mb-4">Chapitres du Matn</h2>
+          {CHAPTERS.map((ch) => {
+            const isUnlocked = ch.id <= unlockedChapter;
+            const isSelected = ch.id === selectedChapterId;
 
-            <div className="space-y-3">
-              {currentLesson.quiz.options.map((option, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => { setSelectedOption(idx); setErrorMsg(''); }}
-                  className={`w-full text-left p-4 rounded-xl border transition-all text-sm ${
-                    selectedOption === idx
-                      ? 'border-emerald-600 bg-emerald-50 text-emerald-900 font-semibold'
-                      : 'border-slate-200 hover:border-slate-300 bg-slate-50'
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-
-            {errorMsg && (
-              <p className="text-red-600 text-sm font-medium bg-red-50 p-3 rounded-lg border border-red-200">
-                {errorMsg}
-              </p>
-            )}
-
-            <div className="flex gap-4">
+            return (
               <button
-                onClick={() => setViewState('lesson')}
-                className="w-1/3 py-3 bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold rounded-xl text-sm"
+                key={ch.id}
+                onClick={() => handleSelectChapter(ch.id)}
+                disabled={!isUnlocked}
+                className={`w-text-left p-4 rounded-xl border transition flex items-center justify-between w-full ${
+                  isSelected
+                    ? "bg-emerald-50 border-emerald-600 text-emerald-900 font-medium shadow-sm"
+                    : isUnlocked
+                    ? "bg-white border-slate-200 text-slate-700 hover:border-emerald-300"
+                    : "bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed opacity-75"
+                }`}
               >
-                &larr; Relire la leçon
-              </button>
-              <button
-                onClick={handleQuizValidation}
-                className="w-2/3 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow text-sm"
-              >
-                Valider et continuer
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* RÉCAPITULATIF */}
-        {viewState === 'recap' && (
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-emerald-200 text-center space-y-8">
-            <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-4xl font-bold shadow-inner">
-              ✓
-            </div>
-
-            <div>
-              <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Niveau accompli</span>
-              <h2 className="text-3xl font-extrabold text-slate-900 mt-1">
-                {currentChapter.chapterTitleFr} Validé !
-              </h2>
-              <p className="text-slate-600 text-sm mt-2 max-w-lg mx-auto">
-                Félicitations ! Vous avez validé toutes les leçons de ce chapitre du <strong>Matn Al-Akhdari</strong>.
-              </p>
-            </div>
-
-            <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 text-left space-y-3">
-              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Leçons acquises :</h4>
-              {currentChapter.lessons.map((l) => (
-                <div key={l.id} className="flex items-center justify-between text-sm py-2 border-b border-slate-200 last:border-0">
-                  <div className="flex flex-col">
-                    <span className="font-semibold text-slate-800">{l.number} — {l.titleFr}</span>
-                    <span className="text-xs text-slate-500 font-serif dir-rtl">{l.titleAr}</span>
-                  </div>
-                  <span className="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full">
-                    Validé
-                  </span>
+                <div className="flex items-center gap-3">
+                  {isUnlocked ? (
+                    <CheckCircle className={`w-5 h-5 ${isSelected ? "text-emerald-600" : "text-slate-400"}`} />
+                  ) : (
+                    <Lock className="w-5 h-5 text-slate-400" />
+                  )}
+                  <span className="text-sm font-medium">Chapitre {ch.id}</span>
                 </div>
+                {!isUnlocked && <span className="text-xs bg-slate-200 px-2 py-0.5 rounded text-slate-600">Verrouillé</span>}
+              </button>
+            );
+          })}
+        </aside>
+
+        {/* Zone de Cours et Quiz */}
+        <section className="md:col-span-2 space-y-6">
+          
+          {/* Section Explications du Cours */}
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
+              Cours théorique
+            </span>
+            <h2 className="text-2xl font-bold text-slate-900 mt-3 mb-1">{currentChapter.title}</h2>
+            <p className="text-sm text-slate-500 mb-4">{currentChapter.subtitle}</p>
+            
+            <p className="text-slate-700 leading-relaxed mb-6 bg-slate-50 p-4 rounded-xl border-l-4 border-emerald-600">
+              {currentChapter.summary}
+            </p>
+
+            <h3 className="text-md font-semibold text-slate-800 mb-3">Détails et règles à retenir :</h3>
+            <ul className="space-y-3 text-slate-600 text-sm">
+              {currentChapter.details.map((detail, index) => (
+                <li key={index} className="bg-slate-50 p-3 rounded-lg border border-slate-100 leading-relaxed">
+                  {detail}
+                </li>
               ))}
+            </ul>
+          </div>
+
+          {/* Section Quiz */}
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full">
+                Évaluation (Quiz)
+              </span>
+              {!isQuizCompleted && (
+                <span className="text-xs text-slate-500">
+                  Question {currentQuestionIndex + 1} sur {currentChapter.quiz.length}
+                </span>
+              )}
             </div>
 
-            <button
-              onClick={handleNextChapter}
-              className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg transition-all text-base"
-            >
-              Déverrouiller le Chapitre Suivant &rarr;
-            </button>
-          </div>
-        )}
+            {!isQuizCompleted ? (
+              <div>
+                <h3 className="text-lg font-semibold text-slate-800 mb-4">
+                  {currentQuestion.question}
+                </h3>
 
-      </div>
-    </main>
+                <div className="space-y-3 mb-6">
+                  {currentQuestion.options.map((option, idx) => {
+                    let btnStyle = "bg-slate-50 border-slate-200 text-slate-700 hover:border-indigo-300";
+                    
+                    if (selectedAnswer === idx) {
+                      btnStyle = "bg-indigo-50 border-indigo-600 text-indigo-900 font-medium";
+                    }
+
+                    if (isAnswerSubmitted) {
+                      if (idx === currentQuestion.answer) {
+                        btnStyle = "bg-emerald-100 border-emerald-600 text-emerald-900 font-medium";
+                      } else if (selectedAnswer === idx) {
+                        btnStyle = "bg-red-100 border-red-500 text-red-900";
+                      }
+                    }
+
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => handleAnswerSelect(idx)}
+                        disabled={isAnswerSubmitted}
+                        className={`w-full text-left p-4 rounded-xl border transition text-sm ${btnStyle}`}
+                      >
+                        {option}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {isAnswerSubmitted && (
+                  <div className="p-4 mb-6 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-700 leading-relaxed">
+                    <span className="font-bold block mb-1">Explication :</span>
+                    {currentQuestion.explanation}
+                  </div>
+                )}
+
+                <div className="flex justify-end">
+                  {!isAnswerSubmitted ? (
+                    <button
+                      onClick={handleValidateAnswer}
+                      disabled={selectedAnswer === null}
+                      className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-medium px-6 py-2.5 rounded-xl transition text-sm"
+                    >
+                      Valider la réponse
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleNextQuestion}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2.5 rounded-xl transition text-sm flex items-center gap-2"
+                    >
+                      {currentQuestionIndex + 1 < currentChapter.quiz.length ? "Question suivante" : "Voir le résultat"}
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            ) : (
+              /* Écran de Fin de Quiz */
+              <div className="text-center py-6">
+                <Award className={`w-16 h-16 mx-auto mb-3 ${isPassed ? "text-emerald-600" : "text-amber-500"}`} />
+                <h3 className="text-xl font-bold text-slate-800 mb-2">
+                  {isPassed ? "Félicitations !" : "Révisez encore un peu"}
+                </h3>
+                <p className="text-sm text-slate-600 mb-6">
+                  Vous avez obtenu <span className="font-bold text-indigo-600">{score}</span> sur <span className="font-bold">{currentChapter.quiz.length}</span> bonnes réponses.
+                  {isPassed
+                    ? " Vous avez débloqué le chapitre suivant !"
+                    : " Il vous faut au moins 3 bonnes réponses sur 4 pour valider ce chapitre."}
+                </p>
+
+                <div className="flex justify-center gap-4">
+                  <button
+                    onClick={handleResetQuiz}
+                    className="border border-slate-300 hover:bg-slate-100 text-slate-700 font-medium px-5 py-2.5 rounded-xl transition text-sm flex items-center gap-2"
+                  >
+                    <RotateCcw className="w-4 h-4" /> Recommencer le quiz
+                  </button>
+                  {isPassed && currentChapter.id < CHAPTERS.length && (
+                    <button
+                      onClick={() => handleSelectChapter(currentChapter.id + 1)}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2.5 rounded-xl transition text-sm flex items-center gap-2"
+                    >
+                      Passer au Chapitre {currentChapter.id + 1}
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }

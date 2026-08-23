@@ -1,0 +1,22 @@
+{
+  "theme_color": "#064e3b",
+  "background_color": "#f1f5f9",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "Fiqh Malikite - Matn Al-Akhdari",
+  "short_name": "Fiqh App",
+  "description": "Apprenez et révisez les bases du Fiqh Malikite avec le Matn Al-Akhdari.",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { BookOpen, Award, ArrowRight, RotateCcw, HelpCircle, CheckCircle, Lock, Globe, Search, BookMarked, BrainCircuit, GraduationCap, Download, Check } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { BookOpen, Award, ArrowRight, RotateCcw, HelpCircle, CheckCircle, Lock, Globe, Search, BookMarked, BrainCircuit, GraduationCap, Download, Check, Smartphone, X, Share } from "lucide-react";
 
 type Language = "fr" | "en";
 
@@ -133,7 +133,7 @@ const LESSONS: Lesson[] = [
   {
     id: "1.1",
     chapterId: 1,
-    title: { fr: "Leçon 1.1 : Les types d'eaux et la purification (At-Tahara)", en: "Lesson 1.1: Types of Water & Purification (At-Taharah)" },
+    title: { fr: "Leçon 1.1 : Les types d'eaux et la purification (At-Taharah)", en: "Lesson 1.1: Types of Water & Purification (At-Taharah)" },
     arabicText: "فَصْلٌ: أَنْوَاعُ المِيَاهِ وَأَحْكَامُ الطَّهَارَةِ. لَا يَجُوزُ إِزَالَةُ النَّجَاسَةِ وَلَا رَفْعُ الحَدَثِ إِلَّا بِالمَاءِ المُطْلَقِ الَّذِي لَمْ يَتَغَيَّرْ لَوْنُهُ أَوْ طَعْمُهُ أَوْ رَائِحَتُهُ بِمَا يُفَارِقُهُ غَالِبًا.",
     frenchTranslation: "Section : Les catégories d'eau et les règles de purification. Il n'est pas permis d'enlever une impureté matérielle (Najasah) ni de lever une impureté rituelle (Hadath) si ce n'est avec de l'eau pure et purifiante (Al-Ma' Al-Moutlaq)...",
     englishTranslation: "Section: Categories of water and rules of purification. Removing physical impurity (Najasah) or removing ritual impurity (Hadath) is not permissible except with pure and purifying water...",
@@ -337,6 +337,36 @@ export default function FiqhApp() {
   const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
   const [examPassed, setExamPassed] = useState<boolean>(false);
 
+  // PWA State & Modal
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallModal, setShowInstallModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === "accepted") {
+        setDeferredPrompt(null);
+      }
+    } else {
+      // Afficher le guide d'installation explicite
+      setShowInstallModal(true);
+    }
+  };
+
   const lesson = LESSONS[currentLessonIndex];
   const activeQuestions = viewMode === "exam" ? FINAL_EXAM_QUESTIONS : lesson.quiz;
   const currentQuestion = activeQuestions[currentQuestionIndex];
@@ -427,7 +457,8 @@ export default function FiqhApp() {
       certificateTitle: "ATTESTATION DE RÉUSSITE",
       certificateSub: "Délivrée pour la maîtrise des bases du Fiqh Malikite (Matn Al-Akhdari)",
       certifiedTo: "Décerné à l'Étudiant(e)",
-      printCert: "Télécharger / Imprimer l'Attestation"
+      printCert: "Télécharger / Imprimer l'Attestation",
+      installApp: "Installer l'App"
     },
     en: {
       subtitle: "MALIKI FIQH — MATN AL-AKHDARI",
@@ -459,7 +490,8 @@ export default function FiqhApp() {
       certificateTitle: "CERTIFICATE OF COMPLETION",
       certificateSub: "Awarded for mastering Maliki Fiqh fundamentals (Matn Al-Akhdari)",
       certifiedTo: "Awarded to the Student",
-      printCert: "Download / Print Certificate"
+      printCert: "Download / Print Certificate",
+      installApp: "Install App"
     }
   };
 
@@ -478,7 +510,15 @@ export default function FiqhApp() {
               <h1 className="text-xl md:text-2xl font-bold mt-1">{lesson.title[lang]}</h1>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
+              <button
+                onClick={handleInstallClick}
+                className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow transition cursor-pointer"
+              >
+                <Smartphone className="w-4 h-4" />
+                <span>{text.installApp}</span>
+              </button>
+
               <div className="bg-emerald-800 border border-emerald-700 rounded-lg p-1 flex items-center gap-1">
                 <Globe className="w-4 h-4 ml-2 text-emerald-300" />
                 <button
@@ -520,6 +560,45 @@ export default function FiqhApp() {
           </div>
         </div>
       </header>
+
+      {/* Modal d'installation PWA */}
+      {showInstallModal && (
+        <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 text-left relative shadow-2xl">
+            <button
+              onClick={() => setShowInstallModal(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="flex items-center gap-3">
+              <Smartphone className="w-8 h-8 text-emerald-700" />
+              <h3 className="text-lg font-bold text-slate-900">Installer l'Application</h3>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Pour ajouter **Fiqh App** sur votre écran d'accueil comme une vraie application :
+            </p>
+            <div className="space-y-3 border-t border-slate-100 pt-3 text-xs text-slate-700">
+              <div className="p-3 bg-emerald-50 rounded-xl space-y-1 border border-emerald-100">
+                <span className="font-bold text-emerald-900 block">Sur iPhone / iPad (Safari) :</span>
+                <p>1. Cliquez sur le bouton <Share className="w-3.5 h-3.5 inline text-emerald-700" /> <strong>Partager</strong> en bas de l'écran.</p>
+                <p>2. Choisissez <strong>"Sur l'écran d'accueil"</strong>.</p>
+              </div>
+              <div className="p-3 bg-slate-50 rounded-xl space-y-1 border border-slate-200">
+                <span className="font-bold text-slate-900 block">Sur Android / Chrome / Edge :</span>
+                <p>1. Cliquez sur les <strong>3 petits points</strong> du navigateur (ou l'icône dans la barre d'adresse).</p>
+                <p>2. Cliquez sur <strong>"Installer l'application"</strong> ou <strong>"Ajouter à l'écran d'accueil"</strong>.</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowInstallModal(false)}
+              className="w-full bg-emerald-800 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-emerald-900 transition mt-2"
+            >
+              J'ai compris
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main Container */}
       <main className="max-w-5xl mx-auto px-4 mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">

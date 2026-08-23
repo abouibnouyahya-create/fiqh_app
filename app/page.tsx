@@ -148,11 +148,11 @@ const LESSONS: Lesson[] = [
     chapterId: 1,
     title: {
       fr: "Leçon 1.2 : Les Obligations des Ablutions (Fara'id Al-Wudu)",
-      en: "Lesson 1.2: Obligatory Acts of Ablution (Fara'id Al-Wudu)"
+      en: "Lesson 1.2: Obligatory Acts of Wudu (Fara'id Al-Wudu)"
     },
     arabicText: "فَرَائِضُ الوُضُوءِ سَبْعَةٌ: النِّيَّةُ، وَغَسْلُ الوَجْهِ، وَغَسْلُ اليَدَيْنِ إِلَى المِرْفَقَيْنِ، وَمَسْحُ الرَّأْسِ، وَغَسْلُ الرِّجْلَيْنِ إِلَى الكَعْبَيْنِ، وَالدَّلْكُ، وَالـمُوَالَاةُ.",
     frenchTranslation: "Les actes obligatoires (Fara'id) des ablutions sont au nombre de sept : 1) L'intention, 2) Le lavage du visage, 3) Le lavage des mains jusqu'aux coudes compris, 4) L'essuyage de la tête, 5) Le lavage des pieds jusqu'aux chevilles comprises, 6) Le frottement (Dalk), 7) La continuité sans interruption (Muwalah).",
-    englishTranslation: "The obligatory elements (Fara'id) of Wudu are seven: 1) Intention (Niyyah), 2) Washing the face, 3) Washing the arms up to the elbows, 4) Wiping the head, 5) Washing the feet up to the ankles, 6) Rubbing/Scrubbing (Dalk), 7) Continuity without interruption (Muwalah).",
+    englishTranslation: "The obligatory elements (Fara'id) of Wudu are seven: 1) Intention (Niyyah), 2) Washing the face, 3) Washing arms up to the elbows, 4) Wiping the head, 5) Washing feet up to the ankles, 6) Rubbing/Scrubbing (Dalk), 7) Continuity without interruption (Muwalah).",
     explanations: [
       {
         concept: {
@@ -190,6 +190,286 @@ const LESSONS: Lesson[] = [
         explanation: {
           fr: "L'école Malikite exige 7 obligations strictes pour la validité du Wudu.",
           en: "The Maliki school requires 7 strict obligations for Wudu to be valid."
+        }
+      }
+    ]
+  },
+  {
+    id: "1.3",
+    chapterId: 1,
+    title: {
+      fr: "Leçon 1.3 : Les Sunan des Ablutions (Sunan Al-Wudu)",
+      en: "Lesson 1.3: Recommended Acts of Wudu (Sunan Al-Wudu)"
+    },
+    arabicText: "وَسُنَنُهُ: غَسْلُ اليَدَيْنِ إِلَى الكُوعَيْنِ عِنْدَ الِابْتِدَاءِ، وَالمَضْمَضَةُ، وَالِاسْتِنْشَاقُ، وَالِاسْتِنْثَارُ، وَرَدُّ مَسْحِ الرَّأْسِ، وَمَسْحُ الأُذُنَيْنِ، وَتَجْدِيدُ المَاءِ لَهُمَا، وَالتَّرْتِيبُ بَيْنَ الفَرَائِضِ.",
+    frenchTranslation: "Les actes recommandés (Sunan) du Wudu sont au nombre de 8 : 1) Le lavage des mains jusqu'aux poignets au début, 2) Le rincage de la bouche (Madmadah), 3) L'aspiration de l'eau par le nez (Istinshaq), 4) Le rejet de l'eau du nez (Istinthar), 5) Le retour de l'essuyage de la tête, 6) L'essuyage des oreilles, 7) Le renouvellement de l'eau pour les oreilles, 8) L'ordre chronologique entre les obligations.",
+    englishTranslation: "The Sunan (recommended acts) of Wudu are 8: 1) Washing hands to the wrists at the start, 2) Rinsing the mouth (Madmadah), 3) Sniffing water into the nose (Istinshaq), 4) Blowing water out of the nose (Istinthar), 5) Returning the wipe over the head, 6) Wiping the ears, 7) Fresh water for ears, 8) Proper sequence between obligatory acts.",
+    explanations: [
+      {
+        concept: {
+          fr: "Les 8 Sunan des Ablutions",
+          en: "The 8 Sunan of Wudu"
+        },
+        description: {
+          fr: "Les Sunan complètent les Fara'id. Omettre une Sunah ne rend pas le Wudu invalide, mais en diminue la récompense.",
+          en: "Sunan complement the Fara'id. Omitting a Sunnah does not invalidate Wudu, but reduces its spiritual reward."
+        }
+      }
+    ],
+    keyPoints: {
+      fr: ["Les Sunan sont au nombre de 8.", "Le rinçage de la bouche et du nez en font partie."],
+      en: ["The Sunan are 8 in total.", "Rinsing the mouth and nose are included among them."]
+    },
+    quiz: [
+      {
+        id: 1,
+        question: {
+          fr: "Combien y a-t-il de Sunan dans le Wudu chez les Malikites ?",
+          en: "How many Sunan acts are there in Wudu in the Maliki school?"
+        },
+        options: {
+          fr: ["5", "7", "8", "12"],
+          en: ["5", "7", "8", "12"]
+        },
+        answer: 2,
+        explanation: {
+          fr: "Il y a 8 Sunan reconnues dans le Wudu.",
+          en: "There are 8 recognized Sunan acts in Wudu."
+        }
+      }
+    ]
+  },
+  {
+    id: "1.4",
+    chapterId: 1,
+    title: {
+      fr: "Leçon 1.4 : Les Annulateurs des Ablutions (Nawaqid Al-Wudu)",
+      en: "Lesson 1.4: Nullifiers of Wudu (Nawaqid Al-Wudu)"
+    },
+    arabicText: "نَوَاقِضُ الوُضُوءِ: أَحْدَاثٌ وَأَسْبَابٌ. فَالأَحْدَاثُ: البَوْلُ، وَالغَائِطُ، وَالرِّيحُ، وَالـمَذْيُ، وَالوَدْيُ. وَالأَسْبَابُ: النَّوْمُ الثَّقِيلُ، وَالإِغْمَاءُ، وَالسُّكْرُ، وَالجُنُونُ، وَالـمَسُّ، وَالقُبْلَةُ.",
+    frenchTranslation: "Les annulateurs du Wudu sont divisés en évacuations directes (Ahdath) et causes d'inconscience/contact (Asbab). Directs : urine, selles, gaz, Mady, Wady. Causes : sommeil lourd, évanouissement, ivresse, folie, toucher d'une partie intime, baiser passionné.",
+    englishTranslation: "Nullifiers of Wudu are divided into direct discharges (Ahdath) and indirect causes (Asbab). Direct: urine, feces, wind, Mady, Wady. Causes: heavy sleep, fainting, intoxication, insanity, touching private parts, passionate kissing.",
+    explanations: [
+      {
+        concept: {
+          fr: "Classification des Annulateurs",
+          en: "Classification of Nullifiers"
+        },
+        description: {
+          fr: "Les annulateurs se divisent en deux catégories majeures : les Ahdath (sécrétions/évacuations naturelles) et les Asbab (perte de conscience ou contact spécifique).",
+          en: "Nullifiers are divided into two main categories: Ahdath (natural body discharges) and Asbab (loss of consciousness or specific contact)."
+        }
+      }
+    ],
+    keyPoints: {
+      fr: ["Le sommeil lourd annule le Wudu.", "Les évacuations naturelles nécessitent un nouveau Wudu."],
+      en: ["Heavy sleep breaks Wudu.", "Natural bodily excretions require renewing Wudu."]
+    },
+    quiz: [
+      {
+        id: 1,
+        question: {
+          fr: "Le sommeil léger annule-t-il le Wudu en jurisprudence Malikite ?",
+          en: "Does light sleep break Wudu in Maliki jurisprudence?"
+        },
+        options: {
+          fr: ["Oui, toujours", "Non, seul le sommeil lourd l'annule", "Oui, s'il dure plus de 5 minutes", "Seulement la nuit"],
+          en: ["Yes, always", "No, only heavy sleep breaks it", "Yes, if over 5 minutes", "Only at night"]
+        },
+        answer: 1,
+        explanation: {
+          fr: "Seul le sommeil lourd entraîne l'invalidation du Wudu.",
+          en: "Only heavy sleep invalidates Wudu."
+        }
+      }
+    ]
+  },
+  {
+    id: "2.1",
+    chapterId: 2,
+    title: {
+      fr: "Leçon 2.1 : La Grande Purification (Al-Ghusl)",
+      en: "Lesson 2.1: Major Ritual Purification (Al-Ghusl)"
+    },
+    arabicText: "فَرَائِضُ الغُسْلِ: النِّيَّةُ، وَعُمُومُ الجَسَدِ بِالمَاءِ، وَالدَّلْكُ، وَالمُوَالَاةُ، وَتَخْلِيلُ الشَّعْرِ.",
+    frenchTranslation: "Les obligations du Ghusl : 1) L'intention, 2) Couvrir tout le corps d'eau, 3) Le frottement (Dalk), 4) La continuité (Muwalah), 5) Pénétrer l'eau à la racine des cheveux.",
+    englishTranslation: "Obligations of Ghusl: 1) Intention, 2) Washing the entire body with water, 3) Rubbing (Dalk), 4) Continuity (Muwalah), 5) Passing water through hair roots.",
+    explanations: [
+      {
+        concept: {
+          fr: "Obligations du Ghusl",
+          en: "Obligations of Ghusl"
+        },
+        description: {
+          fr: "Le Ghusl requiert de mouiller la totalité du corps sans oublier les racines des cheveux et de frotter la peau.",
+          en: "Ghusl requires washing the entire body, ensuring water reaches the hair roots and rubbing the skin."
+        }
+      }
+    ],
+    keyPoints: {
+      fr: ["L'eau doit toucher 100% de la peau.", "Le frottement est obligatoire chez les Malikites."],
+      en: ["Water must touch 100% of skin.", "Rubbing (Dalk) is mandatory in the Maliki school."]
+    },
+    quiz: [
+      {
+        id: 1,
+        question: {
+          fr: "Est-il obligatoire de laver les racines des cheveux pendant le Ghusl ?",
+          en: "Is it obligatory to reach the roots of the hair during Ghusl?"
+        },
+        options: {
+          fr: ["Non, c'est facultatif", "Oui, c'est une obligation (Fard)", "Seulement pour les hommes", "Seulement le vendredi"],
+          en: ["No, it is optional", "Yes, it is obligatory (Fard)", "Only for men", "Only on Friday"]
+        },
+        answer: 1,
+        explanation: {
+          fr: "L'eau doit obligatoirement atteindre le cuir chevelu et les racines.",
+          en: "Water must reach the scalp and hair roots."
+        }
+      }
+    ]
+  },
+  {
+    id: "2.2",
+    chapterId: 2,
+    title: {
+      fr: "Leçon 2.2 : La Purification Sèche (At-Tayammum)",
+      en: "Lesson 2.2: Dry Ablution (At-Tayammum)"
+    },
+    arabicText: "فَرَائِضُ التَّيَمُّمِ: النِّيَّةُ، وَالصَّعِيدُ الطَّاهِرُ، وَالضَّرْبَةُ الأُولَى، وَمَسْحُ الوَجْهِ، وَمَسْحُ اليَدَيْنِ إِلَى الكُوعَيْنِ، وَالمُوَالَاةُ، وَدُخُولُ الوَقْتِ.",
+    frenchTranslation: "Les obligations du Tayammum : 1) L'intention, 2) Un sol pur (Sa'id Tahir), 3) La première frappe, 4) L'essuyage du visage, 5) L'essuyage des mains jusqu'aux poignets, 6) La continuité, 7) L'entrée du temps de prière.",
+    englishTranslation: "Obligations of Tayammum: 1) Intention, 2) Pure earth material (Sa'id Tahir), 3) First strike of hands, 4) Wiping the face, 5) Wiping hands to wrists, 6) Continuity, 7) Entry of prayer time.",
+    explanations: [
+      {
+        concept: {
+          fr: "Conditions du Tayammum",
+          en: "Conditions of Tayammum"
+        },
+        description: {
+          fr: "Le Tayammum remplace le Wudu/Ghusl en cas d'absence d'eau ou de maladie. Il ne peut être fait qu'après l'entrée du temps de la prière.",
+          en: "Tayammum replaces Wudu/Ghusl in case of water absence or illness. It can only be performed after prayer time has set in."
+        }
+      }
+    ],
+    keyPoints: {
+      fr: ["S'effectue avec de la terre, pierre ou sable pur.", "Doit être fait après le début de l'heure de la prière."],
+      en: ["Performed using pure earth, stone, or sand.", "Must be done after the prayer time begins."]
+    },
+    quiz: [
+      {
+        id: 1,
+        question: {
+          fr: "Peut-on faire le Tayammum avant l'entrée du temps de la prière ?",
+          en: "Can Tayammum be performed before the prayer time enters?"
+        },
+        options: {
+          fr: ["Oui, n'importe quand", "Non, l'entrée du temps est une condition", "Oui, si on voyage", "Seulement le matin"],
+          en: ["Yes, anytime", "No, entry of prayer time is required", "Yes, if traveling", "Only in the morning"]
+        },
+        answer: 1,
+        explanation: {
+          fr: "L'entrée du temps de la prière concernée est une obligation pour le Tayammum.",
+          en: "The entry of the specific prayer time is required for Tayammum."
+        }
+      }
+    ]
+  },
+  {
+    id: "2.3",
+    chapterId: 2,
+    title: {
+      fr: "Leçon 2.3 : Les Conditions de la Prière (Shurut As-Salah)",
+      en: "Lesson 2.3: Conditions of Prayer (Shurut As-Salah)"
+    },
+    arabicText: "شُرُوطُ الصَّلَاةِ: طَهَارَةُ الحَدَثِ، وَطَهَارَةُ الخَبَثِ مِنَ الثَّوْبِ وَالبَدَنِ وَالمَكَانِ، وَسَتْرُ العَوْرَةِ، وَاسْتِقْبَالُ القِبْلَةِ، وَدُخُولُ الوَقْتِ.",
+    frenchTranslation: "Les conditions de validité de la prière : 1) Purification de l'impureté rituelle, 2) Purification des souillures physiques (vêtement, corps, lieu), 3) Couvrir la 'Awrah, 4) S'orienter vers la Qibla, 5) L'entrée du temps.",
+    englishTranslation: "Conditions for prayer validity: 1) Purity from ritual impurity, 2) Purity from physical filth (clothes, body, place), 3) Covering the 'Awrah, 4) Facing the Qibla, 5) Entry of prayer time.",
+    explanations: [
+      {
+        concept: {
+          fr: "Les 5 Conditions Préalables",
+          en: "The 5 Prerequisite Conditions"
+        },
+        description: {
+          fr: "Ces conditions doivent être remplies AVANT de commencer la prière sous peine d'invalidation.",
+          en: "These conditions must be fulfilled BEFORE starting the prayer, otherwise it is invalid."
+        }
+      }
+    ],
+    keyPoints: {
+      fr: ["L'orientation vers la Qibla est obligatoire.", "Le lieu, les vêtements et le corps doivent être propres."],
+      en: ["Facing the Qibla is mandatory.", "Body, clothing, and location must be clean."]
+    },
+    quiz: [
+      {
+        id: 1,
+        question: {
+          fr: "Que faut-il purifier avant la prière ?",
+          en: "What must be clean before praying?"
+        },
+        options: {
+          fr: ["Uniquement les mains", "Le corps, le vêtement et le lieu", "Seulement le vêtement", "Rien d'autre que le coeur"],
+          en: ["Hands only", "Body, clothing, and place of prayer", "Clothing only", "Nothing but the heart"]
+        },
+        answer: 1,
+        explanation: {
+          fr: "La purification concerne à la fois le corps, les habits et le lieu de prière.",
+          en: "Purification applies to body, clothing, and the spot of prayer."
+        }
+      }
+    ]
+  },
+  {
+    id: "2.4",
+    chapterId: 2,
+    title: {
+      fr: "Leçon 2.4 : Les Piliers de la Prière (Arkan As-Salah)",
+      en: "Lesson 2.4: Pillars of Prayer (Arkan As-Salah)"
+    },
+    arabicText: "أَرْكَانُ الصَّلَاةِ: النِّيَّةُ، وَتَكْبِيرَةُ الإِحْرَامِ، وَالقِيَامُ لَهَا، وَالفَاتِحَةُ، وَالقِيَامُ لَهَا، وَالرُّكُوعُ، وَالرَّفْعُ مِنْهُ، وَالسُّجُودُ، وَالرَّفْعُ مِنْهُ، وَالاعْتِدَالُ، وَالطَّمَأْنِينَةُ، وَالسَّلَامُ.",
+    frenchTranslation: "Les piliers obligatoires de la prière : L'intention, Takbirat Al-Ihram et la station debout pour celle-ci, la récitation de la Fatiha, le Ruku', le redressement, la prosternation (Sujud), le redressement du Sujud, l'alignement (I'tidal), la sérénité (Tuma'ninah) et le Salam final.",
+    englishTranslation: "Obligatory pillars of prayer: Intention, Takbirat Al-Ihram while standing, reciting Al-Fatiha while standing, Ruku', rising from Ruku', Sujud, rising from Sujud, composure (I'tidal), tranquility (Tuma'ninah), and final Taslim.",
+    explanations: [
+      {
+        concept: {
+          fr: "Définition des Piliers",
+          en: "Definition of Pillars"
+        },
+        description: {
+          fr: "Un pilier (Rukn) ne peut jamais être omis, que ce soit par oubli ou volontairement. Son omission annule la prière.",
+          en: "A pillar (Rukn) cannot be omitted, whether accidentally or intentionally. Omitting it invalidates the prayer."
+        }
+      }
+    ],
+    keyPoints: {
+      fr: ["La Fatiha est un pilier obligatoire à chaque Rak'ah.", "La quiétude (Tuma'ninah) est requise."],
+      en: ["Reciting Al-Fatiha is mandatory in every Rak'ah.", "Tranquility (Tuma'ninah) is required in every position."]
+    },
+    quiz: [
+      {
+        id: 1,
+        question: {
+          fr: "Que se passe-t-il si un pilier de la prière est oublié ?",
+          en: "What happens if a pillar of prayer is omitted?"
+        },
+        options: {
+          fr: [
+            "La prière reste valide",
+            "La prière ou la raka'ah est invalide et doit être corrigée",
+            "Il suffit d'offrir une aumône",
+            "Rien de particulier"
+          ],
+          en: [
+            "Prayer remains valid",
+            "The prayer or Rak'ah is invalid and must be corrected",
+            "Giving charity compensates for it",
+            "Nothing"
+          ]
+        },
+        answer: 1,
+        explanation: {
+          fr: "Un pilier omis invalide la raka'ah concernée et exige réparation.",
+          en: "An omitted pillar invalidates the affected Rak'ah and requires correction."
         }
       }
     ]

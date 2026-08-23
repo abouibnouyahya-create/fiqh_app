@@ -27,6 +27,7 @@ interface Lesson {
 }
 
 const LESSONS: Lesson[] = [
+  // --- CHAPITRE 1 : LA PURIFICATION (AT-TAHARA) ---
   {
     id: "1.1",
     chapterId: 1,
@@ -336,6 +337,305 @@ const LESSONS: Lesson[] = [
         ],
         answer: 1,
         explanation: "Le contact direct de la verge avec la paume ou le plat des doigts annule le Woudou selon le texte du Matn."
+      }
+    ]
+  },
+
+  // --- CHAPITRE 2 : LA PRIÈRE (AS-SALAH) ---
+  {
+    id: "2.1",
+    chapterId: 2,
+    title: "Leçon 2.1 : Les Conditions de Validité de la Prière (Shourout As-Salah)",
+    arabicText: "فَصْلٌ: شُرُوطُ الصَّلَاةِ: طَهَارَةُ الحَدَثِ، وَطَهَارَةُ الخَبَثِ مِنَ الثَّوْبِ وَالبَدَنِ وَالمَكَانِ، وَسَتْرُ العَوْرَةِ، وَاسْتِقْبَالُ القِبْلَةِ، وَالدُّخُولُ فِي الوَقْتِ.",
+    frenchTranslation: "Section : Les conditions de validité de la prière (Shourout) sont : 1) La purification de l'impureté rituelle (Hadath), 2) La purification des impuretés matérielles (Khabath/Najasah) sur le vêtement, le corps et le lieu, 3) Le recouvrement de la nudité (Satr Al-'Awrah), 4) L'orientation vers la Qiblah, 5) L'entrée du temps prescrit.",
+    explanations: [
+      {
+        concept: "1. Différence entre Condition (Shart) et Pilier (Rukn)",
+        description: "Une condition de validité (Shart) est une exigence préalable qui doit être remplie AVANT de commencer la prière et être maintenue jusqu'à la fin de la prière.",
+      },
+      {
+        concept: "2. Les 5 Conditions Majeures",
+        description: "• 1. Taharat Al-Hadath : Avoir ses ablutions (Woudou ou Ghusl).\n• 2. Taharat Al-Khabath : Le corps, l'habit et le sol de prière doivent être exempts de souillure (urine, sang impur, etc.).\n• 3. Satr Al-'Awrah : Pour l'homme, du nombril aux genoux au minimum. Pour la femme, tout le corps sauf le visage et les mains.\n• 4. Istiqbal Al-Qiblah : S'orienter vers la Ka'bah à la Mecque.\n• 5. Dukhoul Al-Waqt : La prière accomplie avant son temps légal est invalide.",
+      }
+    ],
+    keyPoints: [
+      "Les Shourout doivent être présents avant la Takbirah d'ouverture.",
+      "L'hygiène du lieu, des vêtements et du corps est indispensable.",
+      "Prier avant l'heure prescrite rend la prière nulle et non avenue."
+    ],
+    quiz: [
+      {
+        id: 1,
+        question: "Quelle est la différence entre une condition (Shart) et un pilier (Rukn) de la prière ?",
+        options: [
+          "Le Shart se fait après la prière et le Rukn pendant la prière",
+          "Le Shart est une exigence préalable qui doit précéder le début de la prière",
+          "Il n'y a aucune différence en Fiqh",
+          "Le Shart est optionnel alors que le Rukn est détestable"
+        ],
+        answer: 1,
+        explanation: "Les conditions (Shourout) préexistent à la prière (ex: ablutions, orientation Qiblah)."
+      },
+      {
+        id: 2,
+        question: "Sur quels éléments la purification matérielle (Taharat Al-Khabath) doit-elle s'appliquer ?",
+        options: [
+          "Uniquement sur le tapis de prière",
+          "Uniquement sur les mains et le visage",
+          "Sur le corps, le vêtement et l'emplacement de prière",
+          "Uniquement sur le vêtement supérieur"
+        ],
+        answer: 2,
+        explanation: "La pureté contre la Najasah concerne impérativement 3 éléments : le corps, les habits et le sol."
+      },
+      {
+        id: 3,
+        question: "Quelle est la limite minimale de la 'Awrah (nudité à recouvrir) pour l'homme en prière ?",
+        options: [
+          "Du cou jusqu'aux chevilles",
+          "Du nombril jusqu'aux genoux",
+          "Uniquement le bas du dos",
+          "Tout le corps à l'exception du visage"
+        ],
+        answer: 1,
+        explanation: "La 'Awrah minimale de l'homme s'étend de la zone du nombril aux genoux inclus."
+      },
+      {
+        id: 4,
+        question: "Que se passe-t-il si une personne prie sciemment 5 minutes avant l'appel à la prière (Adhan) ?",
+        options: [
+          "Sa prière est acceptée avec une récompense moindre",
+          "Sa prière est totalement invalide car l'entrée du temps est une condition stricte",
+          "Sa prière devient une prière surérogatoire validée",
+          "Elle doit simplement refaire une prosternation de réparation"
+        ],
+        answer: 1,
+        explanation: "L'entrée du temps (Dukhoul Al-Waqt) est une condition de validité indispensable."
+      }
+    ]
+  },
+  {
+    id: "2.2",
+    chapterId: 2,
+    title: "Leçon 2.2 : Les Piliers Obligatoires de la Prière (Fara'id As-Salah)",
+    arabicText: "فَرَائِضُ الصَّلَاةِ: النِّيَّةُ، وَتَكْبِيرَةُ الإِحْرَامِ، وَالْقِيَامُ لَهَا، وَقِرَاءَةُ الفَاتِحَةِ، وَالْقِيَامُ لَهَا، وَالرُّكُوعُ، وَالرَّفْعُ مِنْهُ، وَالسُّجُودُ، وَالرَّفْعُ مِنْهُ، وَالاعْتِدَالُ، وَالطُّمَأْنِينَةُ، وَالسَّلَامُ، وَالْجُلُوسُ لَهُ.",
+    frenchTranslation: "Les obligations (Fara'id/Piliers) de la prière sont : 1) L'intention, 2) La Takbirah d'ouverture (Takbirat al-Ihram), 3) La station debout pour cette Takbirah, 4) La récitation de la Al-Fatiha, 5) La station debout pour la Fatiha, 6) Le Ruku' (inclinaison), 7) Le redressement du Ruku', 8) Le Sujud (prosternation), 9) Le redressement du Sujud, 10) L'équilibre/l'alignement (I'tidal), 11) La quiétude/pause (Tuma'ninah), 12) Le Salutation finale (Salam), 13) L'assise pour le Salam.",
+    explanations: [
+      {
+        concept: "1. L'importance des Piliers (Arkan)",
+        description: "L'omission d'un pilier (Fard/Rukn), qu'elle soit volontaire ou par oubli, annule la Raka'ah concernée et ne peut pas être réparée par les prosternations de l'oubli (Sujud as-Sahw) seules.",
+      },
+      {
+        concept: "2. La Quiétude (Al-Tuma'ninah) et l'Équilibre (Al-I'tidal)",
+        description: "Une spécificité importante en Fiqh : il faut marquer un temps d'arrêt immobile (Tuma'ninah) dans chaque position (inclinaison, redressement, prosternation). Prier trop rapidement annule la prière.",
+      },
+      {
+        concept: "3. La Récitation de la Fatiha",
+        description: "La récitation de la sourate Al-Fatiha est un pilier obligatoire dans chaque Raka'ah pour celui qui prie seul (Munfarid) ou pour l'Imam.",
+      }
+    ],
+    keyPoints: [
+      "La Takbirah d'ouverture doit se faire obligatoirement en position debout pour les prières obligatoires.",
+      "La quiétude (marquer un temps d'immobilité) est un pilier obligatoire.",
+      "Le Salam final en disant 'As-Salamu 'Alaykum' est le pilier de sortie de prière."
+    ],
+    quiz: [
+      {
+        id: 1,
+        question: "Que se passe-t-il si un croyant oublie d'accomplir le Ruku' (l'inclinaison) ?",
+        options: [
+          "Il fait deux prosternations à la fin et sa prière est valide",
+          "La Raka'ah est invalide, l'oubli d'un pilier exige de refaire la Raka'ah",
+          "Sa prière reste 100% valide",
+          "Il donne une aumône pour compenser"
+        ],
+        answer: 1,
+        explanation: "Un pilier omis ne se répare pas simplement par le Sujud As-Sahw ; la Raka'ah doit être réaccomplie."
+      },
+      {
+        id: 2,
+        question: "Qu'est-ce que la 'Tuma'ninah' dans la prière ?",
+        options: [
+          "Le fait de fermer les yeux très fort",
+          "L'immobilité des membres pendant au moins la durée d'une glorification dans chaque posture",
+          "La récitation à voix haute",
+          "Le fait de lever les mains aux oreilles à chaque mouvement"
+        ],
+        answer: 1,
+        explanation: "La Tuma'ninah est la pause immobile indispensable dans le Ruku', le Sujud et les redressements."
+      },
+      {
+        id: 3,
+        question: "Dans quelle position doit être prononcée la Takbirat Al-Ihram (Takbir d'ouverture) lors d'une prière obligatoire ?",
+        options: [
+          "Assis",
+          "En s'inclinant",
+          "Obligatoirement debout (Al-Qiyam)",
+          "En prostration"
+        ],
+        answer: 2,
+        explanation: "La station debout pour la Takbirah d'ouverture est un pilier à part entière pour qui en a la capacité."
+      },
+      {
+        id: 4,
+        question: "La formule du Salam final de sortie de prière est-elle un pilier obligatoire ?",
+        options: [
+          "Non, c'est une simple Sunnah",
+          "Oui, la prononciation du Salam et l'assise pour celui-ci sont des Fara'id",
+          "Uniquement le vendredi",
+          "Seulement si l'Imam le demande"
+        ],
+        answer: 1,
+        explanation: "Le Salam final (As-Salamu 'Alaykum) clôt la prière et constitue un pilier obligatoire."
+      }
+    ]
+  },
+  {
+    id: "2.3",
+    chapterId: 2,
+    title: "Leçon 2.3 : Les Traditions Confirmées de la Prière (Sunan As-Salah)",
+    arabicText: "وَسُنَنُهَا: السُّورَةُ بَعْدَ الفَاتِحَةِ، وَالْقِيَامُ لَهَا، وَالْجَهْرُ فِيمَا يُجْهَرُ فِيهِ، وَالسِّرُّ فِيمَا يُسَرُّ فِيهِ، وَالتَّكْبِيرُ عِنْدَ كُلِّ خَفْضٍ وَرَفْعٍ إِلَّا تَكْبِيرَةَ الإِحْرَامِ، وَالتَّشَهُُّدُ الأَوَّلُ وَالثَّانِي، وَالْجُلُوسُ لَهُمَا.",
+    frenchTranslation: "Ses traditions (Sunan) sont : 1) La récitation d'une sourate après la Fatiha, 2) La station debout pour cette sourate, 3) La récitation à voix haute (Jahr) là où elle est prescrite, 4) La récitation à voix basse (Sirr) là où elle est prescrite, 5) Les Takbirs à chaque abaissement et redressement, 6) Le premier et second Tashahhud, 7) L'assise pour les deux Tashahhud.",
+    explanations: [
+      {
+        concept: "1. Distinction entre Voix Haute (Jahr) et Voix Basse (Sirr)",
+        description: "• Prières à voix haute (Jahr) : Sobh, les 2 premières Raka'at de Maghrib et 'Isha.\n• Prières à voix basse (Sirr) : Dhohr, 'Asr, la 3ème de Maghrib, et les 3ème/4ème de 'Isha.",
+      },
+      {
+        concept: "2. Les Sunan Mo'akkadah (Traditions Confirmées)",
+        description: "Si une Sunnah confirmée (comme un Tashahhud ou deux Takbirs de transition) est oubliée par inadvertance, la prière est complétée par la prostration d'oubli (Sujud As-Sahw) avant le Salam.",
+      }
+    ],
+    keyPoints: [
+      "La sourate après la Fatiha concerne les deux premières Raka'at.",
+      "Oublier une Sunnah confirmée se répare par le Sujud As-Sahw.",
+      "Le Tashahhud intermédiaire est une Sunnah."
+    ],
+    quiz: [
+      {
+        id: 1,
+        question: "Quel est le statut de la récitation d'une seconde sourate après la Fatiha dans les 2 premières Raka'at ?",
+        options: [
+          "C'est un pilier obligatoire (Fard)",
+          "C'est une tradition recommandée (Sunnah)",
+          "C'est une condition d'annulation",
+          "C'est un acte détestable"
+        ],
+        answer: 1,
+        explanation: "La sourate complémentaire après la Fatiha est une Sunnah."
+      },
+      {
+        id: 2,
+        question: "Quelles sont les prières où la récitation se fait à voix haute (Jahr) dans leurs deux premières Raka'at ?",
+        options: [
+          "Dhohr et 'Asr",
+          "Sobh, Maghrib et 'Isha",
+          "Dhohr, Maghrib et 'Isha",
+          "Toutes les prières de la journée"
+        ],
+        answer: 1,
+        explanation: "Le Sobh (2 Raka'at), le Maghrib (2 1ères) et le 'Isha (2 1ères) se récitent à voix haute."
+      },
+      {
+        id: 3,
+        question: "Que doit faire un fidèle s'il oublie le premier Tashahhud (assise intermédiaire) et se relève directement ?",
+        options: [
+          "Refaire toute la prière depuis le début",
+          "Continuer sa prière et effectuer 2 prosternations d'oubli (Sujud Qabli) avant le Salam",
+          "Annuler immédiatement la prière",
+          "Manger une datte pour compenser"
+        ],
+        answer: 1,
+        explanation: "L'oubli d'une Sunnah confirmée comme le Tashahhud se répare par le Sujud Qabli (avant le Salam)."
+      },
+      {
+        id: 4,
+        question: "Les Takbirs d'assise et de redressement (Allahu Akbar durant les mouvements) sont-ils des piliers ou des Sunan ?",
+        options: [
+          "Des piliers indispensables",
+          "Des Sunan (Traditions)",
+          "Des actes annulatifs",
+          "Des obligations uniquement pour l'Imam"
+        ],
+        answer: 1,
+        explanation: "Seul le tout premier Takbir (Takbirat Al-Ihram) est un Fard, les suivants sont des Sunan."
+      }
+    ]
+  },
+  {
+    id: "2.4",
+    chapterId: 2,
+    title: "Leçon 2.4 : Les Prostrations de l'Oubli (Sujud As-Sahw)",
+    arabicText: "فَصْلٌ: وَالسُّجُودُ لِلسَّهْوِ فِي الصَّلَاةِ: سَجْدَتَانِ قَبْلَ السَّلَامِ لِلنَّقْصِ، وَسَجْدَتَانِ بَعْدَ السَّلَامِ لِلزِّيَادَةِ. وَإِنْ اجْتَمَعَ نَقْصٌ وَزِيَادَةٌ سَجَدَ قَبْلَ السَّلَامِ.",
+    frenchTranslation: "Section : Les prostrations pour l'oubli dans la prière consistent en : deux prostrations AVANT le Salam (Sujud Qabli) en cas de MINORATION (oubli d'une Sunnah), et deux prostrations APRÈS le Salam (Sujud Ba'di) en cas de MAJORATION (ajout involontaire d'un geste). S'il y a à la fois minoration et majoration, on effectue les prostrations AVANT le Salam.",
+    explanations: [
+      {
+        concept: "1. La Prostration Avant le Salam (Sujud Qabli - سُجُود قَبْلِي)",
+        description: "Elle s'effectue juste après le dernier Tashahhud et AVANT de prononcer le Salam final. Elle répare l'omission involontaire d'une ou plusieurs Sunan (ex: oubli du premier Tashahhud ou d'un Takbir).",
+      },
+      {
+        concept: "2. La Prostration Après le Salam (Sujud Ba'di - سُجُود بَعْدِي)",
+        description: "Elle s'effectue APRÈS avoir donné le Salam final. Elle répare l'ajout involontaire d'un élément dans la prière (ex: avoir fait un Ruku' supplémentaire ou une Raka'ah de trop). Elle nécessite un Tashahhud court et un nouveau Salam.",
+      },
+      {
+        concept: "3. Cumul d'une omission et d'un ajout",
+        description: "Si le croyant a commis à la fois un oubli (minoration) et un ajout (majoration) dans la même prière, le Sujud Qabli (avant le Salam) l'emporte et répare l'ensemble.",
+      }
+    ],
+    keyPoints: [
+      "Minoration (Naqs / Oubli d'une Sunnah) = Sujud Qabli (avant le Salam).",
+      "Majoration (Ziyadah / Ajout de geste) = Sujud Ba'di (après le Salam).",
+      "Oubli + Ajout simultanés = Sujud Qabli (avant le Salam).",
+      "L'oubli d'un pilier (Fard) ne peut PAS être réparé par le Sujud As-Sahw seul."
+    ],
+    quiz: [
+      {
+        id: 1,
+        question: "Quand effectue-t-on le 'Sujud Qabli' ?",
+        options: [
+          "Avant la Takbirah d'ouverture",
+          "Juste avant de prononcer le Salam final",
+          "Deux minutes après la fin de la prière",
+          "Pendant la récitation de la Fatiha"
+        ],
+        answer: 1,
+        explanation: "Le Sujud Qabli se fait à la fin du dernier Tashahhud, avant de dire As-Salamu 'Alaykum."
+      },
+      {
+        id: 2,
+        question: "Quel type de prostration applique-t-on en cas d'AJOUT involontaire (ex: une prostration de trop) ?",
+        options: [
+          "Sujud Qabli (avant le Salam)",
+          "Sujud Ba'di (après le Salam)",
+          "Aucune prostration n'est nécessaire",
+          "On recommence toute la prière"
+        ],
+        answer: 1,
+        explanation: "Pour une majoration/ajout (Ziyadah), on effectue le Sujud Ba'di (après le Salam)."
+      },
+      {
+        id: 3,
+        question: "Si une personne oublie une Sunnah ET ajoute par erreur une assise en trop, que doit-elle faire ?",
+        options: [
+          "Effectuer le Sujud Ba'di uniquement",
+          "Effectuer le Sujud Qabli (avant le Salam) car l'omission l'emporte",
+          "Faire 4 prostrations de réparation",
+          "Annuler sa prière"
+        ],
+        answer: 1,
+        explanation: "En cas de cumul omission + ajout, la règle Malikite donne la priorité au Sujud Qabli."
+      },
+      {
+        id: 4,
+        question: "Peut-on compenser l'oubli de la récitation de la Fatiha uniquement avec le Sujud As-Sahw ?",
+        options: [
+          "Oui, 2 prostrations suffisent",
+          "Non, la Fatiha est un pilier (Fard) ; la Raka'ah doit être refaite",
+          "Oui, si on fait le Sujud Ba'di",
+          "Uniquement pendant la prière du vendredi"
+        ],
+        answer: 1,
+        explanation: "Le Sujud As-Sahw répare l'oubli des Sunan, pas l'omission d'un Fard (pilier obligatoire)."
       }
     ]
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { BookOpen, Award, ArrowRight, RotateCcw, HelpCircle, CheckCircle, Lock, Globe } from "lucide-react";
+import { BookOpen, Award, ArrowRight, RotateCcw, HelpCircle, CheckCircle, Lock, Globe, Search, BookMarked, Check } from "lucide-react";
 
 type Language = "fr" | "en";
 
@@ -29,12 +29,31 @@ interface Lesson {
   quiz: Question[];
 }
 
+interface GlossaryItem {
+  ar: string;
+  trans: string;
+  fr: string;
+  en: string;
+  desc: { fr: string; en: string };
+}
+
+const GLOSSARY: GlossaryItem[] = [
+  { ar: "طَهَارَة", trans: "Taharah", fr: "Purification rituelle", en: "Ritual Purification", desc: { fr: "Action d'éliminer l'impureté rituelle ou matérielle.", en: "The act of removing physical or ritual impurity." } },
+  { ar: "فَرْضٌ", trans: "Fard / Faridah", fr: "Obligation stricte", en: "Strict Obligation", desc: { fr: "Acte dont l'accomplissement est exigé et dont l'omission annule l'acte d'adoration.", en: "Mandatory act whose omission invalidates worship." } },
+  { ar: "سُنَّةٌ", trans: "Sunnah", fr: "Pratique recommandée", en: "Recommended Practice", desc: { fr: "Tradition prophétique complétant les obligations.", en: "Prophetic tradition complementing mandatory acts." } },
+  { ar: "حَدَث", trans: "Hadath", fr: "Impureté rituelle (Immatérielle)", en: "Ritual Impurity (Immaterial)", desc: { fr: "État d'impureté exigeant le Wudu ou le Ghusl (ex: gaz, sommeil).", en: "State of impurity requiring Wudu or Ghusl." } },
+  { ar: "نَجَاسَة", trans: "Najasah / Khabath", fr: "Impureté physique (Matérielle)", en: "Physical Filth (Material)", desc: { fr: "Souillure physique sur le corps, les habits ou le lieu (ex: urine).", en: "Physical stain on body, clothing, or location." } },
+  { ar: "دَلْك", trans: "Dalk", fr: "Frottement", en: "Rubbing / Scrubbing", desc: { fr: "Passer la main sur le membre avec de l'eau (Obligation Malikite).", en: "Passing the hand over the body part with water (Maliki obligation)." } },
+  { ar: "مُوَالَاة", trans: "Muwalah", fr: "Continuité", en: "Continuity", desc: { fr: "Enchaîner les membres sans interruption prolongée.", en: "Washing body parts consecutively without long breaks." } },
+  { ar: "تَيَمُّم", trans: "Tayammum", fr: "Ablution sèche", en: "Dry Ablution", desc: { fr: "Purification avec de la terre pure en cas d'absence d'eau.", en: "Purification using pure earth when water is unavailable." } }
+];
+
 const LESSONS: Lesson[] = [
   {
     id: "1.1",
     chapterId: 1,
     title: {
-      fr: "Leçon 1.1 : Les types d'eaux et la purification (At-Taharah)",
+      fr: "Leçon 1.1 : Les types d'eaux et la purification (At-Tahara)",
       en: "Lesson 1.1: Types of Water & Purification (At-Taharah)"
     },
     arabicText: "فَصْلٌ: أَنْوَاعُ المِيَاهِ وَأَحْكَامُ الطَّهَارَةِ. لَا يَجُوزُ إِزَالَةُ النَّجَاسَةِ وَلَا رَفْعُ الحَدَثِ إِلَّا بِالمَاءِ المُطْلَقِ الَّذِي لَمْ يَتَغَيَّرْ لَوْنُهُ أَوْ طَعْمُهُ أَوْ رَائِحَتُهُ بِمَا يُفَارِقُهُ غَالِبًا.",
@@ -202,7 +221,7 @@ const LESSONS: Lesson[] = [
       en: "Lesson 1.3: Recommended Acts of Wudu (Sunan Al-Wudu)"
     },
     arabicText: "وَسُنَنُهُ: غَسْلُ اليَدَيْنِ إِلَى الكُوعَيْنِ عِنْدَ الِابْتِدَاءِ، وَالمَضْمَضَةُ، وَالِاسْتِنْشَاقُ، وَالِاسْتِنْثَارُ، وَرَدُّ مَسْحِ الرَّأْسِ، وَمَسْحُ الأُذُنَيْنِ، وَتَجْدِيدُ المَاءِ لَهُمَا، وَالتَّرْتِيبُ بَيْنَ الفَرَائِضِ.",
-    frenchTranslation: "Les actes recommandés (Sunan) du Wudu sont au nombre de 8 : 1) Le lavage des mains jusqu'aux poignets au début, 2) Le rincage de la bouche (Madmadah), 3) L'aspiration de l'eau par le nez (Istinshaq), 4) Le rejet de l'eau du nez (Istinthar), 5) Le retour de l'essuyage de la tête, 6) L'essuyage des oreilles, 7) Le renouvellement de l'eau pour les oreilles, 8) L'ordre chronologique entre les obligations.",
+    frenchTranslation: "Les actes recommandés (Sunan) du Wudu sont au nombre de 8 : 1) Le lavage des mains jusqu'aux poignets au début, 2) Le rinçage de la bouche (Madmadah), 3) L'aspiration de l'eau par le nez (Istinshaq), 4) Le rejet de l'eau du nez (Istinthar), 5) Le retour de l'essuyage de la tête, 6) L'essuyage des oreilles, 7) Le renouvellement de l'eau pour les oreilles, 8) L'ordre chronologique entre les obligations.",
     englishTranslation: "The Sunan (recommended acts) of Wudu are 8: 1) Washing hands to the wrists at the start, 2) Rinsing the mouth (Madmadah), 3) Sniffing water into the nose (Istinshaq), 4) Blowing water out of the nose (Istinthar), 5) Returning the wipe over the head, 6) Wiping the ears, 7) Fresh water for ears, 8) Proper sequence between obligatory acts.",
     explanations: [
       {
@@ -480,7 +499,8 @@ export default function FiqhApp() {
   const [lang, setLang] = useState<Language>("fr");
   const [unlockedLessonIndex, setUnlockedLessonIndex] = useState<number>(0);
   const [currentLessonIndex, setCurrentLessonIndex] = useState<number>(0);
-  const [viewMode, setViewMode] = useState<"course" | "quiz">("course");
+  const [viewMode, setViewMode] = useState<"course" | "quiz" | "glossary">("course");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   
   // Quiz State
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -491,22 +511,17 @@ export default function FiqhApp() {
 
   const lesson = LESSONS[currentLessonIndex];
   const currentQuestion = lesson.quiz[currentQuestionIndex];
+  const progressPercentage = Math.round(((unlockedLessonIndex + 1) / LESSONS.length) * 100);
 
-  const toggleLanguage = (newLang: Language) => {
-    setLang(newLang);
-  };
+  const toggleLanguage = (newLang: Language) => setLang(newLang);
 
   const handleAnswerSelect = (index: number) => {
-    if (!isAnswerSubmitted) {
-      setSelectedAnswer(index);
-    }
+    if (!isAnswerSubmitted) setSelectedAnswer(index);
   };
 
   const handleValidateAnswer = () => {
     if (selectedAnswer === null) return;
-    if (selectedAnswer === currentQuestion.answer) {
-      setScore((prev) => prev + 1);
-    }
+    if (selectedAnswer === currentQuestion.answer) setScore((prev) => prev + 1);
     setIsAnswerSubmitted(true);
   };
 
@@ -540,21 +555,29 @@ export default function FiqhApp() {
     }
   };
 
+  const filteredGlossary = GLOSSARY.filter((item) =>
+    item.trans.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.ar.includes(searchTerm) ||
+    item[lang].toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const isPassed = score >= Math.ceil(lesson.quiz.length * 0.75);
 
   const UI_TEXT = {
     fr: {
       subtitle: "FIQH MALIKITE — MATN AL-AKHDARI",
+      overallProgress: "Progression globale",
       level: "Niveau",
       lessons: "Leçons",
       allLessons: "Toutes les leçons",
       locked: "Verrouillé",
-      courseTab: "Cours & Explications",
+      courseTab: "Cours",
       quizTab: "Quiz",
+      glossaryTab: "Glossaire Fiqh",
       translationTitle: "Traduction",
       explanationsTitle: "Explications Détaillées",
       keyPointsTitle: "Points clés à retenir",
-      nextStep: "Étape suivante : Passer au Quiz",
+      nextStep: "Passer au Quiz",
       question: "Question",
       explanation: "Explication",
       validate: "Valider la réponse",
@@ -565,20 +588,22 @@ export default function FiqhApp() {
       scoreMessage: (s: number, total: number) => `Vous avez obtenu ${s} / ${total} bonnes réponses.`,
       restartQuiz: "Recommencer le quiz",
       nextLesson: "Leçon suivante",
-      glossaryTitle: "Glossaire Multilingue du Fiqh"
+      searchPlaceholder: "Rechercher un terme (ex: Fard, Wudu, طهارة)..."
     },
     en: {
       subtitle: "MALIKI FIQH — MATN AL-AKHDARI",
+      overallProgress: "Overall Progress",
       level: "Level",
       lessons: "Lessons",
       allLessons: "All Lessons",
       locked: "Locked",
-      courseTab: "Lesson & Explanations",
+      courseTab: "Course",
       quizTab: "Quiz",
+      glossaryTab: "Fiqh Glossary",
       translationTitle: "Translation",
       explanationsTitle: "Detailed Explanations",
       keyPointsTitle: "Key Takeaways",
-      nextStep: "Next Step: Take the Quiz",
+      nextStep: "Take the Quiz",
       question: "Question",
       explanation: "Explanation",
       validate: "Submit Answer",
@@ -589,7 +614,7 @@ export default function FiqhApp() {
       scoreMessage: (s: number, total: number) => `You scored ${s} / ${total}.`,
       restartQuiz: "Retake Quiz",
       nextLesson: "Next Lesson",
-      glossaryTitle: "Multilingual Fiqh Glossary"
+      searchPlaceholder: "Search a term (e.g. Fard, Wudu, طهارة)..."
     }
   };
 
@@ -599,38 +624,53 @@ export default function FiqhApp() {
     <div className="min-h-screen bg-slate-100 text-slate-900 font-sans pb-12">
       {/* Header */}
       <header className="bg-emerald-900 text-white py-6 px-4 shadow-lg">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <span className="text-xs uppercase tracking-widest text-emerald-300 font-bold">
-              {text.subtitle}
-            </span>
-            <h1 className="text-xl md:text-2xl font-bold mt-1">{lesson.title[lang]}</h1>
-          </div>
-
-          <div className="flex items-center gap-3">
-            {/* Language Toggle */}
-            <div className="bg-emerald-800 border border-emerald-700 rounded-lg p-1 flex items-center gap-1">
-              <Globe className="w-4 h-4 ml-2 text-emerald-300" />
-              <button
-                onClick={() => toggleLanguage("fr")}
-                className={`px-2 py-1 text-xs rounded font-bold transition ${
-                  lang === "fr" ? "bg-emerald-600 text-white" : "text-emerald-200 hover:text-white"
-                }`}
-              >
-                FR
-              </button>
-              <button
-                onClick={() => toggleLanguage("en")}
-                className={`px-2 py-1 text-xs rounded font-bold transition ${
-                  lang === "en" ? "bg-emerald-600 text-white" : "text-emerald-200 hover:text-white"
-                }`}
-              >
-                EN
-              </button>
+        <div className="max-w-5xl mx-auto space-y-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <span className="text-xs uppercase tracking-widest text-emerald-300 font-bold">
+                {text.subtitle}
+              </span>
+              <h1 className="text-xl md:text-2xl font-bold mt-1">{lesson.title[lang]}</h1>
             </div>
 
-            <div className="bg-emerald-800 border border-emerald-700 px-3 py-1.5 rounded-lg text-xs md:text-sm">
-              {text.level} : <span className="font-bold text-emerald-300">{unlockedLessonIndex + 1} / {LESSONS.length} {text.lessons}</span>
+            <div className="flex items-center gap-3">
+              <div className="bg-emerald-800 border border-emerald-700 rounded-lg p-1 flex items-center gap-1">
+                <Globe className="w-4 h-4 ml-2 text-emerald-300" />
+                <button
+                  onClick={() => toggleLanguage("fr")}
+                  className={`px-2 py-1 text-xs rounded font-bold transition ${
+                    lang === "fr" ? "bg-emerald-600 text-white" : "text-emerald-200 hover:text-white"
+                  }`}
+                >
+                  FR
+                </button>
+                <button
+                  onClick={() => toggleLanguage("en")}
+                  className={`px-2 py-1 text-xs rounded font-bold transition ${
+                    lang === "en" ? "bg-emerald-600 text-white" : "text-emerald-200 hover:text-white"
+                  }`}
+                >
+                  EN
+                </button>
+              </div>
+
+              <div className="bg-emerald-800 border border-emerald-700 px-3 py-1.5 rounded-lg text-xs md:text-sm">
+                {text.level} : <span className="font-bold text-emerald-300">{unlockedLessonIndex + 1} / {LESSONS.length}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Barre de Progression Globale */}
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs text-emerald-200 font-medium">
+              <span>{text.overallProgress}</span>
+              <span>{progressPercentage}%</span>
+            </div>
+            <div className="w-full bg-emerald-950 h-2.5 rounded-full overflow-hidden border border-emerald-800">
+              <div
+                className="bg-emerald-400 h-full transition-all duration-500 ease-out"
+                style={{ width: `${progressPercentage}%` }}
+              ></div>
             </div>
           </div>
         </div>
@@ -644,7 +684,7 @@ export default function FiqhApp() {
           <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3">{text.allLessons}</h2>
           {LESSONS.map((l, idx) => {
             const isUnlocked = idx <= unlockedLessonIndex;
-            const isSelected = idx === currentLessonIndex;
+            const isSelected = idx === currentLessonIndex && viewMode !== "glossary";
 
             return (
               <button
@@ -679,11 +719,11 @@ export default function FiqhApp() {
 
         {/* Contenu Principal */}
         <section className="md:col-span-3">
-          {/* Mode Tabs */}
-          <div className="flex gap-4 mb-6">
+          {/* Navigation Mode */}
+          <div className="flex gap-3 mb-6">
             <button
               onClick={() => setViewMode("course")}
-              className={`flex-1 py-3 rounded-xl font-semibold text-sm transition flex items-center justify-center gap-2 ${
+              className={`flex-1 py-3 rounded-xl font-semibold text-xs md:text-sm transition flex items-center justify-center gap-2 ${
                 viewMode === "course"
                   ? "bg-emerald-700 text-white shadow-md"
                   : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
@@ -696,7 +736,7 @@ export default function FiqhApp() {
                 setViewMode("quiz");
                 handleResetQuiz();
               }}
-              className={`flex-1 py-3 rounded-xl font-semibold text-sm transition flex items-center justify-center gap-2 ${
+              className={`flex-1 py-3 rounded-xl font-semibold text-xs md:text-sm transition flex items-center justify-center gap-2 ${
                 viewMode === "quiz"
                   ? "bg-emerald-700 text-white shadow-md"
                   : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
@@ -704,19 +744,27 @@ export default function FiqhApp() {
             >
               <HelpCircle className="w-4 h-4" /> {text.quizTab} ({lesson.quiz.length})
             </button>
+            <button
+              onClick={() => setViewMode("glossary")}
+              className={`flex-1 py-3 rounded-xl font-semibold text-xs md:text-sm transition flex items-center justify-center gap-2 ${
+                viewMode === "glossary"
+                  ? "bg-emerald-700 text-white shadow-md"
+                  : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
+              }`}
+            >
+              <BookMarked className="w-4 h-4" /> {text.glossaryTab}
+            </button>
           </div>
 
           {/* MODE COURS */}
           {viewMode === "course" && (
             <div className="space-y-6">
-              {/* Texte Arabe */}
               <div className="bg-emerald-50 border-r-4 border-emerald-700 p-6 rounded-2xl shadow-sm text-right">
                 <p className="text-xl md:text-2xl font-serif leading-loose text-emerald-950" dir="rtl">
                   {lesson.arabicText}
                 </p>
               </div>
 
-              {/* Traduction (Dynamique selon la langue sélectionnée) */}
               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-2">
                   {text.translationTitle} ({lang.toUpperCase()})
@@ -726,7 +774,6 @@ export default function FiqhApp() {
                 </p>
               </div>
 
-              {/* Explications */}
               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
                 <h3 className="text-lg font-bold text-slate-900 border-b pb-3">{text.explanationsTitle}</h3>
 
@@ -745,7 +792,6 @@ export default function FiqhApp() {
                 ))}
               </div>
 
-              {/* Points Clés */}
               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                 <h3 className="text-md font-bold text-slate-900 mb-4">{text.keyPointsTitle} :</h3>
                 <ul className="space-y-2">
@@ -870,27 +916,38 @@ export default function FiqhApp() {
             </div>
           )}
 
-          {/* Mini-Glossaire Fiqh FR/EN/AR */}
-          <div className="mt-8 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-            <h3 className="text-sm font-bold text-slate-800 mb-3 uppercase tracking-wider">{text.glossaryTitle}</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-xs">
-              <div className="p-2 bg-slate-50 rounded border border-slate-100">
-                <span className="font-bold text-emerald-800 block">طَهَارَة (Taharah)</span>
-                <span className="text-slate-600">FR: Purification</span>
-                <span className="text-slate-600 block">EN: Purification</span>
+          {/* MODE GLOSSAIRE DYNAMIQUE */}
+          {viewMode === "glossary" && (
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+              <div className="relative">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
+                <input
+                  type="text"
+                  placeholder={text.searchPlaceholder}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-600"
+                />
               </div>
-              <div className="p-2 bg-slate-50 rounded border border-slate-100">
-                <span className="font-bold text-emerald-800 block">فَرْضٌ / فَرَائِض (Fard)</span>
-                <span className="text-slate-600">FR: Obligation</span>
-                <span className="text-slate-600 block">EN: Obligatory act</span>
-              </div>
-              <div className="p-2 bg-slate-50 rounded border border-slate-100">
-                <span className="font-bold text-emerald-800 block">سُنَّةٌ / سُنَن (Sunnah)</span>
-                <span className="text-slate-600">FR: Tradition recommandée</span>
-                <span className="text-slate-600 block">EN: Recommended practice</span>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {filteredGlossary.map((item, idx) => (
+                  <div key={idx} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                    <div className="flex justify-between items-start">
+                      <span className="text-lg font-serif font-bold text-emerald-900" dir="rtl">{item.ar}</span>
+                      <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">{item.trans}</span>
+                    </div>
+                    <div className="text-xs font-semibold text-slate-800">
+                      {lang === "fr" ? item.fr : item.en}
+                    </div>
+                    <p className="text-xs text-slate-600 leading-relaxed">
+                      {item.desc[lang]}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
+          )}
         </section>
       </main>
     </div>

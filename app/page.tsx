@@ -124,7 +124,7 @@ const LESSONS: Lesson[] = [
         description: "Selon le Madhhab Malikite, le Woudou est invalide si l'un de ces 7 piliers est omis volontairement ou par oubli :",
         examples: [
           "1. Niyyah (النِّيَّة) : Formuler l'intention d'accomplir le Woudou pour lever le Hadath ou rendre la prière licite.",
-          "2. Ghasl Al-Wajh (غَسْل الوَجْهِ) : Laver le visage du haut du front (naissance des cheveux) jusqu'au bas du menton, et d'une oreille à l'autre.",
+          "2. Ghasl Al-Wajh (غَسْل الوَجْهِ) : Laver le visage du haut du front jusqu'au bas du menton, et d'une oreille à l'autre.",
           "3. Ghasl Al-Yadayn (غَسْل اليَدَيْنِ) : Laver les deux bras en incluant obligatoirement les coudes.",
           "4. Mas'h Ar-Ra's (مَسْح الرَّأْسِ) : Passer les mains mouillées sur l'ensemble de la tête, du front jusqu'à la nuque.",
           "5. Ghasl Ar-Rijlayn (غَسْل الرِّجْلَيْنِ) : Laver les deux pieds en englobant les chevilles (K'abayn).",
@@ -221,7 +221,7 @@ const LESSONS: Lesson[] = [
           "C'est une obligation majeure (Fard)",
           "C'est une tradition (Sunnah)",
           "C'est un acte détestable (Makruh)",
-          "C me condition d'annulation de la prière"
+          "C'est une condition d'annulation de la prière"
         ],
         answer: 1,
         explanation: "La Madmadah est une Sunnah. Si elle est omise, le Woudou demeure valide."
@@ -430,7 +430,7 @@ export default function FiqhApp() {
             <h1 className="text-xl md:text-2xl font-bold mt-1">{lesson.title}</h1>
           </div>
           <div className="bg-emerald-800 border border-emerald-700 px-3 py-1.5 rounded-lg text-xs md:text-sm">
-            Progression : <span className="font-bold text-emerald-300">{unlockedLessonIndex + 1} / {LESSONS.length} Leçons</span>
+            Niveau : <span className="font-bold text-emerald-300">{unlockedLessonIndex + 1} / {LESSONS.length} Leçons</span>
           </div>
         </div>
       </header>
@@ -438,9 +438,9 @@ export default function FiqhApp() {
       {/* Main Container */}
       <main className="max-w-5xl mx-auto px-4 mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
         
-        {/* Barre Latérale des Leçons */}
+        {/* Barre Latérale des Leçons avec Cadenas */}
         <aside className="md:col-span-1 space-y-2">
-          <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3">Sommaire des Leçons</h2>
+          <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3">Toutes les leçons</h2>
           {LESSONS.map((l, idx) => {
             const isUnlocked = idx <= unlockedLessonIndex;
             const isSelected = idx === currentLessonIndex;
@@ -455,17 +455,22 @@ export default function FiqhApp() {
                     ? "bg-emerald-700 text-white font-bold border-emerald-700 shadow-sm"
                     : isUnlocked
                     ? "bg-white text-slate-700 hover:bg-emerald-50 border-slate-200"
-                    : "bg-slate-200 text-slate-400 border-slate-200 cursor-not-allowed opacity-60"
+                    : "bg-slate-200 text-slate-500 border-slate-200 cursor-not-allowed opacity-75"
                 }`}
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 overflow-hidden">
                   {isUnlocked ? (
-                    <CheckCircle className={`w-4 h-4 ${isSelected ? "text-emerald-300" : "text-emerald-600"}`} />
+                    <CheckCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-emerald-300" : "text-emerald-600"}`} />
                   ) : (
-                    <Lock className="w-4 h-4 text-slate-400" />
+                    <Lock className="w-4 h-4 shrink-0 text-slate-500" />
                   )}
-                  <span>Leçon {l.id}</span>
+                  <span className="truncate">Leçon {l.id}</span>
                 </div>
+                {!isUnlocked && (
+                  <span className="text-[10px] bg-slate-300 text-slate-700 px-2 py-0.5 rounded font-semibold ml-1 shrink-0">
+                    Verrouillé
+                  </span>
+                )}
               </button>
             );
           })}
@@ -638,8 +643,8 @@ export default function FiqhApp() {
                   <p className="text-slate-600 text-sm mb-6">
                     Vous avez obtenu <span className="font-bold text-emerald-700">{score}</span> / <span className="font-bold">{lesson.quiz.length}</span> bonnes réponses.
                     {isPassed
-                      ? " Vous avez validé cette leçon !"
-                      : " Il faut obtenir au moins 3 bonnes réponses sur 4 pour valider le niveau."}
+                      ? " Vous avez déverrouillé la leçon suivante !"
+                      : " Il faut obtenir au moins 3 bonnes réponses sur 4 pour déverrouiller la suite."}
                   </p>
 
                   <div className="flex justify-center gap-4">

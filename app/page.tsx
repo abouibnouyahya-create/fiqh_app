@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { BookOpen, Award, ArrowRight, RotateCcw, HelpCircle, CheckCircle, Lock, Globe, Search, BookMarked, Check } from "lucide-react";
+import { BookOpen, Award, ArrowRight, RotateCcw, HelpCircle, CheckCircle, Lock, Globe, Search, BookMarked, BrainCircuit, GraduationCap, Download, Check } from "lucide-react";
 
 type Language = "fr" | "en";
 
@@ -37,6 +37,13 @@ interface GlossaryItem {
   desc: { fr: string; en: string };
 }
 
+interface Flashcard {
+  ar: string;
+  trans: string;
+  front: { fr: string; en: string };
+  back: { fr: string; en: string };
+}
+
 const GLOSSARY: GlossaryItem[] = [
   { ar: "طَهَارَة", trans: "Taharah", fr: "Purification rituelle", en: "Ritual Purification", desc: { fr: "Action d'éliminer l'impureté rituelle ou matérielle.", en: "The act of removing physical or ritual impurity." } },
   { ar: "فَرْضٌ", trans: "Fard / Faridah", fr: "Obligation stricte", en: "Strict Obligation", desc: { fr: "Acte dont l'accomplissement est exigé et dont l'omission annule l'acte d'adoration.", en: "Mandatory act whose omission invalidates worship." } },
@@ -48,448 +55,264 @@ const GLOSSARY: GlossaryItem[] = [
   { ar: "تَيَمُّم", trans: "Tayammum", fr: "Ablution sèche", en: "Dry Ablution", desc: { fr: "Purification avec de la terre pure en cas d'absence d'eau.", en: "Purification using pure earth when water is unavailable." } }
 ];
 
+const FLASHCARDS: Flashcard[] = [
+  { ar: "طَهَارَة", trans: "Taharah", front: { fr: "Quelle est la définition de la Taharah ?", en: "What is the definition of Taharah?" }, back: { fr: "La purification rituelle du corps, des habits et du lieu d'impuretés rituelles (Hadath) ou matérielles (Najasah).", en: "Ritual purification of body, clothing, and place from ritual (Hadath) or physical (Najasah) impurities." } },
+  { ar: "دَلْك", trans: "Dalk", front: { fr: "Le Dalk est-il obligatoire en Fiqh Malikite ?", en: "Is Dalk mandatory in Maliki Fiqh?" }, back: { fr: "Oui, faire passer la main sur le membre avec de l'eau est l'une des 7 obligations (Fara'id) du Wudu.", en: "Yes, passing the hand over the body part while pouring water is one of the 7 obligations (Fara'id) of Wudu." } },
+  { ar: "مُوَالَاة", trans: "Muwalah", front: { fr: "Que signifie la Muwalah ?", en: "What does Muwalah mean?" }, back: { fr: "La continuité : laver les membres les uns après les autres sans pause qui assècherait le membre précédent.", en: "Continuity: washing body parts in succession without long delays that dry out previous parts." } },
+  { ar: "تَيَمُّم", trans: "Tayammum", front: { fr: "Quand autorise-t-on le Tayammum ?", en: "When is Tayammum permitted?" }, back: { fr: "En cas d'absence d'eau, d'incapacité d'utiliser l'eau ou de maladie, après l'entrée du temps de prière.", en: "When water is unavailable, unusable due to illness/harm, and strictly after prayer time enters." } }
+];
+
+const FINAL_EXAM_QUESTIONS: Question[] = [
+  {
+    id: 1,
+    question: {
+      fr: "Quelle est la condition essentielle concernant l'eau pour la levée du Hadath ?",
+      en: "What is the essential condition regarding water for removing Hadath?"
+    },
+    options: {
+      fr: ["Qu'elle soit bouillie", "Qu'elle soit pure et purifiante (Al-Ma' Al-Mutlaq)", "Qu'elle contienne du parfum", "Qu'elle soit stockée dans un récipient en argent"],
+      en: ["It must be boiled", "It must be pure and purifying (Al-Ma' Al-Mutlaq)", "It must contain perfume", "It must be stored in a silver vessel"]
+    },
+    answer: 1,
+    explanation: {
+      fr: "Seule l'eau naturelle à l'état pur (Al-Ma' Al-Mutlaq) permet d'enlever le Hadath.",
+      en: "Only natural water in its pure state (Al-Ma' Al-Mutlaq) removes Hadath."
+    }
+  },
+  {
+    id: 2,
+    question: {
+      fr: "Combien y a-t-il d'obligations (Fara'id) dans le Wudu selon l'école Malikite ?",
+      en: "How many obligatory acts (Fara'id) are in Wudu according to the Maliki school?"
+    },
+    options: {
+      fr: ["4 obligations", "5 obligations", "7 obligations", "9 obligations"],
+      en: ["4 obligations", "5 obligations", "7 obligations", "9 obligations"]
+    },
+    answer: 2,
+    explanation: {
+      fr: "L'école Malikite établit 7 obligations strictes pour le Wudu.",
+      en: "The Maliki school establishes 7 strict obligations for Wudu."
+    }
+  },
+  {
+    id: 3,
+    question: {
+      fr: "Le frottement (Dalk) est-il un acte obligatoire ou recommandé dans le Wudu et le Ghusl malikite ?",
+      en: "Is rubbing (Dalk) obligatory or recommended in Maliki Wudu and Ghusl?"
+    },
+    options: {
+      fr: ["Recommandé (Sunnah)", "Obligatoire (Fard)", "Superérogatoire (Nafl)", "Déconseillé (Makruh)"],
+      en: ["Recommended (Sunnah)", "Obligatory (Fard)", "Supererogatory (Nafl)", "Disliked (Makruh)"]
+    },
+    answer: 1,
+    explanation: {
+      fr: "Le Dalk (frottement) est une obligation (Fard) distinctive de l'école Malikite.",
+      en: "Dalk (rubbing) is a distinctive obligatory act (Fard) in the Maliki school."
+    }
+  },
+  {
+    id: 4,
+    question: {
+      fr: "Quelle est la règle concernant le Tayammum quant au moment de son exécution ?",
+      en: "What is the rule regarding the timing of Tayammum?"
+    },
+    options: {
+      fr: ["Il peut être fait avant l'heure de la prière", "Il doit obligatoirement être fait après l'entrée du temps de la prière", "Il se fait uniquement la nuit", "Il est valide pour toutes les prières de la journée"],
+      en: ["It can be done before prayer time", "It must strictly be performed after prayer time enters", "It is only performed at night", "It remains valid for all daily prayers"]
+    },
+    answer: 1,
+    explanation: {
+      fr: "Le Tayammum exige l'entrée préalable du temps de la prière concernée.",
+      en: "Tayammum requires the prior entry of the specific prayer time."
+    }
+  }
+];
+
 const LESSONS: Lesson[] = [
   {
     id: "1.1",
     chapterId: 1,
-    title: {
-      fr: "Leçon 1.1 : Les types d'eaux et la purification (At-Tahara)",
-      en: "Lesson 1.1: Types of Water & Purification (At-Taharah)"
-    },
+    title: { fr: "Leçon 1.1 : Les types d'eaux et la purification (At-Tahara)", en: "Lesson 1.1: Types of Water & Purification (At-Taharah)" },
     arabicText: "فَصْلٌ: أَنْوَاعُ المِيَاهِ وَأَحْكَامُ الطَّهَارَةِ. لَا يَجُوزُ إِزَالَةُ النَّجَاسَةِ وَلَا رَفْعُ الحَدَثِ إِلَّا بِالمَاءِ المُطْلَقِ الَّذِي لَمْ يَتَغَيَّرْ لَوْنُهُ أَوْ طَعْمُهُ أَوْ رَائِحَتُهُ بِمَا يُفَارِقُهُ غَالِبًا.",
-    frenchTranslation: "Section : Les catégories d'eau et les règles de purification. Il n'est pas permis d'enlever une impureté matérielle (Najasah) ni de lever une impureté rituelle (Hadath) si ce n'est avec de l'eau pure et purifiante (Al-Ma' Al-Moutlaq), c'est-à-dire une eau dont la couleur, le goût ou l'odeur n'ont pas été altérés par une substance étrangère qui s'en sépare habituellement.",
-    englishTranslation: "Section: Categories of water and rules of purification. Removing physical impurity (Najasah) or removing ritual impurity (Hadath) is not permissible except with pure and purifying water (Al-Ma' Al-Mutlaq), which is water whose color, taste, or smell has not been altered by a substance that is normally detached from it.",
+    frenchTranslation: "Section : Les catégories d'eau et les règles de purification. Il n'est pas permis d'enlever une impureté matérielle (Najasah) ni de lever une impureté rituelle (Hadath) si ce n'est avec de l'eau pure et purifiante (Al-Ma' Al-Moutlaq)...",
+    englishTranslation: "Section: Categories of water and rules of purification. Removing physical impurity (Najasah) or removing ritual impurity (Hadath) is not permissible except with pure and purifying water...",
     explanations: [
       {
-        concept: {
-          fr: "1. Qu'est-ce que l'Eau Pure et Purifiante (Al-Ma' Al-Mutlaq) ?",
-          en: "1. What is Pure and Purifying Water (Al-Ma' Al-Mutlaq)?"
-        },
-        description: {
-          fr: "En Fiqh Malikite, l'eau purifiante est l'eau qui conserve sa nature originelle (eau de pluie, de puits, de rivière, de mer, de source). Elle est qualifiée de 'Tahour' (طَهُور) : elle est pure en elle-même et a la capacité de purifier autre chose.",
-          en: "In Maliki Fiqh, purifying water retains its original natural state (rain, well, river, sea, or spring water). It is classified as 'Tahur' (طَهُور): pure in itself and capable of purifying other things."
-        }
-      },
-      {
-        concept: {
-          fr: "2. Les Trois Caractéristiques Fondamentales",
-          en: "2. The Three Fundamental Characteristics"
-        },
-        description: {
-          fr: "Pour vérifier si une eau est utilisable pour la purification, il faut observer ses trois attributs :",
-          en: "To verify if water can be used for ritual purification, observe its three attributes:"
-        },
-        examples: {
-          fr: ["Le Goût (الطَّعْم)", "La Couleur (اللَّوْن)", "L'Odeur (الرَّائِحَة)"],
-          en: ["Taste (الطَّعْم)", "Color (اللَّوْن)", "Smell (الرَّائِحَة)"]
-        }
-      },
-      {
-        concept: {
-          fr: "3. Différence entre 'Hadath' et 'Najasah'",
-          en: "3. Difference between 'Hadath' and 'Najasah'"
-        },
-        description: {
-          fr: "• Al-Hadath : État d'impureté rituelle (immatérielle) qui empêche de prier (ex: besoin naturel). Se lève par le Wudu ou Ghusl.\n• An-Najasah : Souillure matérielle physique (ex: urine, sang). Se nettoie en lavant la zone.",
-          en: "• Al-Hadath: State of ritual (immaterial) impurity preventing prayer (e.g. natural relief). Removed via Wudu or Ghusl.\n• An-Najasah: Physical, tangible filth (e.g. urine, blood). Cleaned by washing the affected area."
-        }
+        concept: { fr: "1. Qu'est-ce que l'Eau Pure et Purifiante (Al-Ma' Al-Mutlaq) ?", en: "1. What is Pure and Purifying Water (Al-Ma' Al-Mutlaq)?" },
+        description: { fr: "En Fiqh Malikite, l'eau purifiante est l'eau qui conserve sa nature originelle (eau de pluie, de puits, de rivière, de mer).", en: "In Maliki Fiqh, purifying water retains its original natural state (rain, well, river, sea)." }
       }
     ],
     keyPoints: {
-      fr: [
-        "L'eau purifiante (Al-Ma' Al-Mutlaq) est la seule utilisable pour la purification rituelle.",
-        "L'altération de la couleur, du goût ou de l'odeur par un produit étranger annule son pouvoir purifiant.",
-        "L'eau de mer, de puits et de pluie sont toutes purifiantes par nature."
-      ],
-      en: [
-        "Purifying water (Al-Ma' Al-Mutlaq) is the only type allowed for ritual purification.",
-        "Alteration of taste, color, or smell by foreign substances removes its purifying status.",
-        "Sea water, well water, and rain water are naturally purifying."
-      ]
+      fr: ["L'eau purifiante est la seule utilisable.", "L'altération de couleur, goût ou odeur la disqualifie."],
+      en: ["Purifying water is the only allowed type.", "Changes in color, taste, or smell disqualify it."]
     },
     quiz: [
       {
         id: 1,
-        question: {
-          fr: "Qu'est-ce que 'Al-Ma' Al-Mutlaq' en jurisprudence musulmane ?",
-          en: "What is 'Al-Ma' Al-Mutlaq' in Islamic jurisprudence?"
-        },
-        options: {
-          fr: [
-            "Une eau mélangée à du parfum",
-            "Une eau pure et purifiante qui conserve sa nature originelle",
-            "Une eau bouillie uniquement avec des plantes",
-            "Une eau réservée exclusivement à la boisson"
-          ],
-          en: [
-            "Water mixed with perfume",
-            "Pure and purifying water in its natural state",
-            "Water boiled strictly with herbs",
-            "Water meant exclusively for drinking"
-          ]
-        },
+        question: { fr: "Qu'est-ce que 'Al-Ma' Al-Mutlaq' ?", en: "What is 'Al-Ma' Al-Mutlaq'?" },
+        options: { fr: ["Eau parfumée", "Eau pure et purifiante originelle", "Eau bouillie", "Eau potable seulement"], en: ["Perfumed water", "Original pure & purifying water", "Boiled water", "Drinking water only"] },
         answer: 1,
-        explanation: {
-          fr: "Al-Ma' Al-Mutlaq désigne l'eau naturelle à l'état pur (pluie, puits, mer) qui n'a pas été altérée.",
-          en: "Al-Ma' Al-Mutlaq refers to natural water in its pure state (rain, well, sea) that remains unaltered."
-        }
-      },
-      {
-        id: 2,
-        question: {
-          fr: "Quels sont les trois attributs de l'eau à vérifier ?",
-          en: "What are the three attributes of water to verify?"
-        },
-        options: {
-          fr: [
-            "La température, la quantité et le récipient",
-            "La couleur, le goût et l'odeur",
-            "La provenance, le prix et la clarté",
-            "La profondeur, la vitesse et le volume"
-          ],
-          en: [
-            "Temperature, quantity, and container",
-            "Color, taste, and smell",
-            "Origin, price, and clarity",
-            "Depth, speed, and volume"
-          ]
-        },
-        answer: 1,
-        explanation: {
-          fr: "Si l'un des trois attributs (couleur, goût, odeur) est altéré, l'eau perd ses propriétés purifiantes.",
-          en: "If any of the three attributes (color, taste, smell) is altered, the water loses its purifying status."
-        }
+        explanation: { fr: "Al-Ma' Al-Mutlaq est l'eau dans son état naturel pur.", en: "Al-Ma' Al-Mutlaq is water in its natural pure state." }
       }
     ]
   },
   {
     id: "1.2",
     chapterId: 1,
-    title: {
-      fr: "Leçon 1.2 : Les Obligations des Ablutions (Fara'id Al-Wudu)",
-      en: "Lesson 1.2: Obligatory Acts of Wudu (Fara'id Al-Wudu)"
-    },
+    title: { fr: "Leçon 1.2 : Les Obligations des Ablutions (Fara'id Al-Wudu)", en: "Lesson 1.2: Obligatory Acts of Wudu (Fara'id Al-Wudu)" },
     arabicText: "فَرَائِضُ الوُضُوءِ سَبْعَةٌ: النِّيَّةُ، وَغَسْلُ الوَجْهِ، وَغَسْلُ اليَدَيْنِ إِلَى المِرْفَقَيْنِ، وَمَسْحُ الرَّأْسِ، وَغَسْلُ الرِّجْلَيْنِ إِلَى الكَعْبَيْنِ، وَالدَّلْكُ، وَالـمُوَالَاةُ.",
-    frenchTranslation: "Les actes obligatoires (Fara'id) des ablutions sont au nombre de sept : 1) L'intention, 2) Le lavage du visage, 3) Le lavage des mains jusqu'aux coudes compris, 4) L'essuyage de la tête, 5) Le lavage des pieds jusqu'aux chevilles comprises, 6) Le frottement (Dalk), 7) La continuité sans interruption (Muwalah).",
-    englishTranslation: "The obligatory elements (Fara'id) of Wudu are seven: 1) Intention (Niyyah), 2) Washing the face, 3) Washing arms up to the elbows, 4) Wiping the head, 5) Washing feet up to the ankles, 6) Rubbing/Scrubbing (Dalk), 7) Continuity without interruption (Muwalah).",
+    frenchTranslation: "Les actes obligatoires (Fara'id) des ablutions sont au nombre de sept...",
+    englishTranslation: "The obligatory elements (Fara'id) of Wudu are seven...",
     explanations: [
       {
-        concept: {
-          fr: "Les 7 Piliers du Wudu dans l'école Malikite",
-          en: "The 7 Pillars of Wudu in the Maliki School"
-        },
-        description: {
-          fr: "Le Wudu est invalide si l'un de ces 7 piliers est omis :\n1. Intention (Niyyah)\n2. Lavage du visage\n3. Lavage des bras jusqu'aux coudes inclus\n4. Essuyage de toute la tête\n5. Lavage des pieds jusqu'aux chevilles\n6. Frottement de la main sur la peau mouillée (Dalk)\n7. Enchaînement sans pause prolongée (Muwalah)",
-          en: "Wudu is invalid if any of these 7 pillars is omitted:\n1. Intention (Niyyah)\n2. Washing the face\n3. Washing arms including elbows\n4. Wiping the entire head\n5. Washing feet including ankles\n6. Rubbing skin with hand while washing (Dalk)\n7. Continuous flow without long breaks (Muwalah)"
-        }
+        concept: { fr: "Les 7 Piliers du Wudu", en: "The 7 Pillars of Wudu" },
+        description: { fr: "1. Intention, 2. Visage, 3. Bras jusqu'aux coudes, 4. Tête, 5. Pieds, 6. Dalk (frottement), 7. Muwalah (continuité).", en: "1. Intention, 2. Face, 3. Arms to elbows, 4. Head, 5. Feet, 6. Dalk (rubbing), 7. Muwalah (continuity)." }
       }
     ],
     keyPoints: {
-      fr: [
-        "Les Fara'id du Wudu sont au nombre de 7.",
-        "Le frottement (Dalk) et la continuité (Muwalah) sont des obligations strictes chez les Malikites."
-      ],
-      en: [
-        "The obligatory acts of Wudu are 7.",
-        "Rubbing (Dalk) and continuity (Muwalah) are strict obligations in the Maliki school."
-      ]
+      fr: ["7 obligations au total chez les Malikites.", "Dalk et Muwalah sont obligatoires."],
+      en: ["7 total obligations in the Maliki school.", "Dalk and Muwalah are mandatory."]
     },
     quiz: [
       {
         id: 1,
-        question: {
-          fr: "Combien d'actes obligatoires compte le Wudu selon l'école Malikite ?",
-          en: "How many obligatory acts are there in Wudu according to the Maliki school?"
-        },
-        options: {
-          fr: ["4 actes", "5 actes", "7 actes", "10 actes"],
-          en: ["4 acts", "5 acts", "7 acts", "10 acts"]
-        },
+        question: { fr: "Combien d'actes obligatoires compte le Wudu ?", en: "How many obligatory acts in Wudu?" },
+        options: { fr: ["4", "5", "7", "10"], en: ["4", "5", "7", "10"] },
         answer: 2,
-        explanation: {
-          fr: "L'école Malikite exige 7 obligations strictes pour la validité du Wudu.",
-          en: "The Maliki school requires 7 strict obligations for Wudu to be valid."
-        }
+        explanation: { fr: "Il y a 7 obligations d'après l'école Malikite.", en: "There are 7 obligations according to the Maliki school." }
       }
     ]
   },
   {
     id: "1.3",
     chapterId: 1,
-    title: {
-      fr: "Leçon 1.3 : Les Sunan des Ablutions (Sunan Al-Wudu)",
-      en: "Lesson 1.3: Recommended Acts of Wudu (Sunan Al-Wudu)"
-    },
-    arabicText: "وَسُنَنُهُ: غَسْلُ اليَدَيْنِ إِلَى الكُوعَيْنِ عِنْدَ الِابْتِدَاءِ، وَالمَضْمَضَةُ، وَالِاسْتِنْشَاقُ، وَالِاسْتِنْثَارُ، وَرَدُّ مَسْحِ الرَّأْسِ، وَمَسْحُ الأُذُنَيْنِ، وَتَجْدِيدُ المَاءِ لَهُمَا، وَالتَّرْتِيبُ بَيْنَ الفَرَائِضِ.",
-    frenchTranslation: "Les actes recommandés (Sunan) du Wudu sont au nombre de 8 : 1) Le lavage des mains jusqu'aux poignets au début, 2) Le rinçage de la bouche (Madmadah), 3) L'aspiration de l'eau par le nez (Istinshaq), 4) Le rejet de l'eau du nez (Istinthar), 5) Le retour de l'essuyage de la tête, 6) L'essuyage des oreilles, 7) Le renouvellement de l'eau pour les oreilles, 8) L'ordre chronologique entre les obligations.",
-    englishTranslation: "The Sunan (recommended acts) of Wudu are 8: 1) Washing hands to the wrists at the start, 2) Rinsing the mouth (Madmadah), 3) Sniffing water into the nose (Istinshaq), 4) Blowing water out of the nose (Istinthar), 5) Returning the wipe over the head, 6) Wiping the ears, 7) Fresh water for ears, 8) Proper sequence between obligatory acts.",
+    title: { fr: "Leçon 1.3 : Les Sunan des Ablutions", en: "Lesson 1.3: Recommended Acts of Wudu" },
+    arabicText: "وَسُنَنُهُ: غَسْلُ اليَدَيْنِ إِلَى الكُوعَيْنِ عِنْدَ الِابْتِدَاءِ...",
+    frenchTranslation: "Les actes recommandés (Sunan) du Wudu sont au nombre de 8...",
+    englishTranslation: "The Sunan (recommended acts) of Wudu are 8...",
     explanations: [
       {
-        concept: {
-          fr: "Les 8 Sunan des Ablutions",
-          en: "The 8 Sunan of Wudu"
-        },
-        description: {
-          fr: "Les Sunan complètent les Fara'id. Omettre une Sunah ne rend pas le Wudu invalide, mais en diminue la récompense.",
-          en: "Sunan complement the Fara'id. Omitting a Sunnah does not invalidate Wudu, but reduces its spiritual reward."
-        }
+        concept: { fr: "Sunan du Wudu", en: "Sunan of Wudu" },
+        description: { fr: "Les Sunan complètent les Fara'id.", en: "Sunan complement the Fara'id." }
       }
     ],
-    keyPoints: {
-      fr: ["Les Sunan sont au nombre de 8.", "Le rinçage de la bouche et du nez en font partie."],
-      en: ["The Sunan are 8 in total.", "Rinsing the mouth and nose are included among them."]
-    },
+    keyPoints: { fr: ["8 Sunan au total."], en: ["8 Sunan in total."] },
     quiz: [
       {
         id: 1,
-        question: {
-          fr: "Combien y a-t-il de Sunan dans le Wudu chez les Malikites ?",
-          en: "How many Sunan acts are there in Wudu in the Maliki school?"
-        },
-        options: {
-          fr: ["5", "7", "8", "12"],
-          en: ["5", "7", "8", "12"]
-        },
+        question: { fr: "Nombre de Sunan du Wudu ?", en: "Number of Sunan in Wudu?" },
+        options: { fr: ["5", "7", "8", "12"], en: ["5", "7", "8", "12"] },
         answer: 2,
-        explanation: {
-          fr: "Il y a 8 Sunan reconnues dans le Wudu.",
-          en: "There are 8 recognized Sunan acts in Wudu."
-        }
+        explanation: { fr: "8 Sunan reconnues.", en: "8 recognized Sunan." }
       }
     ]
   },
   {
     id: "1.4",
     chapterId: 1,
-    title: {
-      fr: "Leçon 1.4 : Les Annulateurs des Ablutions (Nawaqid Al-Wudu)",
-      en: "Lesson 1.4: Nullifiers of Wudu (Nawaqid Al-Wudu)"
-    },
-    arabicText: "نَوَاقِضُ الوُضُوءِ: أَحْدَاثٌ وَأَسْبَابٌ. فَالأَحْدَاثُ: البَوْلُ، وَالغَائِطُ، وَالرِّيحُ، وَالـمَذْيُ، وَالوَدْيُ. وَالأَسْبَابُ: النَّوْمُ الثَّقِيلُ، وَالإِغْمَاءُ، وَالسُّكْرُ، وَالجُنُونُ، وَالـمَسُّ، وَالقُبْلَةُ.",
-    frenchTranslation: "Les annulateurs du Wudu sont divisés en évacuations directes (Ahdath) et causes d'inconscience/contact (Asbab). Directs : urine, selles, gaz, Mady, Wady. Causes : sommeil lourd, évanouissement, ivresse, folie, toucher d'une partie intime, baiser passionné.",
-    englishTranslation: "Nullifiers of Wudu are divided into direct discharges (Ahdath) and indirect causes (Asbab). Direct: urine, feces, wind, Mady, Wady. Causes: heavy sleep, fainting, intoxication, insanity, touching private parts, passionate kissing.",
+    title: { fr: "Leçon 1.4 : Les Annulateurs des Ablutions", en: "Lesson 1.4: Nullifiers of Wudu" },
+    arabicText: "نَوَاقِضُ الوُضُوءِ: أَحْدَاثٌ وَأَسْبَابٌ...",
+    frenchTranslation: "Les annulateurs sont divisés en Ahdath et Asbab...",
+    englishTranslation: "Nullifiers are divided into Ahdath and Asbab...",
     explanations: [
       {
-        concept: {
-          fr: "Classification des Annulateurs",
-          en: "Classification of Nullifiers"
-        },
-        description: {
-          fr: "Les annulateurs se divisent en deux catégories majeures : les Ahdath (sécrétions/évacuations naturelles) et les Asbab (perte de conscience ou contact spécifique).",
-          en: "Nullifiers are divided into two main categories: Ahdath (natural body discharges) and Asbab (loss of consciousness or specific contact)."
-        }
+        concept: { fr: "Classification des annulateurs", en: "Classification of nullifiers" },
+        description: { fr: "Ahdath (évacuations) et Asbab (perte de conscience/contact).", en: "Ahdath (discharges) and Asbab (loss of consciousness/contact)." }
       }
     ],
-    keyPoints: {
-      fr: ["Le sommeil lourd annule le Wudu.", "Les évacuations naturelles nécessitent un nouveau Wudu."],
-      en: ["Heavy sleep breaks Wudu.", "Natural bodily excretions require renewing Wudu."]
-    },
+    keyPoints: { fr: ["Sommeil lourd annule le Wudu."], en: ["Heavy sleep breaks Wudu."] },
     quiz: [
       {
         id: 1,
-        question: {
-          fr: "Le sommeil léger annule-t-il le Wudu en jurisprudence Malikite ?",
-          en: "Does light sleep break Wudu in Maliki jurisprudence?"
-        },
-        options: {
-          fr: ["Oui, toujours", "Non, seul le sommeil lourd l'annule", "Oui, s'il dure plus de 5 minutes", "Seulement la nuit"],
-          en: ["Yes, always", "No, only heavy sleep breaks it", "Yes, if over 5 minutes", "Only at night"]
-        },
+        question: { fr: "Le sommeil léger annule-t-il le Wudu ?", en: "Does light sleep break Wudu?" },
+        options: { fr: ["Oui", "Non, seul le sommeil lourd", "Oui si >5 min", "Seulement la nuit"], en: ["Yes", "No, only heavy sleep", "Yes if >5 mins", "Only at night"] },
         answer: 1,
-        explanation: {
-          fr: "Seul le sommeil lourd entraîne l'invalidation du Wudu.",
-          en: "Only heavy sleep invalidates Wudu."
-        }
+        explanation: { fr: "Seul le sommeil lourd annule.", en: "Only heavy sleep invalidates." }
       }
     ]
   },
   {
     id: "2.1",
     chapterId: 2,
-    title: {
-      fr: "Leçon 2.1 : La Grande Purification (Al-Ghusl)",
-      en: "Lesson 2.1: Major Ritual Purification (Al-Ghusl)"
-    },
-    arabicText: "فَرَائِضُ الغُسْلِ: النِّيَّةُ، وَعُمُومُ الجَسَدِ بِالمَاءِ، وَالدَّلْكُ، وَالمُوَالَاةُ، وَتَخْلِيلُ الشَّعْرِ.",
-    frenchTranslation: "Les obligations du Ghusl : 1) L'intention, 2) Couvrir tout le corps d'eau, 3) Le frottement (Dalk), 4) La continuité (Muwalah), 5) Pénétrer l'eau à la racine des cheveux.",
-    englishTranslation: "Obligations of Ghusl: 1) Intention, 2) Washing the entire body with water, 3) Rubbing (Dalk), 4) Continuity (Muwalah), 5) Passing water through hair roots.",
+    title: { fr: "Leçon 2.1 : La Grande Purification (Al-Ghusl)", en: "Lesson 2.1: Major Purification (Al-Ghusl)" },
+    arabicText: "فَرَائِضُ الغُسْلِ: النِّيَّةُ، وَعُمُومُ الجَسَدِ بِالمَاءِ...",
+    frenchTranslation: "Obligations du Ghusl : Intention, eau sur tout le corps, Dalk, Muwalah, racines des cheveux.",
+    englishTranslation: "Obligations of Ghusl: Intention, water over whole body, Dalk, Muwalah, hair roots.",
     explanations: [
-      {
-        concept: {
-          fr: "Obligations du Ghusl",
-          en: "Obligations of Ghusl"
-        },
-        description: {
-          fr: "Le Ghusl requiert de mouiller la totalité du corps sans oublier les racines des cheveux et de frotter la peau.",
-          en: "Ghusl requires washing the entire body, ensuring water reaches the hair roots and rubbing the skin."
-        }
-      }
+      { concept: { fr: "Ghusl", en: "Ghusl" }, description: { fr: "Eau sur 100% de la peau.", en: "Water over 100% of body." } }
     ],
-    keyPoints: {
-      fr: ["L'eau doit toucher 100% de la peau.", "Le frottement est obligatoire chez les Malikites."],
-      en: ["Water must touch 100% of skin.", "Rubbing (Dalk) is mandatory in the Maliki school."]
-    },
+    keyPoints: { fr: ["Racines des cheveux obligatoires."], en: ["Hair roots mandatory."] },
     quiz: [
       {
         id: 1,
-        question: {
-          fr: "Est-il obligatoire de laver les racines des cheveux pendant le Ghusl ?",
-          en: "Is it obligatory to reach the roots of the hair during Ghusl?"
-        },
-        options: {
-          fr: ["Non, c'est facultatif", "Oui, c'est une obligation (Fard)", "Seulement pour les hommes", "Seulement le vendredi"],
-          en: ["No, it is optional", "Yes, it is obligatory (Fard)", "Only for men", "Only on Friday"]
-        },
+        question: { fr: "Faut-il mouiller la racine des cheveux ?", en: "Must hair roots be wet?" },
+        options: { fr: ["Non", "Oui (Fard)", "Hommes seulement", "Vendredi seulement"], en: ["No", "Yes (Fard)", "Men only", "Friday only"] },
         answer: 1,
-        explanation: {
-          fr: "L'eau doit obligatoirement atteindre le cuir chevelu et les racines.",
-          en: "Water must reach the scalp and hair roots."
-        }
+        explanation: { fr: "Obligation stricte.", en: "Strict obligation." }
       }
     ]
   },
   {
     id: "2.2",
     chapterId: 2,
-    title: {
-      fr: "Leçon 2.2 : La Purification Sèche (At-Tayammum)",
-      en: "Lesson 2.2: Dry Ablution (At-Tayammum)"
-    },
-    arabicText: "فَرَائِضُ التَّيَمُّمِ: النِّيَّةُ، وَالصَّعِيدُ الطَّاهِرُ، وَالضَّرْبَةُ الأُولَى، وَمَسْحُ الوَجْهِ، وَمَسْحُ اليَدَيْنِ إِلَى الكُوعَيْنِ، وَالمُوَالَاةُ، وَدُخُولُ الوَقْتِ.",
-    frenchTranslation: "Les obligations du Tayammum : 1) L'intention, 2) Un sol pur (Sa'id Tahir), 3) La première frappe, 4) L'essuyage du visage, 5) L'essuyage des mains jusqu'aux poignets, 6) La continuité, 7) L'entrée du temps de prière.",
-    englishTranslation: "Obligations of Tayammum: 1) Intention, 2) Pure earth material (Sa'id Tahir), 3) First strike of hands, 4) Wiping the face, 5) Wiping hands to wrists, 6) Continuity, 7) Entry of prayer time.",
+    title: { fr: "Leçon 2.2 : La Purification Sèche (At-Tayammum)", en: "Lesson 2.2: Dry Ablution (At-Tayammum)" },
+    arabicText: "فَرَائِضُ التَّيَمُّمِ: النِّيَّةُ، وَالصَّعِيدُ الطَّاهِرُ...",
+    frenchTranslation: "Obligations du Tayammum : Intention, sol pur, première frappe, visage, mains, continuité, entrée du temps.",
+    englishTranslation: "Obligations of Tayammum: Intention, pure earth, first strike, face, hands, continuity, prayer time entry.",
     explanations: [
-      {
-        concept: {
-          fr: "Conditions du Tayammum",
-          en: "Conditions of Tayammum"
-        },
-        description: {
-          fr: "Le Tayammum remplace le Wudu/Ghusl en cas d'absence d'eau ou de maladie. Il ne peut être fait qu'après l'entrée du temps de la prière.",
-          en: "Tayammum replaces Wudu/Ghusl in case of water absence or illness. It can only be performed after prayer time has set in."
-        }
-      }
+      { concept: { fr: "Tayammum", en: "Tayammum" }, description: { fr: "Remplacé en cas d'absence d'eau.", en: "Replaces Wudu when water unavailable." } }
     ],
-    keyPoints: {
-      fr: ["S'effectue avec de la terre, pierre ou sable pur.", "Doit être fait après le début de l'heure de la prière."],
-      en: ["Performed using pure earth, stone, or sand.", "Must be done after the prayer time begins."]
-    },
+    keyPoints: { fr: ["Requiert l'entrée du temps."], en: ["Requires prayer time entry."] },
     quiz: [
       {
         id: 1,
-        question: {
-          fr: "Peut-on faire le Tayammum avant l'entrée du temps de la prière ?",
-          en: "Can Tayammum be performed before the prayer time enters?"
-        },
-        options: {
-          fr: ["Oui, n'importe quand", "Non, l'entrée du temps est une condition", "Oui, si on voyage", "Seulement le matin"],
-          en: ["Yes, anytime", "No, entry of prayer time is required", "Yes, if traveling", "Only in the morning"]
-        },
+        question: { fr: "Peut-on faire Tayammum avant l'heure de prière ?", en: "Can Tayammum be done before prayer time?" },
+        options: { fr: ["Oui", "Non, entrée du temps obligatoire", "Si voyage", "Le matin"], en: ["Yes", "No, prayer time entry required", "If traveling", "Morning"] },
         answer: 1,
-        explanation: {
-          fr: "L'entrée du temps de la prière concernée est une obligation pour le Tayammum.",
-          en: "The entry of the specific prayer time is required for Tayammum."
-        }
+        explanation: { fr: "L'entrée du temps est requise.", en: "Prayer time entry is required." }
       }
     ]
   },
   {
     id: "2.3",
     chapterId: 2,
-    title: {
-      fr: "Leçon 2.3 : Les Conditions de la Prière (Shurut As-Salah)",
-      en: "Lesson 2.3: Conditions of Prayer (Shurut As-Salah)"
-    },
-    arabicText: "شُرُوطُ الصَّلَاةِ: طَهَارَةُ الحَدَثِ، وَطَهَارَةُ الخَبَثِ مِنَ الثَّوْبِ وَالبَدَنِ وَالمَكَانِ، وَسَتْرُ العَوْرَةِ، وَاسْتِقْبَالُ القِبْلَةِ، وَدُخُولُ الوَقْتِ.",
-    frenchTranslation: "Les conditions de validité de la prière : 1) Purification de l'impureté rituelle, 2) Purification des souillures physiques (vêtement, corps, lieu), 3) Couvrir la 'Awrah, 4) S'orienter vers la Qibla, 5) L'entrée du temps.",
-    englishTranslation: "Conditions for prayer validity: 1) Purity from ritual impurity, 2) Purity from physical filth (clothes, body, place), 3) Covering the 'Awrah, 4) Facing the Qibla, 5) Entry of prayer time.",
+    title: { fr: "Leçon 2.3 : Les Conditions de la Prière", en: "Lesson 2.3: Conditions of Prayer" },
+    arabicText: "شُرُوطُ الصَّلَاةِ: طَهَارَةُ الحَدَثِ، وَطَهَارَةُ الخَبَثِ...",
+    frenchTranslation: "Conditions de validité : Purification Hadath/Najasah, 'Awrah, Qibla, Entrée du temps.",
+    englishTranslation: "Conditions: Purification Hadath/Najasah, 'Awrah, Qibla, Prayer time.",
     explanations: [
-      {
-        concept: {
-          fr: "Les 5 Conditions Préalables",
-          en: "The 5 Prerequisite Conditions"
-        },
-        description: {
-          fr: "Ces conditions doivent être remplies AVANT de commencer la prière sous peine d'invalidation.",
-          en: "These conditions must be fulfilled BEFORE starting the prayer, otherwise it is invalid."
-        }
-      }
+      { concept: { fr: "Conditions", en: "Conditions" }, description: { fr: "Avant la prière.", en: "Before prayer." } }
     ],
-    keyPoints: {
-      fr: ["L'orientation vers la Qibla est obligatoire.", "Le lieu, les vêtements et le corps doivent être propres."],
-      en: ["Facing the Qibla is mandatory.", "Body, clothing, and location must be clean."]
-    },
+    keyPoints: { fr: ["Purification corps, vêtements, lieu."], en: ["Clean body, clothes, place."] },
     quiz: [
       {
         id: 1,
-        question: {
-          fr: "Que faut-il purifier avant la prière ?",
-          en: "What must be clean before praying?"
-        },
-        options: {
-          fr: ["Uniquement les mains", "Le corps, le vêtement et le lieu", "Seulement le vêtement", "Rien d'autre que le coeur"],
-          en: ["Hands only", "Body, clothing, and place of prayer", "Clothing only", "Nothing but the heart"]
-        },
+        question: { fr: "Que purifier avant de prier ?", en: "What must be clean before praying?" },
+        options: { fr: ["Mains", "Corps, vêtements et lieu", "Vêtements", "Cœur seulement"], en: ["Hands", "Body, clothes, and place", "Clothes", "Heart only"] },
         answer: 1,
-        explanation: {
-          fr: "La purification concerne à la fois le corps, les habits et le lieu de prière.",
-          en: "Purification applies to body, clothing, and the spot of prayer."
-        }
+        explanation: { fr: "Purification globale requise.", en: "Global purification required." }
       }
     ]
   },
   {
     id: "2.4",
     chapterId: 2,
-    title: {
-      fr: "Leçon 2.4 : Les Piliers de la Prière (Arkan As-Salah)",
-      en: "Lesson 2.4: Pillars of Prayer (Arkan As-Salah)"
-    },
-    arabicText: "أَرْكَانُ الصَّلَاةِ: النِّيَّةُ، وَتَكْبِيرَةُ الإِحْرَامِ، وَالقِيَامُ لَهَا، وَالفَاتِحَةُ، وَالقِيَامُ لَهَا، وَالرُّكُوعُ، وَالرَّفْعُ مِنْهُ، وَالسُّجُودُ، وَالرَّفْعُ مِنْهُ، وَالاعْتِدَالُ، وَالطَّمَأْنِينَةُ، وَالسَّلَامُ.",
-    frenchTranslation: "Les piliers obligatoires de la prière : L'intention, Takbirat Al-Ihram et la station debout pour celle-ci, la récitation de la Fatiha, le Ruku', le redressement, la prosternation (Sujud), le redressement du Sujud, l'alignement (I'tidal), la sérénité (Tuma'ninah) et le Salam final.",
-    englishTranslation: "Obligatory pillars of prayer: Intention, Takbirat Al-Ihram while standing, reciting Al-Fatiha while standing, Ruku', rising from Ruku', Sujud, rising from Sujud, composure (I'tidal), tranquility (Tuma'ninah), and final Taslim.",
+    title: { fr: "Leçon 2.4 : Les Piliers de la Prière (Arkan As-Salah)", en: "Lesson 2.4: Pillars of Prayer" },
+    arabicText: "أَرْكَانُ الصَّلَاةِ: النِّيَّةُ، وَتَكْبِيرَةُ الإِحْرَامِ...",
+    frenchTranslation: "Piliers : Intention, Takbir, Fatiha, Ruku', Sujud, Tuma'ninah, Salam.",
+    englishTranslation: "Pillars: Intention, Takbir, Fatiha, Ruku', Sujud, Tuma'ninah, Taslim.",
     explanations: [
-      {
-        concept: {
-          fr: "Définition des Piliers",
-          en: "Definition of Pillars"
-        },
-        description: {
-          fr: "Un pilier (Rukn) ne peut jamais être omis, que ce soit par oubli ou volontairement. Son omission annule la prière.",
-          en: "A pillar (Rukn) cannot be omitted, whether accidentally or intentionally. Omitting it invalidates the prayer."
-        }
-      }
+      { concept: { fr: "Piliers", en: "Pillars" }, description: { fr: "Ne peuvent pas être omis.", en: "Cannot be omitted." } }
     ],
-    keyPoints: {
-      fr: ["La Fatiha est un pilier obligatoire à chaque Rak'ah.", "La quiétude (Tuma'ninah) est requise."],
-      en: ["Reciting Al-Fatiha is mandatory in every Rak'ah.", "Tranquility (Tuma'ninah) is required in every position."]
-    },
+    keyPoints: { fr: ["Fatiha obligatoire.", "Quiétude (Tuma'ninah) requise."], en: ["Fatiha mandatory.", "Tranquility (Tuma'ninah) required."] },
     quiz: [
       {
         id: 1,
-        question: {
-          fr: "Que se passe-t-il si un pilier de la prière est oublié ?",
-          en: "What happens if a pillar of prayer is omitted?"
-        },
-        options: {
-          fr: [
-            "La prière reste valide",
-            "La prière ou la raka'ah est invalide et doit être corrigée",
-            "Il suffit d'offrir une aumône",
-            "Rien de particulier"
-          ],
-          en: [
-            "Prayer remains valid",
-            "The prayer or Rak'ah is invalid and must be corrected",
-            "Giving charity compensates for it",
-            "Nothing"
-          ]
-        },
+        question: { fr: "Que fait l'omission d'un pilier ?", en: "What does omitting a pillar do?" },
+        options: { fr: ["Valide", "Invalide la Rak'ah/Prière", "Aumône suffit", "Rien"], en: ["Valid", "Invalidates Rak'ah/Prayer", "Charity suffices", "Nothing"] },
         answer: 1,
-        explanation: {
-          fr: "Un pilier omis invalide la raka'ah concernée et exige réparation.",
-          en: "An omitted pillar invalidates the affected Rak'ah and requires correction."
-        }
+        explanation: { fr: "Annule la raka'ah concernée.", en: "Invalidates the affected Rak'ah." }
       }
     ]
   }
@@ -499,19 +322,26 @@ export default function FiqhApp() {
   const [lang, setLang] = useState<Language>("fr");
   const [unlockedLessonIndex, setUnlockedLessonIndex] = useState<number>(0);
   const [currentLessonIndex, setCurrentLessonIndex] = useState<number>(0);
-  const [viewMode, setViewMode] = useState<"course" | "quiz" | "glossary">("course");
+  const [viewMode, setViewMode] = useState<"course" | "quiz" | "glossary" | "flashcards" | "exam">("course");
   const [searchTerm, setSearchTerm] = useState<string>("");
   
-  // Quiz State
+  // Flashcards state
+  const [flashcardIndex, setFlashcardIndex] = useState<number>(0);
+  const [isFlipped, setIsFlipped] = useState<boolean>(false);
+
+  // Quiz / Exam State
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
+  const [examPassed, setExamPassed] = useState<boolean>(false);
 
   const lesson = LESSONS[currentLessonIndex];
-  const currentQuestion = lesson.quiz[currentQuestionIndex];
+  const activeQuestions = viewMode === "exam" ? FINAL_EXAM_QUESTIONS : lesson.quiz;
+  const currentQuestion = activeQuestions[currentQuestionIndex];
   const progressPercentage = Math.round(((unlockedLessonIndex + 1) / LESSONS.length) * 100);
+  const allLessonsCompleted = unlockedLessonIndex === LESSONS.length - 1;
 
   const toggleLanguage = (newLang: Language) => setLang(newLang);
 
@@ -526,15 +356,18 @@ export default function FiqhApp() {
   };
 
   const handleNextQuestion = () => {
-    if (currentQuestionIndex + 1 < lesson.quiz.length) {
+    if (currentQuestionIndex + 1 < activeQuestions.length) {
       setCurrentQuestionIndex((prev) => prev + 1);
       setSelectedAnswer(null);
       setIsAnswerSubmitted(false);
     } else {
       setIsQuizCompleted(true);
-      const passed = score >= Math.ceil(lesson.quiz.length * 0.75);
-      if (passed && currentLessonIndex === unlockedLessonIndex && unlockedLessonIndex + 1 < LESSONS.length) {
+      const passed = score >= Math.ceil(activeQuestions.length * 0.75);
+      if (viewMode === "quiz" && passed && currentLessonIndex === unlockedLessonIndex && unlockedLessonIndex + 1 < LESSONS.length) {
         setUnlockedLessonIndex((prev) => prev + 1);
+      }
+      if (viewMode === "exam" && passed) {
+        setExamPassed(true);
       }
     }
   };
@@ -561,19 +394,20 @@ export default function FiqhApp() {
     item[lang].toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const isPassed = score >= Math.ceil(lesson.quiz.length * 0.75);
+  const isPassed = score >= Math.ceil(activeQuestions.length * 0.75);
 
   const UI_TEXT = {
     fr: {
       subtitle: "FIQH MALIKITE — MATN AL-AKHDARI",
       overallProgress: "Progression globale",
       level: "Niveau",
-      lessons: "Leçons",
       allLessons: "Toutes les leçons",
       locked: "Verrouillé",
       courseTab: "Cours",
       quizTab: "Quiz",
-      glossaryTab: "Glossaire Fiqh",
+      glossaryTab: "Glossaire",
+      flashcardsTab: "Révision",
+      examTab: "Examen Final",
       translationTitle: "Traduction",
       explanationsTitle: "Explications Détaillées",
       keyPointsTitle: "Points clés à retenir",
@@ -585,21 +419,27 @@ export default function FiqhApp() {
       viewResult: "Voir le résultat",
       congrats: "Félicitations !",
       tryAgain: "Encore un effort !",
-      scoreMessage: (s: number, total: number) => `Vous avez obtenu ${s} / ${total} bonnes réponses.`,
-      restartQuiz: "Recommencer le quiz",
+      scoreMessage: (s: number, total: number) => `Score obtenu : ${s} / ${total}`,
+      restartQuiz: "Recommencer",
       nextLesson: "Leçon suivante",
-      searchPlaceholder: "Rechercher un terme (ex: Fard, Wudu, طهارة)..."
+      searchPlaceholder: "Rechercher un terme (ex: Fard, Wudu)...",
+      flipCard: "Cliquer pour retourner la carte",
+      certificateTitle: "ATTESTATION DE RÉUSSITE",
+      certificateSub: "Délivrée pour la maîtrise des bases du Fiqh Malikite (Matn Al-Akhdari)",
+      certifiedTo: "Décerné à l'Étudiant(e)",
+      printCert: "Télécharger / Imprimer l'Attestation"
     },
     en: {
       subtitle: "MALIKI FIQH — MATN AL-AKHDARI",
       overallProgress: "Overall Progress",
       level: "Level",
-      lessons: "Lessons",
       allLessons: "All Lessons",
       locked: "Locked",
       courseTab: "Course",
       quizTab: "Quiz",
-      glossaryTab: "Fiqh Glossary",
+      glossaryTab: "Glossary",
+      flashcardsTab: "Revision",
+      examTab: "Final Exam",
       translationTitle: "Translation",
       explanationsTitle: "Detailed Explanations",
       keyPointsTitle: "Key Takeaways",
@@ -611,10 +451,15 @@ export default function FiqhApp() {
       viewResult: "View Results",
       congrats: "Congratulations!",
       tryAgain: "Keep Trying!",
-      scoreMessage: (s: number, total: number) => `You scored ${s} / ${total}.`,
-      restartQuiz: "Retake Quiz",
+      scoreMessage: (s: number, total: number) => `Score achieved: ${s} / ${total}`,
+      restartQuiz: "Restart",
       nextLesson: "Next Lesson",
-      searchPlaceholder: "Search a term (e.g. Fard, Wudu, طهارة)..."
+      searchPlaceholder: "Search term (e.g. Fard, Wudu)...",
+      flipCard: "Click to flip card",
+      certificateTitle: "CERTIFICATE OF COMPLETION",
+      certificateSub: "Awarded for mastering Maliki Fiqh fundamentals (Matn Al-Akhdari)",
+      certifiedTo: "Awarded to the Student",
+      printCert: "Download / Print Certificate"
     }
   };
 
@@ -623,7 +468,7 @@ export default function FiqhApp() {
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900 font-sans pb-12">
       {/* Header */}
-      <header className="bg-emerald-900 text-white py-6 px-4 shadow-lg">
+      <header className="bg-emerald-900 text-white py-6 px-4 shadow-lg print:hidden">
         <div className="max-w-5xl mx-auto space-y-4">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
@@ -680,11 +525,11 @@ export default function FiqhApp() {
       <main className="max-w-5xl mx-auto px-4 mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
         
         {/* Barre Latérale */}
-        <aside className="md:col-span-1 space-y-2">
+        <aside className="md:col-span-1 space-y-2 print:hidden">
           <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3">{text.allLessons}</h2>
           {LESSONS.map((l, idx) => {
             const isUnlocked = idx <= unlockedLessonIndex;
-            const isSelected = idx === currentLessonIndex && viewMode !== "glossary";
+            const isSelected = idx === currentLessonIndex && viewMode === "course";
 
             return (
               <button
@@ -720,10 +565,10 @@ export default function FiqhApp() {
         {/* Contenu Principal */}
         <section className="md:col-span-3">
           {/* Navigation Mode */}
-          <div className="flex gap-3 mb-6">
+          <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mb-6 print:hidden">
             <button
               onClick={() => setViewMode("course")}
-              className={`flex-1 py-3 rounded-xl font-semibold text-xs md:text-sm transition flex items-center justify-center gap-2 ${
+              className={`py-3 rounded-xl font-semibold text-xs transition flex items-center justify-center gap-1 ${
                 viewMode === "course"
                   ? "bg-emerald-700 text-white shadow-md"
                   : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
@@ -736,23 +581,51 @@ export default function FiqhApp() {
                 setViewMode("quiz");
                 handleResetQuiz();
               }}
-              className={`flex-1 py-3 rounded-xl font-semibold text-xs md:text-sm transition flex items-center justify-center gap-2 ${
+              className={`py-3 rounded-xl font-semibold text-xs transition flex items-center justify-center gap-1 ${
                 viewMode === "quiz"
                   ? "bg-emerald-700 text-white shadow-md"
                   : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
               }`}
             >
-              <HelpCircle className="w-4 h-4" /> {text.quizTab} ({lesson.quiz.length})
+              <HelpCircle className="w-4 h-4" /> {text.quizTab}
             </button>
             <button
               onClick={() => setViewMode("glossary")}
-              className={`flex-1 py-3 rounded-xl font-semibold text-xs md:text-sm transition flex items-center justify-center gap-2 ${
+              className={`py-3 rounded-xl font-semibold text-xs transition flex items-center justify-center gap-1 ${
                 viewMode === "glossary"
                   ? "bg-emerald-700 text-white shadow-md"
                   : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
               }`}
             >
               <BookMarked className="w-4 h-4" /> {text.glossaryTab}
+            </button>
+            <button
+              onClick={() => setViewMode("flashcards")}
+              className={`py-3 rounded-xl font-semibold text-xs transition flex items-center justify-center gap-1 ${
+                viewMode === "flashcards"
+                  ? "bg-emerald-700 text-white shadow-md"
+                  : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
+              }`}
+            >
+              <BrainCircuit className="w-4 h-4" /> {text.flashcardsTab}
+            </button>
+            <button
+              onClick={() => {
+                if (allLessonsCompleted) {
+                  setViewMode("exam");
+                  handleResetQuiz();
+                }
+              }}
+              disabled={!allLessonsCompleted}
+              className={`py-3 rounded-xl font-semibold text-xs transition flex items-center justify-center gap-1 ${
+                viewMode === "exam"
+                  ? "bg-emerald-700 text-white shadow-md"
+                  : allLessonsCompleted
+                  ? "bg-amber-600 text-white hover:bg-amber-700 shadow-md"
+                  : "bg-slate-200 text-slate-400 border border-slate-200 cursor-not-allowed"
+              }`}
+            >
+              <GraduationCap className="w-4 h-4" /> {text.examTab}
             </button>
           </div>
 
@@ -816,14 +689,63 @@ export default function FiqhApp() {
             </div>
           )}
 
-          {/* MODE QUIZ */}
-          {viewMode === "quiz" && (
+          {/* MODE FLASHCARDS */}
+          {viewMode === "flashcards" && (
+            <div className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6 text-center">
+              <div className="flex justify-between items-center text-xs text-slate-500 font-bold">
+                <span>FLASHCARD {flashcardIndex + 1} / {FLASHCARDS.length}</span>
+                <span>{FLASHCARDS[flashcardIndex].trans}</span>
+              </div>
+
+              <div
+                onClick={() => setIsFlipped(!isFlipped)}
+                className="w-full h-64 bg-emerald-50 border-2 border-dashed border-emerald-600 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer transition hover:bg-emerald-100/50 shadow-inner"
+              >
+                {!isFlipped ? (
+                  <div className="space-y-3">
+                    <span className="text-2xl font-serif text-emerald-950 block">{FLASHCARDS[flashcardIndex].ar}</span>
+                    <p className="text-base font-semibold text-slate-800">{FLASHCARDS[flashcardIndex].front[lang]}</p>
+                    <span className="text-xs text-emerald-700 underline block mt-4">{text.flipCard}</span>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <p className="text-sm text-slate-800 font-medium leading-relaxed">{FLASHCARDS[flashcardIndex].back[lang]}</p>
+                    <span className="text-xs text-emerald-700 underline block mt-4">{text.flipCard}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-between gap-4">
+                <button
+                  onClick={() => {
+                    setIsFlipped(false);
+                    setFlashcardIndex((prev) => (prev > 0 ? prev - 1 : FLASHCARDS.length - 1));
+                  }}
+                  className="px-4 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50"
+                >
+                  Précédent
+                </button>
+                <button
+                  onClick={() => {
+                    setIsFlipped(false);
+                    setFlashcardIndex((prev) => (prev + 1) % FLASHCARDS.length);
+                  }}
+                  className="px-4 py-2 bg-emerald-700 text-white rounded-xl text-xs font-bold hover:bg-emerald-800"
+                >
+                  Suivant
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* MODE QUIZ ET EXAMEN */}
+          {(viewMode === "quiz" || viewMode === "exam") && (
             <div className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
               {!isQuizCompleted ? (
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <span className="text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">
-                      {text.question} {currentQuestionIndex + 1} / {lesson.quiz.length}
+                      {text.question} {currentQuestionIndex + 1} / {activeQuestions.length}
                     </span>
                   </div>
 
@@ -879,7 +801,7 @@ export default function FiqhApp() {
                         onClick={handleNextQuestion}
                         className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-3 rounded-xl transition text-sm flex items-center gap-2"
                       >
-                        {currentQuestionIndex + 1 < lesson.quiz.length ? text.nextQuestion : text.viewResult}
+                        {currentQuestionIndex + 1 < activeQuestions.length ? text.nextQuestion : text.viewResult}
                         <ArrowRight className="w-4 h-4" />
                       </button>
                     )}
@@ -892,8 +814,29 @@ export default function FiqhApp() {
                     {isPassed ? text.congrats : text.tryAgain}
                   </h3>
                   <p className="text-slate-600 text-sm mb-6">
-                    {text.scoreMessage(score, lesson.quiz.length)}
+                    {text.scoreMessage(score, activeQuestions.length)}
                   </p>
+
+                  {/* CERTIFICAT DE REUSSITE FINAL */}
+                  {viewMode === "exam" && examPassed && (
+                    <div className="border-4 border-double border-emerald-700 p-6 md:p-8 rounded-2xl bg-amber-50/40 my-6 text-center space-y-4 print:border-black">
+                      <GraduationCap className="w-12 h-12 mx-auto text-emerald-800" />
+                      <h4 className="text-xl font-serif font-bold text-emerald-950 tracking-wider">{text.certificateTitle}</h4>
+                      <p className="text-xs text-slate-600 max-w-md mx-auto">{text.certificateSub}</p>
+                      <div className="py-2">
+                        <span className="text-xs uppercase text-slate-500 font-bold block">{text.certifiedTo}</span>
+                        <span className="text-lg font-bold text-emerald-900 border-b-2 border-emerald-700 pb-1 inline-block px-4 mt-1">Étudiant(e) du Matn Al-Akhdari</span>
+                      </div>
+                      <div className="pt-4">
+                        <button
+                          onClick={() => window.print()}
+                          className="bg-emerald-800 text-white font-bold px-4 py-2 rounded-lg text-xs flex items-center gap-2 mx-auto hover:bg-emerald-900 print:hidden"
+                        >
+                          <Download className="w-4 h-4" /> {text.printCert}
+                        </button>
+                      </div>
+                    </div>
+                  )}
 
                   <div className="flex justify-center gap-4">
                     <button
@@ -902,7 +845,7 @@ export default function FiqhApp() {
                     >
                       <RotateCcw className="w-4 h-4" /> {text.restartQuiz}
                     </button>
-                    {isPassed && currentLessonIndex + 1 < LESSONS.length && (
+                    {viewMode === "quiz" && isPassed && currentLessonIndex + 1 < LESSONS.length && (
                       <button
                         onClick={() => handleSelectLesson(currentLessonIndex + 1)}
                         className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-3 rounded-xl transition text-sm flex items-center gap-2"

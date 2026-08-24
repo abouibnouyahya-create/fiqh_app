@@ -1,19 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import {
-  Play,
-  Pause,
-  Repeat,
-  Volume2,
-  BookOpen,
-  HelpCircle,
-  BookMarked,
-  RotateCcw,
-  Award,
-  Globe,
-  Smartphone
-} from 'lucide-react';
 
 interface Lesson {
   id: string;
@@ -151,7 +138,7 @@ export default function FiqhAppPage() {
 
   return (
     <div className="min-h-screen bg-[#f4f7f5] text-slate-800 font-sans pb-12">
-      {/* Header Sombre Vert (Match exact capture) */}
+      {/* Header Sombre Vert */}
       <header className="bg-[#0b5c3a] text-white px-6 py-6 md:py-8">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -165,11 +152,11 @@ export default function FiqhAppPage() {
             </div>
 
             <div className="flex items-center gap-3">
-              <button className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-3.5 py-2 rounded-lg text-xs flex items-center gap-2 shadow-sm transition-colors">
-                <Smartphone className="w-4 h-4" /> Installer l'App
+              <button className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-3.5 py-2 rounded-lg text-xs flex items-center gap-2 shadow-sm">
+                📲 Installer l'App
               </button>
               <div className="bg-emerald-950/40 p-1.5 rounded-lg border border-emerald-700/60 flex items-center gap-1 text-xs">
-                <Globe className="w-4 h-4 text-emerald-300 ml-1" />
+                <span>🌐</span>
                 <span className="font-bold text-white px-1.5 py-0.5 rounded bg-emerald-700">FR</span>
                 <span className="text-emerald-300 px-1.5 py-0.5">EN</span>
               </div>
@@ -199,7 +186,7 @@ export default function FiqhAppPage() {
       {/* Main Container */}
       <div className="max-w-6xl mx-auto px-4 md:px-6 pt-6 grid grid-cols-1 md:grid-cols-4 gap-6">
         
-        {/* Sidebar : TOUTES LES LEÇONS (8/8 Débloquées) */}
+        {/* Sidebar : TOUTES LES LEÇONS */}
         <aside className="md:col-span-1 space-y-2">
           <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-3 px-1">
             TOUTES LES LEÇONS
@@ -238,7 +225,7 @@ export default function FiqhAppPage() {
                 activeTab === 'cours' ? 'bg-[#0b5c3a] text-white shadow' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              <BookOpen className="w-3.5 h-3.5" /> Cours
+              📖 Cours
             </button>
             <button
               onClick={() => setActiveTab('quiz')}
@@ -246,7 +233,7 @@ export default function FiqhAppPage() {
                 activeTab === 'quiz' ? 'bg-[#0b5c3a] text-white shadow' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200/60'
               }`}
             >
-              <HelpCircle className="w-3.5 h-3.5" /> Quiz
+              ❓ Quiz
             </button>
             <button
               onClick={() => setActiveTab('glossaire')}
@@ -254,7 +241,7 @@ export default function FiqhAppPage() {
                 activeTab === 'glossaire' ? 'bg-[#0b5c3a] text-white shadow' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200/60'
               }`}
             >
-              <BookMarked className="w-3.5 h-3.5" /> Glossaire
+              📚 Glossaire
             </button>
             <button
               onClick={() => setActiveTab('revision')}
@@ -262,36 +249,36 @@ export default function FiqhAppPage() {
                 activeTab === 'revision' ? 'bg-[#0b5c3a] text-white shadow' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200/60'
               }`}
             >
-              <RotateCcw className="w-3.5 h-3.5" /> Révision
+              🔄 Révision
             </button>
             <button
               disabled
               className="flex-1 min-w-[90px] py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 bg-slate-200/70 text-slate-400 cursor-not-allowed"
             >
-              <Award className="w-3.5 h-3.5" /> Examen Final
+              🎓 Examen Final
             </button>
           </div>
 
-          {/* Arabe + Audio Controls */}
+          {/* Arabe + Lecteur Audio Visible */}
           <div className="bg-emerald-50/40 border border-emerald-200/60 rounded-2xl p-6 shadow-sm">
             <p
-              className="text-2xl md:text-3xl font-serif text-right leading-loose text-slate-900 font-medium"
+              className="text-2xl md:text-3xl font-serif text-right leading-loose text-slate-900 font-medium mb-6"
               lang="ar"
               dir="rtl"
             >
               {currentLesson.arabicText}
             </p>
 
-            {/* Integrated Hifz Audio Player */}
-            <div className="mt-6 pt-4 border-t border-emerald-200/60 flex items-center justify-between bg-white/90 p-2.5 px-4 rounded-xl shadow-sm">
+            {/* BARRE AUDIO VISIBLE ET FORCEE */}
+            <div className="pt-4 border-t border-emerald-300/60 flex flex-wrap items-center justify-between gap-4 bg-white p-3 px-4 rounded-xl shadow-md">
               <div className="flex items-center gap-3">
                 <button
                   onClick={togglePlay}
-                  className={`p-2.5 rounded-full text-white transition-all shadow-sm ${
+                  className={`px-4 py-2 rounded-full text-white text-xs font-bold flex items-center gap-2 transition-all shadow ${
                     isPlaying ? 'bg-amber-600 hover:bg-amber-700' : 'bg-[#0b5c3a] hover:bg-emerald-800'
                   }`}
                 >
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
+                  {isPlaying ? '⏸️ Pause' : '▶️ Écouter la récitation'}
                 </button>
                 <button
                   onClick={() => setIsLooping(!isLooping)}
@@ -301,16 +288,15 @@ export default function FiqhAppPage() {
                       : 'bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200'
                   }`}
                 >
-                  <Repeat className="w-3.5 h-3.5" />
-                  <span>{isLooping ? 'Boucle ON' : 'Mode Boucle'}</span>
+                  🔁 {isLooping ? 'Boucle activée' : 'Mode Boucle (Hifz)'}
                 </button>
               </div>
 
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-slate-400" />
+                <span className="text-xs font-semibold text-slate-500">Vitesse :</span>
                 <button
                   onClick={cycleSpeed}
-                  className="px-2.5 py-1 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md border border-slate-200"
+                  className="px-3 py-1 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-md border border-slate-300 shadow-sm"
                 >
                   {rate}x
                 </button>

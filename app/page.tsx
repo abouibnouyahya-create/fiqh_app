@@ -15,7 +15,7 @@ const LESSONS: Lesson[] = [
     id: '1.1',
     number: 'Leçon 1.1',
     title: "Les types d'eaux et la purification (At-Taharah)",
-    arabicText: "فَصْلٌ: أَنْوَاعُ الْمِيَاهِ وَأَحْكَامُ الطَّهَارَةِ. لاَ يَجُوزُ إِزَالَةُ النَّجَاسَةِ وَلاَ رَفْعُ الْحَدَثِ إِلاَّ بِالْمَاءِ الْمُطْلَقِ الَّذِي لَمْ يَتَغَيَّرْ لَوْنُهُ أَوْ طَعْمُهُ أَوْ رَائِحَتُهُ بِمَا يُفَارِقُهُ غَالِبًا.",
+    arabicText: "فَصْلٌ: أَنْوَاعُ الْمِيَاهِ وَأَحْكامُ الطَّهَارَةِ. لاَ يَجُوزُ إِزَالَةُ النَّجَاسَةِ وَلاَ رَفْعُ الْحَدَثِ إِلاَّ بِالْمَاءِ الْمُطْلَقِ الَّذِي لَمْ يَتَغَيَّرْ لَوْنُهُ أَوْ طَعْمُهُ أَوْ رَائِحَتُهُ بِمَا يُفَارِقُهُ غَالِبًا.",
     translation: "Section : Les catégories d'eau et les règles de purification. Il n'est pas permis d'enlever une impureté matérielle (Najasah) ni de lever une impureté rituelle (Hadath) si ce n'est avec de l'eau pure et purifiante (Al-Ma' Al-Moutlaq)..."
   },
   {
@@ -73,7 +73,6 @@ export default function FiqhAppPage() {
   const [selectedLessonIndex, setSelectedLessonIndex] = useState(0);
   const [activeTab, setActiveTab] = useState<'cours' | 'quiz' | 'glossaire' | 'revision'>('cours');
   
-  // Audio Web Speech API
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
   const [rate, setRate] = useState(0.8);
@@ -138,7 +137,7 @@ export default function FiqhAppPage() {
 
   return (
     <div className="min-h-screen bg-[#f4f7f5] text-slate-800 font-sans pb-12">
-      {/* Header Sombre Vert */}
+      {/* Header */}
       <header className="bg-[#0b5c3a] text-white px-6 py-6 md:py-8">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -186,7 +185,7 @@ export default function FiqhAppPage() {
       {/* Main Container */}
       <div className="max-w-6xl mx-auto px-4 md:px-6 pt-6 grid grid-cols-1 md:grid-cols-4 gap-6">
         
-        {/* Sidebar : TOUTES LES LEÇONS */}
+        {/* Sidebar */}
         <aside className="md:col-span-1 space-y-2">
           <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-3 px-1">
             TOUTES LES LEÇONS
@@ -214,7 +213,7 @@ export default function FiqhAppPage() {
           </div>
         </aside>
 
-        {/* Dynamic Main Section */}
+        {/* Section Principale */}
         <main className="md:col-span-3 space-y-6">
           
           {/* Navigation Tabs */}
@@ -259,7 +258,7 @@ export default function FiqhAppPage() {
             </button>
           </div>
 
-          {/* Arabe + Lecteur Audio Visible */}
+          {/* Arabe + Lecteur Audio direct */}
           <div className="bg-emerald-50/40 border border-emerald-200/60 rounded-2xl p-6 shadow-sm">
             <p
               className="text-2xl md:text-3xl font-serif text-right leading-loose text-slate-900 font-medium mb-6"
@@ -269,7 +268,6 @@ export default function FiqhAppPage() {
               {currentLesson.arabicText}
             </p>
 
-            {/* BARRE AUDIO VISIBLE ET FORCEE */}
             <div className="pt-4 border-t border-emerald-300/60 flex flex-wrap items-center justify-between gap-4 bg-white p-3 px-4 rounded-xl shadow-md">
               <div className="flex items-center gap-3">
                 <button

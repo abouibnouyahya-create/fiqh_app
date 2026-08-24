@@ -1,121 +1,106 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Play,
   Pause,
   Repeat,
   Volume2,
   BookOpen,
-  CheckCircle2,
-  Sparkles,
-  Search,
+  HelpCircle,
+  BookMarked,
   RotateCcw,
-  Check,
-  GraduationCap,
-  ChevronDown,
-  ChevronUp
+  Award,
+  Lock,
+  Globe,
+  Download
 } from 'lucide-react';
 
-// Structure des données pour les 8 leçons du Matn
 interface Lesson {
-  id: number;
-  chapter: string;
+  id: string;
+  number: string;
   title: string;
   arabicText: string;
   translation: string;
-  explanation: string;
+  unlocked: boolean;
 }
 
 const LESSONS: Lesson[] = [
   {
-    id: 1,
-    chapter: "Chapitre 1",
-    title: "La Purification et les Eaux (كِتَابُ الطَّهَارَةِ وَأَحْكَامُ الْمِيَاهِ)",
-    arabicText: "الطهَارَةُ هِيَ الرَّفْعُ لِمَا يَمْنَعُ الصَّلاَةَ مِنْ حَدَثٍ أَوْ خَبَثٍ، وَالْمَاءُ الطَّهُورُ هُوَ الْمَاءُ الْمُطْلَقُ الَّذِي لَمْ يَتَغَيَّرْ لَوْنُهُ أَوْ طَعْمُهُ أَوْ رِيحُهُ بِنَجَاسَةٍ.",
-    translation: "La purification consiste à lever l'état d'impureté rituelle (Hadath) ou matérielle (Khabath) qui empêche la prière. L'eau purifiante est l'eau pure et naturelle dont la couleur, le goût ou l'odeur n'ont pas été altérés par une impureté.",
-    explanation: "Ce premier texte pose la définition de la purification en droit islamique et précise la condition essentielle de l'eau utilisable pour la purification."
+    id: '1.1',
+    number: 'Leçon 1.1',
+    title: "Les types d'eaux et la purification (At-Taharah)",
+    arabicText: "فَصْلٌ: أَنْوَاعُ الْمِيَاهِ وَأَحْكَامُ الطَّهَارَةِ. لاَ يَجُوزُ إِزَالَةُ النَّجَاسَةِ وَلاَ رَفْعُ الْحَدَثِ إِلاَّ بِالْمَاءِ الْمُطْلَقِ الَّذِي لَمْ يَتَغَيَّرْ لَوْنُهُ أَوْ طَعْمُهُ أَوْ رَائِحَتُهُ بِمَا يُفَارِقُهُ غَالِبًا.",
+    translation: "Section : Les catégories d'eau et les règles de purification. Il n'est pas permis d'enlever une impureté matérielle (Najasah) ni de lever une impureté rituelle (Hadath) si ce n'est avec de l'eau pure et purifiante (Al-Ma' Al-Moutlaq)...",
+    unlocked: true
   },
   {
-    id: 2,
-    chapter: "Chapitre 2",
-    title: "Les Obligations de l'Ablution (فَرَائِضُ الْوُضُوءِ)",
+    id: '1.2',
+    number: 'Leçon 1.2',
+    title: "Les Obligations de l'Ablution (Wudu)",
     arabicText: "فَرَائِضُ الْوُضُوءِ سَبْعَةٌ: النِّيَّةُ عِنْدَ غَسْلِ الْوَجْهِ، وَغَسْلُ الْوَجْهِ، وَغَسْلُ الْيَدَيْنِ إِلَى الْمِرْفَقَيْنِ، وَمَسْحُ جَمِيعِ الرَّأْسِ، وَغَسْلُ الرِّجْلَيْنِ إِلَى الْكَعْبَيْنِ، وَالدَّلْكُ، وَالْمُوَالاَةُ.",
-    translation: "Les obligations de l'ablution (Wudu) sont au nombre de sept : l'intention lors du lavage du visage, le lavage du visage, le lavage des bras jusqu'aux coudes inclus, l'essuyage complet de la tête, le lavage des pieds jusqu'aux chevilles, le frictionnement (Dalk) et la continuité (Muwalat).",
-    explanation: "Sans l'accomplissement de ces 7 piliers, l'ablution n'est pas valide."
+    translation: "Les obligations de l'ablution sont au nombre de sept : l'intention au moment du lavage du visage, le lavage du visage, le lavage des bras jusqu'aux coudes inclus, l'essuyage complet de la tête...",
+    unlocked: true
   },
   {
-    id: 3,
-    chapter: "Chapitre 3",
-    title: "Les Actes Recommandés de l'Ablution (سُنَنُ الْوُضُوءِ)",
-    arabicText: "وَسُنَنُهُ: غَسْلُ الْيَدَيْنِ إِلَى الْكُوعَيْنِ عِنْدَ الاِبْتِدَاءِ، وَالْمَضْمَضَةُ، وَالاِسْتِنْشَاقُ، وَالاِسْتِنْثَارُ، وَرَدُّ مَسْحِ الرَّأْسِ، وَمَسْحُ الأُذُنَيْنِ، وَتَجْدِيدُ الْمَاءِ لَهُمَا، وَالتَّرْتِيبُ بَيْنَ الْفَرَائِضِ.",
-    translation: "Et ses actes recommandés (Sunan) sont : laver les mains jusqu'aux poignets au début, rincer la bouche, aspirer l'eau par le nez, la rejeter, effectuer le retour du massage de la tête, essuyer les oreilles, renouveler l'eau pour les oreilles, et respecter l'ordre des piliers obligatoires.",
-    explanation: "Les Sunan complètent les obligations et augmentent la récompense de l'adorateur."
+    id: '1.3',
+    number: 'Leçon 1.3',
+    title: "Les Actes Recommandés de l'Ablution (Sunan)",
+    arabicText: "وَسُنَنُهُ: غَسْلُ الْيَدَيْنِ إِلَى الْكُوعَيْنِ عِنْدَ الاِبْتِدَاءِ، وَالْمَضْمَضَةُ، وَالاِسْتِنْشَاقُ، وَالاِسْتِنْثَارُ، وَرَدُّ مَسْحِ الرَّأْسِ، وَمَسْحُ الأُذُنَيْنِ، وَتَجْدِيدُ الْمَاءِ لَهُمَا، وَالتَّرْتِيبُ.",
+    translation: "Et ses Sunan sont : le lavage des mains au début, le rincage de la bouche, l'aspiration et l'évacuation de l'eau du nez, le retour de l'essuyage de la tête, l'essuyage des oreilles...",
+    unlocked: true
   },
   {
-    id: 4,
-    chapter: "Chapitre 4",
-    title: "Les Annulateurs de l'Ablution (نَوَاقِضُ الْوُضُوءِ)",
-    arabicText: "نَوَاقِضُ الْوُضُوءِ: أَهْدَاثٌ وَأَسْبَابٌ؛ فَالأَهْدَاثُ هِيَ الْخَارِجُ الْمُعْتَادُ مِنْ السَّبِيلَيْنِ كَالْبَوْلِ وَالْغَائِطِ وَالرِّيحِ، وَالأَسْبَابُ كَالنَّوْمِ الثَّقِيلِ وَزَوَالِ الْعَقْلِ وَمَسِّ الذَّكَرِ بِبَطْنِ الْكَفِّ.",
-    translation: "Les annulateurs de l'ablution sont les évacuations directes et leurs causes : les évacuations concernent les sorties habituelles par les deux voies (urine, selles, gaz). Les causes comprennent le sommeil profond, la perte de conscience et le contact direct des parties intimes.",
-    explanation: "Lorsqu'un de ces éléments survient, il est nécessaire de refaire ses ablutions pour prier."
+    id: '1.4',
+    number: 'Leçon 1.4',
+    title: "Les Annulateurs de l'Ablution (Nawaqid)",
+    arabicText: "نَوَاقِضُ الْوُضُوءِ: أَهْدَاثٌ وَأَسْبَابٌ؛ فَالأَهْدَاثُ هِيَ الْخَارِجُ الْمُعْتَادُ مِنْ السَّبِيلَيْنِ كَالْبَوْلِ وَالْغَائِطِ وَالرِّيحِ، وَالأَسْبَابُ كَالنَّوْمِ الثَّقِيلِ وَزَوَالِ الْعَقْلِ.",
+    translation: "Les annulateurs de l'ablution sont les évacuations directes (urine, selles, gaz) et leurs causes (sommeil profond, perte de conscience...)...",
+    unlocked: true
   },
   {
-    id: 5,
-    chapter: "Chapitre 5",
-    title: "Le Grand Lavage Rituel (أَحْكَامُ الْغُسْلِ وَفَرَائِضُهُ)",
+    id: '2.1',
+    number: 'Leçon 2.1',
+    title: "Le Grand Lavage Rituel (Ghusl)",
     arabicText: "فَرَائِضُ الْغُسْلِ: النِّيَّةُ عِنْدَ بَدْئِهِ، وَتَعْمِيمُ جَمِيعِ الْجَسَدِ بِالْمَاءِ، وَالدَّلْكُ، وَالْمُوَالاَةُ، وَتَخْلِيلُ الشَّعْرِ حَتَّى يَصِلَ الْمَاءُ إِلَى أُصُولِهِ.",
-    translation: "Les obligations du grand lavage (Ghusl) sont : l'intention au moment de commencer, l'arrosage de l'ensemble du corps avec de l'eau, le frictionnement (Dalk), la continuité (Muwalat), et le passage des doigts dans les cheveux pour mouiller le cuir chevelu.",
-    explanation: "Le Ghusl est obligatoire après une grande impureté (Janabah, fin des règles, etc.)."
+    translation: "Les obligations du grand lavage sont : l'intention au moment de commencer, l'arrosage de l'ensemble du corps avec de l'eau, le frictionnement et la continuité...",
+    unlocked: true
   },
   {
-    id: 6,
-    chapter: "Chapitre 6",
-    title: "L'Ablution Sèche (أَحْكَامُ التَّيَمُّمِ)",
-    arabicText: "يَتَيَمَّمُ الْمَرِيضُ وَالْمُسَافِرُ عِنْدَ عَدَمِ الْمَاءِ أَوْ الْعَجْزِ عَنْ اسْتِعْمَالِهِ، وَفَرَائِضُهُ: النِّيَّةُ، وَالصَّعِيدُ الطَّاهِرُ، وَالضَّرْبَةُ الأُولَى، وَمَسْحُ الْوَجْهِ، وَمَسْحُ الْيَدَيْنِ إِلَى الْكُوعَيْنِ، وَالْمُوَالاَةُ.",
-    translation: "Le malade ou le voyageur recourt au Tayammum en cas d'absence d'eau ou d'incapacité de l'utiliser. Ses obligations sont : l'intention, l'usage d'une surface terrestre pure, le premier tapotement, l'essuyage du visage, l'essuyage des mains jusqu'aux poignets, et la continuité.",
-    explanation: "Le Tayammum est une dérogation facilitatrice permettant de préserver la prière à son heure."
+    id: '2.2',
+    number: 'Leçon 2.2',
+    title: "L'Ablution Sèche (Tayammum)",
+    arabicText: "يَتَيَمَّمُ الْمَرِيضُ وَالْمُسَافِرُ عِنْدَ عَدَمِ الْمَاءِ أَوْ الْعَجْزِ عَنْ اسْتِعْمَالِهِ، وَفَرَائِضُهُ: النِّيَّةُ، وَالصَّعِيدُ الطَّاهِرُ، وَالضَّرْبَةُ الأُولَى، وَمَسْحُ الْوَجْهِ وَالْيَدَيْنِ.",
+    translation: "Le malade ou le voyageur recourt au Tayammum en cas d'absence d'eau. Ses obligations sont l'intention, l'usage de terre pure, le premier tapotement...",
+    unlocked: true
   },
   {
-    id: 7,
-    chapter: "Chapitre 7",
-    title: "Les Conditions de la Prière (شُرُوطُ الصَّلاَةِ)",
+    id: '2.3',
+    number: 'Leçon 2.3',
+    title: "Les Conditions de la Prière (Shurut As-Salah)",
     arabicText: "شُرُوطُ الصَّلاَةِ: طَهَارَةُ الْحَدَثِ، وَطَهَارَةُ الْخَبَثِ مِنَ الثَّوْبِ وَالْبَدَنِ وَالْمَكَانِ، وَسَتْرُ الْعَوْرَةِ، وَاسْتِقْبَالُ الْقِبْلَةِ، وَدُخُولُ الْوَقْتِ.",
-    translation: "Les conditions de validité de la prière sont : la purification de l'impureté rituelle, la propreté des vêtements, du corps et du lieu de prière, le fait de couvrir sa 'Awrah, l'orientation vers la Qibla et l'entrée de l'heure prescrite.",
-    explanation: "Ces prérequis doivent être réunis avant d'entamer la prière."
+    translation: "Les conditions de la prière sont la purification rituelle et matérielle du corps, de l'habit et du lieu, le fait de couvrir sa 'Awrah et la Qibla...",
+    unlocked: true
   },
   {
-    id: 8,
-    chapter: "Chapitre 8",
-    title: "Les Piliers de la Prière (أَرْكَانُ الصَّلاَةِ)",
-    arabicText: "أَرْكَانُ الصَّلاَةِ: تَكْبِيرَةُ الإِحْرَامِ، وَالْقِيَامُ لَهَا، وَقِرَاءَةُ الْفَاتِحَةِ، وَالرُّكُوعُ، وَالرَّفْعُ مِنْهُ، وَالسُّجُودُ عَلَى الأَعْضَاءِ السَّبْعَةِ، وَالرَّفْعُ مِنْهُ، وَالطَّمَأْنِينَةُ، وَالاِعْتِدَالُ، وَالسَّلاَمُ.",
-    translation: "Les piliers de la prière sont : le Takbir d'inauguration (Takbirat Al-Ihram), la station debout pour celui-ci, la récitation de Al-Fatihah, l'inclinaison (Ruku'), le redressement, la prosternation (Sujud) sur les 7 membres, le redressement entre les prosternations, la sérénité (Sukun) et le Salut final (Salam).",
-    explanation: "Ce sont les éléments constitutifs indispensables de chaque prière."
+    id: '2.4',
+    number: 'Leçon 2.4',
+    title: "Les Piliers de la Prière (Arkan As-Salah)",
+    arabicText: "أَرْكَانُ الصَّلاَةِ: تَكْبِيرَةُ الإِحْرَامِ، وَالْقِيَامُ لَهَا، وَقِرَاءَةُ الْفَاتِحَةِ، وَالرُّكُوعُ، وَالرَّفْعُ مِنْهُ، وَالسُّجُودُ، وَالطَّمَأْنِينَةُ، وَالاعْتِدَالُ، وَالسَّلاَمُ.",
+    translation: "Les piliers de la prière sont le Takbir d'inauguration, la station debout, la récitation de Al-Fatihah, l'inclinaison, la prosternation et le Salut final...",
+    unlocked: true
   }
 ];
 
-export default function MatnLearningPage() {
-  // États de l'application
-  const [playingLessonId, setPlayingLessonId] = useState<number | null>(null);
-  const [isLooping, setIsLooping] = useState<boolean>(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState<number>(0.8);
-  const [completedLessons, setCompletedLessons] = useState<number[]>([]);
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [expandedExplanation, setExpandedExplanation] = useState<number | null>(null);
+export default function FiqhAppPage() {
+  const [selectedLesson, setSelectedLesson] = useState<Lesson>(LESSONS[0]);
+  const [activeTab, setActiveTab] = useState<'cours' | 'quiz' | 'glossaire' | 'revision' | 'examen'>('cours');
+  
+  // États Audio SpeechSynthesis
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isLooping, setIsLooping] = useState(false);
+  const [rate, setRate] = useState(0.8);
 
-  // Charger la progression depuis le localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('matn_completed_lessons');
-    if (saved) {
-      try {
-        setCompletedLessons(JSON.parse(saved));
-      } catch (e) {
-        console.error("Erreur lors du chargement de la progression", e);
-      }
-    }
-  }, []);
-
-  // Nettoyage de la synthèse vocale lors du démonte du composant
   useEffect(() => {
     return () => {
       if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -124,286 +109,240 @@ export default function MatnLearningPage() {
     };
   }, []);
 
-  // Gestion de la lecture audio
-  const speakLesson = (lesson: Lesson) => {
+  // Changer de leçon
+  const handleSelectLesson = (lesson: Lesson) => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    setIsPlaying(false);
+    setSelectedLesson(lesson);
+  };
+
+  // Lecture / Pause
+  const togglePlay = () => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
       alert("Votre navigateur ne supporte pas la synthèse vocale.");
       return;
     }
 
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(lesson.arabicText);
-    utterance.lang = 'ar-SA';
-    utterance.rate = playbackSpeed;
-
-    utterance.onend = () => {
-      if (isLooping) {
-        speakLesson(lesson);
-      } else {
-        setPlayingLessonId(null);
-      }
-    };
-
-    utterance.onerror = () => {
-      setPlayingLessonId(null);
-    };
-
-    setPlayingLessonId(lesson.id);
-    window.speechSynthesis.speak(utterance);
-  };
-
-  const stopAudio = () => {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    if (isPlaying) {
       window.speechSynthesis.cancel();
-    }
-    setPlayingLessonId(null);
-  };
-
-  const togglePlay = (lesson: Lesson) => {
-    if (playingLessonId === lesson.id) {
-      stopAudio();
+      setIsPlaying(false);
     } else {
-      speakLesson(lesson);
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(selectedLesson.arabicText);
+      utterance.lang = 'ar-SA';
+      utterance.rate = rate;
+
+      utterance.onend = () => {
+        if (isLooping) {
+          togglePlay();
+        } else {
+          setIsPlaying(false);
+        }
+      };
+
+      utterance.onerror = () => setIsPlaying(false);
+
+      window.speechSynthesis.speak(utterance);
+      setIsPlaying(true);
     }
   };
 
-  const toggleComplete = (id: number) => {
-    let updated: number[];
-    if (completedLessons.includes(id)) {
-      updated = completedLessons.filter(lessonId => lessonId !== id);
-    } else {
-      updated = [...completedLessons, id];
-    }
-    setCompletedLessons(updated);
-    localStorage.setItem('matn_completed_lessons', JSON.stringify(updated));
-  };
-
+  // Vitesse de lecture
   const cycleSpeed = () => {
     const speeds = [0.6, 0.8, 1.0, 1.2];
-    const nextIdx = (speeds.indexOf(playbackSpeed) + 1) % speeds.length;
-    const newSpeed = speeds[nextIdx];
-    setPlaybackSpeed(newSpeed);
-
-    // Si une leçon est en cours de lecture, relancer avec la nouvelle vitesse
-    if (playingLessonId !== null) {
-      const currentLesson = LESSONS.find(l => l.id === playingLessonId);
-      if (currentLesson) {
-        speakLesson(currentLesson);
-      }
+    const nextRate = speeds[(speeds.indexOf(rate) + 1) % speeds.length];
+    setRate(nextRate);
+    if (isPlaying) {
+      window.speechSynthesis.cancel();
+      setIsPlaying(false);
     }
   };
 
-  const toggleExplanation = (id: number) => {
-    setExpandedExplanation(expandedExplanation === id ? null : id);
-  };
-
-  // Filtrage des leçons
-  const filteredLessons = LESSONS.filter(l =>
-    l.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    l.arabicText.includes(searchQuery) ||
-    l.translation.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const progressPercentage = Math.round((completedLessons.length / LESSONS.length) * 100);
-
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-800 pb-20 font-sans">
-      {/* En-tête de la page */}
-      <header className="bg-gradient-to-b from-emerald-900 to-emerald-800 text-white pt-10 pb-12 px-4 shadow-lg">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-emerald-700/60 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-medium text-amber-300 mb-4 border border-emerald-600">
-            <Sparkles className="w-4 h-4" /> Programme Complet de Mémorisation (المتون)
+    <div className="min-h-screen bg-slate-100 font-sans text-slate-800">
+      {/* Banner En-tête Vert */}
+      <header className="bg-[#0b5c3a] text-white px-6 py-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <p className="text-emerald-200 text-xs font-semibold tracking-wider uppercase mb-1">
+                FIQH MALIKITE — MATN AL-AKHDARI
+              </p>
+              <h1 className="text-2xl md:text-3xl font-bold">
+                {selectedLesson.number} : {selectedLesson.title}
+              </h1>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow">
+                <Download className="w-4 h-4" /> Installer l'App
+              </button>
+              <div className="bg-emerald-900/60 p-1.5 rounded-xl border border-emerald-700/50 flex items-center gap-1 text-xs">
+                <Globe className="w-4 h-4 text-emerald-300 ml-1" />
+                <span className="font-bold text-white px-1.5 py-0.5 rounded bg-emerald-700">FR</span>
+                <span className="text-emerald-300 px-1.5 py-0.5">EN</span>
+              </div>
+            </div>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
-            Matn Al-Fiqh - المتن الفقهي
-          </h1>
-          <p className="text-emerald-100 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
-            Écoutez, répétez en boucle et validez les 8 leçons fondamentales pour une mémorisation (Hifz) fluide et efficace.
-          </p>
-
-          {/* Barre de Progression */}
-          <div className="mt-8 bg-emerald-950/40 p-4 rounded-2xl max-w-md mx-auto border border-emerald-700/50">
-            <div className="flex justify-between items-center text-xs text-emerald-200 mb-2 font-medium">
-              <span className="flex items-center gap-1.5">
-                <GraduationCap className="w-4 h-4 text-amber-400" /> Progression globale
-              </span>
-              <span className="font-bold text-amber-300">{completedLessons.length} / {LESSONS.length} Mémorisées ({progressPercentage}%)</span>
+          {/* Barre de progression */}
+          <div className="mt-6 max-w-md">
+            <div className="flex justify-between text-xs text-emerald-200 mb-1">
+              <span>Progression globale</span>
+              <span className="font-bold">13%</span>
             </div>
-            <div className="w-full bg-emerald-950/60 rounded-full h-2.5 overflow-hidden border border-emerald-700/30">
-              <div
-                className="bg-gradient-to-r from-amber-400 to-amber-300 h-2.5 rounded-full transition-all duration-500 ease-out"
-                style={{ width: `${progressPercentage}%` }}
-              ></div>
+            <div className="w-full bg-emerald-950/60 h-2 rounded-full overflow-hidden">
+              <div className="bg-emerald-400 h-full w-[13%]"></div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Zone de Contenu */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 -mt-6">
-
-        {/* Barre d'outils et recherche */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
-          <div className="relative w-full sm:w-72">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Rechercher une leçon ou mot..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
-            />
-          </div>
-
-          <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-            {/* Bouton Mode Boucle */}
-            <button
-              onClick={() => setIsLooping(!isLooping)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 border transition-all ${
-                isLooping
-                  ? 'bg-amber-500 text-white border-amber-600 shadow-sm'
-                  : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
-              }`}
-            >
-              <Repeat className={`w-3.5 h-3.5 ${isLooping ? 'animate-spin-slow' : ''}`} />
-              <span>{isLooping ? 'Boucle Active' : 'Activer Boucle'}</span>
-            </button>
-
-            {/* Bouton Vitesse */}
-            <button
-              onClick={cycleSpeed}
-              className="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 transition-all flex items-center gap-1.5"
-              title="Changer la vitesse de lecture"
-            >
-              <Volume2 className="w-3.5 h-3.5 text-slate-500" />
-              <span>Vitesse {playbackSpeed}x</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Liste des 8 Leçons */}
-        <div className="space-y-6">
-          {filteredLessons.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-slate-300">
-              <p className="text-slate-500">Aucune leçon ne correspond à votre recherche.</p>
-            </div>
-          ) : (
-            filteredLessons.map((lesson) => {
-              const isPlaying = playingLessonId === lesson.id;
-              const isDone = completedLessons.includes(lesson.id);
-
+      {/* Main Content Layout */}
+      <div className="max-w-6xl mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+        
+        {/* Sidebar : TOUTES LES LEÇONS */}
+        <aside className="md:col-span-1 space-y-2">
+          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 px-1">
+            Toutes les leçons
+          </h3>
+          <div className="space-y-1.5">
+            {LESSONS.map((lesson) => {
+              const isSelected = selectedLesson.id === lesson.id;
               return (
-                <article
+                <button
                   key={lesson.id}
-                  className={`bg-white rounded-2xl border transition-all duration-300 overflow-hidden ${
-                    isPlaying
-                      ? 'border-amber-400 ring-2 ring-amber-400/20 shadow-md'
-                      : isDone
-                      ? 'border-emerald-200 bg-emerald-50/20'
-                      : 'border-slate-200 shadow-sm hover:border-slate-300'
+                  onClick={() => handleSelectLesson(lesson)}
+                  className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-between transition-all ${
+                    isSelected
+                      ? 'bg-[#0b5c3a] text-white shadow-md'
+                      : 'bg-white text-slate-600 hover:bg-slate-200/60 border border-slate-200/60'
                   }`}
                 >
-                  {/* Entête de Carte */}
-                  <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                    <div className="flex items-center gap-3">
-                      <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-lg">
-                        {lesson.chapter}
-                      </span>
-                      <h2 className="text-base sm:text-lg font-bold text-slate-800">
-                        {lesson.title}
-                      </h2>
-                    </div>
-
-                    {/* Bouton de Validation */}
-                    <button
-                      onClick={() => toggleComplete(lesson.id)}
-                      className={`p-2 rounded-xl transition-all flex items-center gap-1.5 text-xs font-medium ${
-                        isDone
-                          ? 'bg-emerald-600 text-white shadow-sm'
-                          : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-100'
-                      }`}
-                      title={isDone ? "Marquer comme non mémorisé" : "Marquer comme mémorisé"}
-                    >
-                      <Check className="w-4 h-4" />
-                      <span className="hidden sm:inline">{isDone ? 'Mémorisé' : 'À mémoriser'}</span>
-                    </button>
-                  </div>
-
-                  {/* Corps de Carte : Texte Arabe (Matn) */}
-                  <div className="p-5 sm:p-6">
-                    <div className="bg-amber-50/30 rounded-xl p-5 mb-5 border border-amber-100 text-right">
-                      <p
-                        className="text-2xl sm:text-3xl font-serif leading-loose text-emerald-950 font-medium tracking-wide"
-                        lang="ar"
-                        dir="rtl"
-                      >
-                        {lesson.arabicText}
-                      </p>
-                    </div>
-
-                    {/* Traduction Française */}
-                    <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-4">
-                      <strong className="text-slate-800 font-semibold">Traduction : </strong>
-                      {lesson.translation}
-                    </p>
-
-                    {/* Explication Déroulante */}
-                    <div className="border-t border-slate-100 pt-3 mt-4">
-                      <button
-                        onClick={() => toggleExplanation(lesson.id)}
-                        className="text-xs text-emerald-700 font-semibold flex items-center gap-1 hover:text-emerald-800 transition-colors"
-                      >
-                        {expandedExplanation === lesson.id ? (
-                          <>
-                            <ChevronUp className="w-3.5 h-3.5" /> Masquer la note d'explication
-                          </>
-                        ) : (
-                          <>
-                            <ChevronDown className="w-3.5 h-3.5" /> En savoir plus sur ce chapitre
-                          </>
-                        )}
-                      </button>
-
-                      {expandedExplanation === lesson.id && (
-                        <div className="mt-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs text-slate-600 leading-relaxed animate-fadeIn">
-                          {lesson.explanation}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Barre de Contrôle Audio de la Leçon */}
-                  <div className="bg-slate-50/80 p-3 px-5 border-t border-slate-100 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={() => togglePlay(lesson)}
-                        className={`p-3 rounded-full text-white transition-all shadow-md flex items-center justify-center ${
-                          isPlaying
-                            ? 'bg-amber-500 hover:bg-amber-600 ring-4 ring-amber-100'
-                            : 'bg-emerald-700 hover:bg-emerald-800'
-                        }`}
-                        title={isPlaying ? "Pause" : "Écouter la récitation"}
-                      >
-                        {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
-                      </button>
-
-                      <span className="text-xs font-semibold text-slate-600">
-                        {isPlaying ? 'Récitation en cours...' : 'Écouter le Matn'}
-                      </span>
-                    </div>
-
-                    <div className="text-xs text-slate-400 font-mono">
-                      Vitesse : {playbackSpeed}x
-                    </div>
-                  </div>
-                </article>
+                  <span className="flex items-center gap-2">
+                    {lesson.unlocked ? (
+                      <span className={`w-2 h-2 rounded-full ${isSelected ? 'bg-amber-400' : 'bg-emerald-500'}`} />
+                    ) : (
+                      <Lock className="w-3.5 h-3.5 text-slate-400" />
+                    )}
+                    {lesson.number}
+                  </span>
+                  {!lesson.unlocked && (
+                    <span className="text-[10px] bg-slate-200 text-slate-500 px-1.5 py-0.5 rounded">
+                      Verrouillé
+                    </span>
+                  )}
+                </button>
               );
-            })
-          )}
-        </div>
+            })}
+          </div>
+        </aside>
+
+        {/* Zone Principale de Contenu */}
+        <main className="md:col-span-3 space-y-6">
+          
+          {/* Navigation par Onglets */}
+          <div className="flex flex-wrap items-center gap-2 bg-slate-200/60 p-1.5 rounded-2xl">
+            <button
+              onClick={() => setActiveTab('cours')}
+              className={`flex-1 min-w-[90px] py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                activeTab === 'cours' ? 'bg-[#0b5c3a] text-white shadow' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <BookOpen className="w-3.5 h-3.5" /> Cours
+            </button>
+            <button
+              onClick={() => setActiveTab('quiz')}
+              className={`flex-1 min-w-[90px] py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                activeTab === 'quiz' ? 'bg-[#0b5c3a] text-white shadow' : 'bg-white text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              <HelpCircle className="w-3.5 h-3.5" /> Quiz
+            </button>
+            <button
+              onClick={() => setActiveTab('glossaire')}
+              className={`flex-1 min-w-[90px] py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                activeTab === 'glossaire' ? 'bg-[#0b5c3a] text-white shadow' : 'bg-white text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              <BookMarked className="w-3.5 h-3.5" /> Glossaire
+            </button>
+            <button
+              onClick={() => setActiveTab('revision')}
+              className={`flex-1 min-w-[90px] py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                activeTab === 'revision' ? 'bg-[#0b5c3a] text-white shadow' : 'bg-white text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              <RotateCcw className="w-3.5 h-3.5" /> Révision
+            </button>
+            <button
+              disabled
+              className="flex-1 min-w-[90px] py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 bg-slate-200 text-slate-400 cursor-not-allowed"
+            >
+              <Award className="w-3.5 h-3.5" /> Examen Final
+            </button>
+          </div>
+
+          {/* Affichage du Texte Arabe + Barre de Contrôle Audio */}
+          <div className="bg-emerald-50/50 border border-emerald-200/80 rounded-2xl p-6 shadow-sm">
+            <p
+              className="text-2xl md:text-3xl font-serif text-right leading-loose text-slate-900 font-medium"
+              lang="ar"
+              dir="rtl"
+            >
+              {selectedLesson.arabicText}
+            </p>
+
+            {/* Barre d'outils Audio Hifz */}
+            <div className="mt-6 pt-4 border-t border-emerald-200/60 flex items-center justify-between bg-white/80 p-3 px-4 rounded-xl shadow-sm">
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={togglePlay}
+                  className={`p-3 rounded-full text-white transition-all shadow ${
+                    isPlaying ? 'bg-amber-600 hover:bg-amber-700' : 'bg-[#0b5c3a] hover:bg-emerald-800'
+                  }`}
+                >
+                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
+                </button>
+                <button
+                  onClick={() => setIsLooping(!isLooping)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                    isLooping
+                      ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                      : 'bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200'
+                  }`}
+                >
+                  <Repeat className="w-3.5 h-3.5" />
+                  <span>{isLooping ? 'Boucle ON' : 'Mode Boucle'}</span>
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Volume2 className="w-4 h-4 text-slate-400" />
+                <button
+                  onClick={cycleSpeed}
+                  className="px-2.5 py-1 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md border border-slate-200"
+                >
+                  {rate}x
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Traduction */}
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
+            <h4 className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2">
+              Traduction (FR)
+            </h4>
+            <p className="text-slate-700 text-sm md:text-base leading-relaxed italic">
+              {selectedLesson.translation}
+            </p>
+          </div>
+
+        </main>
       </div>
-    </main>
+    </div>
   );
 }

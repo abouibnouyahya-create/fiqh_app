@@ -8,7 +8,11 @@ interface Lesson {
   title: string;
   arabicText: string;
   translation: string;
-  explanation: string[];
+  detailedCourse: {
+    intro: string;
+    points: { title: string; content: string }[];
+    practicalCases: string[];
+  };
   quiz: { question: string; options: string[]; answerIndex: number }[];
   glossary: { term: string; arabic: string; definition: string }[];
   revisionPoints: string[];
@@ -21,13 +25,36 @@ const LESSONS: Lesson[] = [
     title: "Les types d'eaux et la purification (At-Taharah)",
     arabicText: "فَصْلٌ: أَنْوَاعُ الْمِيَاهِ وَأَحْكامُ الطَّهَارَةِ. لاَ يَجُوزُ إِزَالَةُ النَّجَاسَةِ وَلاَ رَفْعُ الْحَدَثِ إِلاَّ بِالْمَاءِ الْمُطْلَقِ الَّذِي لَمْ يَتَغَيَّرْ لَوْنُهُ أَوْ طَعْمُهُ أَوْ رَائِحَتُهُ بِمَا يُفَارِقُهُ غَالِبًا.",
     translation: "Section : Les catégories d'eau et les règles de purification. Il n'est pas permis d'enlever une impureté matérielle (Najasah) ni de lever une impureté rituelle (Hadath) si ce n'est avec de l'eau pure et purifiante (Al-Ma' Al-Moutlaq) dont ni la couleur, ni le goût, ni l'odeur n'ont été altérés par ce qui lui est habituellement étranger.",
-    explanation: [
-      "1. Définition et importance de la purification (Taharah) : La purification est la clé de la prière. Elle se divise en deux volets : la purification matérielle (élimination de la Najasah) et la purification rituelle (élévation du Hadath).",
-      "2. L'Eau Pure et Purifiante (Al-Ma' Al-Moutlaq) : C'est l'eau qui conserve son état originel naturel sans altération (eau de pluie, de mer, de puits, de fleuve, de neige fondue). Seule cette eau permet de faire les ablutions (Wudu) et le grand lavage (Ghusl).",
-      "3. Altération par des substances propres (At-Tahir) : Si une substance propre (du thé, de la de farine, du savon, du lait) modifie l'une des trois qualités de l'eau (couleur, goût ou odeur), l'eau reste propre en elle-même mais perd son pouvoir purifiant (elle devient 'Tahir ghayr Mutahhir'). On ne peut plus l'utiliser pour les ablutions.",
-      "4. Altération par des éléments indissociables : Si l'eau change à cause de ce avec quoi elle se trouve naturellement (comme de la vase, du soufre naturel, ou de la mousse d'étang), elle conserve son statut de purifiante car il est difficile de l'en préserver.",
-      "5. Altération par une impureté (Najasah) : Si une seule des trois caractéristiques de l'eau est altérée par une impureté (ex: urine, sang), l'eau devient totalement impure (Najis) et impropre à tout usage rituel ou domestique."
-    ],
+    detailedCourse: {
+      intro: "En fiqh malékite, la purification (Taharah) est la condition sine qua non de la prière. Elle se divise en deux volets : la levée du Hadath (état d'impureté rituelle) et l'élimination de la Najasah (impureté matérielle sur le corps, l'habit ou le lieu).",
+      points: [
+        {
+          title: "1. L'Eau Pure et Purifiante (Al-Ma' Al-Moutlaq)",
+          content: "C'est l'eau qui demeure dans son état naturel d'origine (eau de pluie, de mer, de puits, de fleuve, ou de fonte de neige). Seule cette eau possède la double qualité : être propre en elle-même (Tahir) et avoir le pouvoir de purifier autrui (Mutahhir)."
+        },
+        {
+          title: "2. Les Trois Critères d'Altération",
+          content: "Pour déterminer si une eau conserve son statut purifiant, on examine trois propriétés fondamentales : sa couleur, son goût et son odeur. Si l'un de ces trois éléments est altéré par un élément externe indissociable ou séparable, son statut juridique change."
+        },
+        {
+          title: "3. Altération par une substance propre (Tahir)",
+          content: "Si du savon, du lait, du thé ou du parfum tombe dans l'eau et en modifie le goût, la couleur ou l'odeur, l'eau reste propre pour les usages domestiques (boisson, cuisine) mais PERD son pouvoir purifiant pour le Wudu et le Ghusl."
+        },
+        {
+          title: "4. Altération par des éléments naturels indissociables",
+          content: "L'eau qui change à cause de son emplacement naturel (vase du puits, mousse d'étang, soufre des sources thermales) reste 100% purifiante car il est impossible ou trop difficile de l'en préserver."
+        },
+        {
+          title: "5. Altération par une impureté (Najis)",
+          content: "Si une goutte d'urine, de sang ou de substance impure altère la couleur, le goût ou l'odeur de l'eau, celle-ci devient totalement impure (Najis). Il est strictement interdit de l'utiliser pour l'adoration ou la consommation."
+        }
+      ],
+      practicalCases: [
+        "Cas 1 : Eau mélangée à un peu de fleur d'oranger -> Propre mais invalide pour le Wudu.",
+        "Cas 2 : Eau de robinet légèrement jaunâtre à cause de la rouille du tuyau -> Valide pour le Wudu.",
+        "Cas 3 : Puits tombé dans lequel une bête est morte et dont l'odeur a changé -> Impure (Najis), Wudu interdit."
+      ]
+    },
     quiz: [
       {
         question: "Quelle est la définition exacte de l'eau 'Al-Ma' Al-Moutlaq' ?",
@@ -85,15 +112,44 @@ const LESSONS: Lesson[] = [
     title: "Les Obligations de l'Ablution (Farā'iḍ Al-Wudu)",
     arabicText: "فَرَائِضُ الْوُضُوءِ سَبْعَةٌ: النِّيَّةُ عِنْدَ غَسْلِ الْوَجْهِ، وَغَسْلُ الْوَجْهِ، وَغَسْلُ الْيَدَيْنِ إِلَى الْمِرْفَقَيْنِ، وَمَسْحُ جَمِيعِ الرَّأْسِ، وَغَسْلُ الرِّجْلَيْنِ إِلَى الْكَعْبَيْنِ، وَالدَّلْكُ، وَالْمُوَالاَةُ.",
     translation: "Les obligations de l'ablution sont au nombre de sept : l'intention au moment du lavage du visage, le lavage du visage, le lavage des bras jusqu'aux coudes inclus, l'essuyage complet de la tête, le lavage des pieds jusqu'aux chevilles incluses, le frictionnement (Dalk) et la continuité (Muwalah).",
-    explanation: [
-      "1. La Niyyah (L'Intention) : Elle doit être formulée mentalement au moment précis où l'eau touche le visage. Elle consiste à avoir l'intention d'accomplir l'obligation de l'ablution ou d'enlever l'impureté rituelle.",
-      "2. Le lavage du visage (Ghasl Al-Wajh) : Ses limites horizontales vont d'une oreille à l'autre, et verticales de la naissance des cheveux au bas du menton.",
-      "3. Le lavage des avant-bras jusqu'aux coudes (Ghasl Al-Yadayn) : Les coudes doivent obligatoirement être lavés avec les bras. Les mains doivent être relavées si elles l'ont été au début.",
-      "4. L'essuyage complet de la tête (Mash Jami' Ar-Ra's) : Passé des mains mouillées du front jusqu'à la nuque. Dans l'école Malikite, essuyer la totalité de la tête est une obligation (contrairement à d'autres écoles qui n'exigent qu'une partie).",
-      "5. Le lavage des pieds jusqu'aux chevilles (Ghasl Ar-Rijlayn) : Les chevilles saillantes doivent être totalement immergées/lavées.",
-      "6. Le frictionnement (Ad-Dalk) : Passer la main sur le membre avec de l'eau ou immédiatement après. C'est une obligation spécifique et indispensable de l'école Malikite.",
-      "7. La continuité (Al-Muwalah) : Enchaîner le lavage des membres sans interruption qui permettrait au membre précédent de sécher dans des conditions climatiques normales."
-    ],
+    detailedCourse: {
+      intro: "Dans l'école Malikite, l'ablution (Wudu) repose sur sept piliers obligatoires (Fara'id). L'omission d'un seul de ces sept éléments rend l'ablution invalide et la prière nulle.",
+      points: [
+        {
+          title: "1. La Niyyah (L'Intention)",
+          content: "Elle prend place dans le cœur au moment précis où l'eau touche le visage. Il s'agit d'avoir la résolution mentale d'accomplir l'obligation de l'ablution ou de lever le Hadath."
+        },
+        {
+          title: "2. Le lavage du visage (Ghasl Al-Wajh)",
+          content: "Du haut du front (naissance habituelle des cheveux) jusqu'au bas du menton verticalement, et d'une oreille à l'autre horizontalement."
+        },
+        {
+          title: "3. Le lavage des bras jusqu'aux coudes inclus",
+          content: "Les coudes doivent obligatoirement être lavés. Si la personne a lavé ses mains au début (Sunnah), elle doit quand même relaver les mains avec les bras jusqu'aux coudes."
+        },
+        {
+          title: "4. L'essuyage complet de la tête (Mash Jami' Ar-Ra's)",
+          content: "Dans l'école Malikite, il est obligatoire d'essuyer la totalité de la tête du front jusqu'à la nuque (contrairement à d'autres écoles qui n'exigent qu'une partie)."
+        },
+        {
+          title: "5. Le lavage des pieds jusqu'aux chevilles incluses",
+          content: "Les chevilles saillantes doivent être complètement immergées et lavées."
+        },
+        {
+          title: "6. Le frictionnement (Ad-Dalk)",
+          content: "Passer la main sur le membre avec de l'eau ou immédiatement après. C'est une obligation spécifique et stricte du Fiqh Malikite."
+        },
+        {
+          title: "7. La continuité (Al-Muwalah)",
+          content: "Enchaîner le lavage des membres sans interruption temporelle qui permettrait au membre précédent de sécher dans des conditions climatiques moyennes."
+        }
+      ],
+      practicalCases: [
+        "Cas 1 : Une personne verse l'eau sur son bras sans le toucher avec la main -> Wudu invalide chez les Malékites (Manque le Dalk).",
+        "Cas 2 : N'essuyer que l'avant du crâne -> Invalide chez les Malékites (Il faut toute la tête).",
+        "Cas 3 : Interrompre son ablution 15 minutes pour répondre au téléphone -> Invalide (Rupture de la Muwalah)."
+      ]
+    },
     quiz: [
       {
         question: "Combien y a-t-il d'obligations (Farā'iḍ) de l'ablution dans le Fiqh Malikite ?",
@@ -146,15 +202,40 @@ const LESSONS: Lesson[] = [
     number: 'Leçon 1.3',
     title: "Les Actes Recommandés de l'Ablution (Sunan Al-Wudu)",
     arabicText: "وَسُنَنُهُ: غَسْلُ الْيَدَيْنِ إِلَى الْمِرْفَقَيْنِ عِنْدَ الاِبْتِدَاءِ، وَالْمَضْمَضَةُ، وَالاِسْتِنْشَاقُ، وَالاِسْتِنْثَارُ، وَرَدُّ مَسْحِ الرَّأْسِ، وَمَسْحُ الأُذُنَيْنِ، وَتَجْدِيدُ الْمَاءِ لَهُمَا، وَالتَّرْتِيبُ.",
-    translation: "Et ses Sunan sont : le lavage initial des mains jusqu'aux poignets, le rincage de la bouche (Madmadah), l'aspiration de l'eau par le nez (Istinshaq), son expulsion (Istinthar), le retour de l'essuyage de la tête, l'essuyage des deux oreilles, le renouvellement de l'eau pour elles, et le respect de l'ordre (Tartib).",
-    explanation: [
-      "1. Lavage initial des mains jusqu'aux poignets : Il s'effectue au tout début avant de tremper les mains dans le récipient ou avant le lavage du visage.",
-      "2. La Madmadah (Rinçage de la bouche) : Faire tourner l'eau à l'intérieur de la bouche puis la recracher.",
-      "3. L'Istinshaq et l'Istinthar : Aspirer l'eau par les narines à l'aide d'une inspiration légère, puis recracher cette eau (Istinthar) en se pinçant légèrement le nez avec la main gauche.",
-      "4. Le retour de l'essuyage de la tête (Radd Mash Ar-Ra's) : Ramener les mains de la nuque vers le front après avoir accompli le premier essuyage obligatoire (du front à la nuque).",
-      "5. L'essuyage des oreilles et renouvellement de l'eau : Essuyer l'intérieur des oreilles avec les index et l'extérieur avec les pouces, en utilisant une nouvelle eau fraîche différente de celle de la tête.",
-      "6. Le respect de l'ordre (At-Tartib) : Enchaîner les membres dans l'ordre prescrit (visage, bras, tête, pieds)."
-    ],
+    translation: "Et ses Sunan sont : le lavage initial des mains jusqu'aux poignets, le rinçage de la bouche (Madmadah), l'aspiration de l'eau par le nez (Istinshaq), son expulsion (Istinthar), le retour de l'essuyage de la tête, l'essuyage des deux oreilles, le renouvellement de l'eau pour elles, et le respect de l'ordre (Tartib).",
+    detailedCourse: {
+      intro: "Les Sunan sont les pratiques enseignées par le Prophète (ﷺ) qui viennent compléter les Fara'id. Leur omission n'annule pas l'ablution, mais prive le croyant d'une grande récompense.",
+      points: [
+        {
+          title: "1. Lavage des mains au poignet au début",
+          content: "Laver les deux mains jusqu'aux poignets au tout début du processus avant de les mettre dans le récipient ou de rincer la bouche."
+        },
+        {
+          title: "2. La Madmadah (Rinçage buccal)",
+          content: "Prendre de l'eau dans la bouche, la faire tourner à l'intérieur puis la rejeter."
+        },
+        {
+          title: "3. L'Istinshaq et l'Istinthar",
+          content: "Aspirer de l'eau par le nez (Istinshaq) puis l'expulser en se pinçant légèrement le nez avec la main gauche (Istinthar)."
+        },
+        {
+          title: "4. Le retour de l'essuyage de la tête",
+          content: "L'aller du front à la nuque est Fard (obligatoire). Le retour de la nuque vers le front est une Sunnah."
+        },
+        {
+          title: "5. L'essuyage des oreilles et l'eau nouvelle",
+          content: "Essuyer l'intérieur des oreilles avec les index et l'extérieur avec les pouces, en reprenant de l'eau propre spécialement dédiée aux oreilles."
+        },
+        {
+          title: "6. At-Tartib (L'ordre des membres)",
+          content: "Respecter l'ordre traditionnel : Visage -> Bras -> Tête -> Pieds."
+        }
+      ],
+      practicalCases: [
+        "Cas 1 : Oublier de se rincer la bouche et faire sa prière -> La prière est valide, l'ablution reste valable.",
+        "Cas 2 : Essuyer ses oreilles avec le reste d'eau de la tête -> Valide, mais a manqué la Sunnah d'utiliser une eau nouvelle."
+      ]
+    },
     quiz: [
       {
         question: "Parmi les actes suivants, lequel est une Sunnah et NON une obligation ?",
@@ -202,15 +283,33 @@ const LESSONS: Lesson[] = [
     id: '1.4',
     number: 'Leçon 1.4',
     title: "Les Annulateurs de l'Ablution (Nawaqid Al-Wudu)",
-    arabicText: "نَوَاقِضُ الْوُضُوءِ: أَهْدَاثٌ وَأَسْبَابٌ؛ فَالأَهْدَاثُ هِيَ الْخَارِجُ الْمُعْتَادُ مِنْ السَّبِيلَيْنِ كَالْبَوْلِ وَالْغَائِطِ وَالرِّيحِ، وَالأَسْبَابُ كَالنَّوْمِ الثَّقِيلِ وَزَوَالِ الْعَقْلِ.",
+    arabicText: "نَوَاقِضُ الْوُضُوءِ: أَهْدَاثٌ وَأَسْبَابٌ؛ فَالأَهْدَاثُ هِيَ الْخَارِجُ الْمُعْتَادُ مِنْ السَّبِيلَيْنِ كَالْبَوْلِ وَالْغَائِطِ وَالرِّيحِ، وَالأَسْبَابُ كالنَّوْمِ الثَّقِيلِ وَزَوَالِ الْعَقْلِ.",
     translation: "Les annulateurs de l'ablution sont de deux catégories : les impuretés directes (Ahdath) et les causes (Asbab). Les Ahdath sont ce qui sort habituellement par les deux voies (urine, selles, gaz). Les Asbab comprennent le sommeil profond, la perte de conscience et le toucher sensuel.",
-    explanation: [
-      "1. Les Événements Directs (Al-Ahdath) : Tout ce qui sort habituellement des deux orifices naturels en état de santé (urine, excréments, gaz intestinal, Madhy - liquide pré-séminal, Wady).",
-      "2. Les Causes Indirectes (Al-Asbab) : Ce qui peut amener à l'émission d'un événement sans qu'on s'en rende compte. Cela inclut la perte de conscience (évanouissement, ivresse, folie) et le sommeil profond (où l'on perd le contrôle de ses sens).",
-      "3. Le sommeil léger vs profond : Un sommeil léger (où l'on entend encore les bruits autour de soi) n'annule pas l'ablution dans l'école Malikite.",
-      "4. Les contacts charnels (Al-Lams) : Toucher une personne du sexe opposé avec désir ou intention d'éprouver du plaisir annule l'ablution.",
-      "5. Le contact direct de la verge : Le fait de toucher son propre sexe directement avec le plat de la main ou des doigts sans barrière."
-    ],
+    detailedCourse: {
+      intro: "Les juristes malékites classent les facteurs qui rompent l'ablution en deux grandes familles : les événements directs (Ahdath) et les causes d'événements (Asbab).",
+      points: [
+        {
+          title: "1. Les Événements Directs (Al-Ahdath)",
+          content: "Tout ce qui sort habituellement par les deux orifices naturels (substances solides, liquides ou gazeuses) : urine, excréments, gaz, liquide pré-séminal (Madhy)."
+        },
+        {
+          title: "2. Les Causes Indirectes (Al-Asbab)",
+          content: "Ce sont des situations où la personne peut perdre le contrôle de ses sens et émettre un Hadath sans s'en rendre compte : la folie, l'évanouissement, l'ivresse et le sommeil lourd."
+        },
+        {
+          title: "3. La nuance du sommeil (Léger vs Profond)",
+          content: "Le sommeil léger (où la personne perçoit les voix autour d'elle) n'annule PAS l'ablution. Seul le sommeil profond (où la personne perd totalement conscience de son environnement) rompt l'ablution."
+        },
+        {
+          title: "4. Le contact physique (Al-Lams)",
+          content: "Le contact avec une personne du sexe opposé annule l'ablution si la personne a l'intention de ressentir du plaisir ou si elle ressent effectivement du plaisir lors du contact."
+        }
+      ],
+      practicalCases: [
+        "Cas 1 : S'assoupir assis pendant le sermon du vendredi tout en entendant la voix de l'imam -> Sommeil léger, Wudu valide.",
+        "Cas 2 : Toucher la main de sa femme sans désir -> Wudu valide."
+      ]
+    },
     quiz: [
       {
         question: "Quelle catégorie regroupe la sortie d'urine ou de gaz ?",
@@ -249,7 +348,7 @@ const LESSONS: Lesson[] = [
       { term: "Nawaqid", arabic: "نَوَاقِض", definition: "Les facteurs qui annulent et rompent la validité de l'ablution." },
       { term: "Ahdath", arabic: "أَهْدَاث", definition: "Sécrétions ou évacuations naturelles sortant des orifices." },
       { term: "Asbab", arabic: "أَسْبَاب", definition: "États (sommeil, évanouissement) pouvant causer l'annulation de la purification." },
-      { term: "Al-Madhy", arabic: "الْمَذْي", definition: "Liquide fluide transparent émis lors d'une stimulation ou pensée passionnelle." }
+      { term: "Al-Madhy", arabic: "الْمَذْي", definition: "Liquide fluide transparent émis lors d'une stimulation passionnelle." }
     ],
     revisionPoints: [
       "Distinguer les Ahdath (évacuations) et les Asbab (perte de conscience/sommeil).",
@@ -264,13 +363,23 @@ const LESSONS: Lesson[] = [
     title: "Le Grand Lavage Rituel (Ghusl)",
     arabicText: "فَرَائِضُ الْغُسْلِ: النِّيَّةُ عِنْدَ بَدْئِهِ، وَتَعْمِيمُ جَمِيعِ الْجَسَدِ بِالْمَاءِ، وَالدَّلْكُ، وَالْمُوَالاَةُ، وَتَخْلِيلُ الشَّعْرِ حَتَّى يَصِلَ الْمَاءُ إِلَى أُصُولِهِ.",
     translation: "Les obligations du grand lavage sont : l'intention au moment de commencer, l'arrosage de l'ensemble du corps avec de l'eau, le frictionnement (Dalk), la continuité (Muwalah), et le démêlage des cheveux pour que l'eau atteigne le cuir chevelu.",
-    explanation: [
-      "1. Les motifs du Ghusl : La grande impureté (Janabah suite au rapport intime ou à l'éjaculation), la fin des menstrues (Hayd) et des lochies (Nifas).",
-      "2. L'Intention (Niyyah) : Formuler la volonté de lever la grande impureté (Raf' Al-Hadath Al-Akbar).",
-      "3. L'arrosage complet du corps (Ta'mim Al-Jasad) : L'eau doit atteindre absolument chaque partie extérieure du corps sans exception (y compris le nombril, sous les aisselles, l'arrière des genoux).",
-      "4. Le Dalk (Frictionnement) : Comme pour le Wudu, passer la main sur l'ensemble du corps avec de l'eau est une obligation chez les Malékites.",
-      "5. Le démêlage des cheveux (Takhli' ash-Sha'r) : Faire pénétrer l'eau jusqu'aux racines des cheveux. Si les tresses des femmes sont serrées au point d'empêcher l'eau de toucher le cuir chevelu, elles doivent être défaites."
-    ],
+    detailedCourse: {
+      intro: "Le Ghusl est la purification majeure nécessaire pour lever la grande impureté rituelle (Hadath Akbar).",
+      points: [
+        {
+          title: "1. Motifs obligatoires du Ghusl",
+          content: "L'état de Janabah (suite à un rapport intime ou une émission séminale), la fin des menstrues (Hayd) et la fin des lochies (Nifas)."
+        },
+        {
+          title: "2. Les 5 Obligations (Fara'id)",
+          content: "1) La Niyyah (Intention de lever la grande impureté), 2) Ta'mim Al-Jasad (Couvrir l'intégralité du corps avec de l'eau), 3) Ad-Dalk (Frictionner tout le corps avec la main), 4) Al-Muwalah (Enchaîner sans arrêt prolongé), 5) Takhlil Ash-Sha'r (Faire pénétrer l'eau jusqu'à la racine des cheveux)."
+        }
+      ],
+      practicalCases: [
+        "Cas 1 : Prendre une douche sans frictionner son dos -> Le Ghusl n'est pas valide selon l'école malékite (Manque le Dalk).",
+        "Cas 2 : Garder des tresses très serrées empêchant l'eau de toucher le cuir chevelu -> Ghusl invalide."
+      ]
+    },
     quiz: [
       {
         question: "Combien d'obligations fondamentales compte le Ghusl dans l'école Malikite ?",
@@ -324,13 +433,27 @@ const LESSONS: Lesson[] = [
     title: "L'Ablution Sèche (At-Tayammum)",
     arabicText: "يَتَيَمَّمُ الْمَرِيضُ وَالْمُسَافِرُ عِنْدَ عَدَمِ الْمَاءِ أَوْ الْعَجْزِ عَنْ اسْتِعْمَالِهِ، وَفَرَائِضُهُ: النِّيَّةُ، وَالصَّعِيدُ الطَّاهِرُ، وَالضَّرْبَةُ الأُولَى، وَمَسْحُ الْوَجْهِ وَالْيَدَيْنِ إِلَى الْكُوعَيْنِ.",
     translation: "Le malade et le voyageur recourent au Tayammum en cas d'absence d'eau ou d'incapacité de l'utiliser. Ses obligations sont : l'intention, l'usage d'une surface terrestre pure (Sa'id Tahir), le premier tapotement, l'essuyage du visage et l'essuyage des mains jusqu'aux poignets.",
-    explanation: [
-      "1. Conditions de dérogation : Le Tayammum remplace le Wudu ou le Ghusl en cas d'absence d'eau suffisante, d'incapacité physique à l'utiliser (maladie), ou de danger réel (froid extrême sans moyen de chauffer l'eau).",
-      "2. La surface pure (As-Sa'id At-Tahir) : Tout ce qui forme la croûte naturelle de la terre (pierre, sable, terre, rocher, argile).",
-      "3. Les obligations du Tayammum : L'intention, toucher la terre pure (première frappe), essuyer l'intégralité du visage, essuyer les mains jusqu'aux poignets.",
-      "4. Essuyer jusqu'aux coudes : Dans l'école Malikite, essuyer des poignets jusqu'aux coudes lors du Tayammum est considéré comme une Sunnah très recommandée (la première partie jusqu'aux poignets étant l'obligation stricte).",
-      "5. Validité temporelle : Le Tayammum doit être accompli obligatoirement après l'entrée de l'heure de la prière et n'est valable que pour une seule prière obligatoire à la fois."
-    ],
+    detailedCourse: {
+      intro: "Le Tayammum est une dérogation légale (Rukhsa) permettant d'utiliser les éléments purs du sol à la place de l'eau en cas de besoin.",
+      points: [
+        {
+          title: "1. Conditions de dérogation",
+          content: "Manque d'eau, crainte pour sa santé (maladie), ou incapacité physique d'atteindre l'eau."
+        },
+        {
+          title: "2. Le support (As-Sa'id At-Tahir)",
+          content: "Toute matière naturelle faisant partie du sol : terre, pierre, sable, rocher."
+        },
+        {
+          title: "3. Piliers du Tayammum",
+          content: "L'intention, la 1ère frappe sur la terre, l'essuyage du visage et l'essuyage des mains jusqu'aux poignets."
+        }
+      ],
+      practicalCases: [
+        "Cas 1 : Effectuer le Tayammum sur une moquette synthétique dépoussiérée -> Invalide chez les Malékites (Il faut du rocher/sable/terre).",
+        "Cas 2 : Priérer deux prières obligatoires avec un seul Tayammum -> Invalide (Un Tayammum par prière obligatoire)."
+      ]
+    },
     quiz: [
       {
         question: "Qu'est-ce que 'As-Sa'id At-Tahir' dans le Tayammum ?",
@@ -387,13 +510,27 @@ const LESSONS: Lesson[] = [
     title: "Les Conditions de la Prière (Shurūṭ As-Ṣalāh)",
     arabicText: "شُرُوطُ الصَّلاَةِ: طَهَارَةُ الْحَدَثِ، وَطَهَارَةُ الْخَبَثِ مِنَ الثَّوْبِ وَالْبَدَنِ وَالْمَكَانِ، وَسَتْرُ الْعَوْرَةِ، وَاسْتِقْبَالُ الْقِبْلَةِ، وَدُخُولُ الْوَقْتِ.",
     translation: "Les conditions de validité de la prière sont : la purification de l'impureté rituelle (Hadath), la purification des impuretés matérielles (Khabath) du corps, du vêtement et du lieu, le recouvrement de la 'Awrah, l'orientation vers la Qibla et l'entrée du temps de la prière.",
-    explanation: [
-      "1. Différence entre condition (Shart) et pilier (Rukn) : La condition doit être remplie AVANT de démarrer la prière et maintenue tout au long de celle-ci.",
-      "2. Purification du Hadath et du Khabath : Être en état de Wudu/Ghusl et s'assurer qu'aucune impureté matérielle (sang, urine) ne se trouve sur le corps, les habits ou l'emplacement de prière.",
-      "3. La 'Awrah (Parties intimes à couvrir) : Pour l'homme, la 'Awrah minimale va du nombril aux genoux. Pour la femme libre, l'ensemble du corps à l'exception du visage et des mains.",
-      "4. L'orientation vers la Qibla : Se tourner vers la Ka'bah à la Mecque. En cas d'incapacité ou d'ignorance absolue après recherche, des règles particulières s'appliquent.",
-      "5. L'entrée du temps (Dukhūl Al-Waqt) : La prière accomplie avant son heure légale n'est absolument pas valide."
-    ],
+    detailedCourse: {
+      intro: "Les Shurut sont les exigences qui doivent être validées avant même de commencer la prière et maintenues jusqu'au salut final.",
+      points: [
+        {
+          title: "1. Purification du Hadath et Khabath",
+          content: "Avoir ses ablutions et s'assurer de l'absence totale de souillures physiques (urine, sang) sur l'habit, la peau et le tapis."
+        },
+        {
+          title: "2. Recouvrement de la 'Awrah",
+          content: "Pour l'homme : du nombril aux genoux. Pour la femme : tout le corps sauf le visage et les mains."
+        },
+        {
+          title: "3. Direction de la Qibla et Entrée du Temps",
+          content: "Être orienté vers la Ka'bah et ne prier qu'une fois l'heure légale commencée."
+        }
+      ],
+      practicalCases: [
+        "Cas 1 : Prier 2 minutes avant l'Adhan -> Prière invalide et à refaire.",
+        "Cas 2 : Prier avec une tache d'urine sur le pantalon en le sachant -> Prière invalide."
+      ]
+    },
     quiz: [
       {
         question: "Quelle est la différence essentielle entre une condition (Shart) et un pilier (Rukn) ?",
@@ -425,7 +562,7 @@ const LESSONS: Lesson[] = [
       {
         question: "Que se passe-t-il si une prière obligatoire est effectuée 5 minutes avant l'entrée de son heure ?",
         options: [
-          "Elle est valide avec démerite",
+          "Elle est valide avec démérite",
           "Elle est invalide et doit être refaite à l'heure légale",
           "Elle compte comme une prière surérogatoire validée"
         ],
@@ -451,14 +588,27 @@ const LESSONS: Lesson[] = [
     title: "Les Piliers de la Prière (Arkān As-Ṣalāh)",
     arabicText: "أَرْكَانُ الصَّلاَةِ: تَكْبِيرَةُ الإِحْرَامِ، وَالْقِيَامُ لَهَا، وَقِرَاءَةُ الْفَاتِحَةِ، وَالرُّكُوعُ، وَالرَّفْعُ مِنْهُ، وَالسُّجُودُ، وَالطَّمَأْنِينَةُ، وَالاعْتِدَالُ، وَالسَّلاَمُ.",
     translation: "Les piliers de la prière sont : le Takbir d'inauguration (Takbirat Al-Ihram), la station debout pour celui-ci, la récitation de Al-Fatihah, l'inclinaison (Rukū'), le redressement, la prosternation (Sujūd), la quiétude (Ṭuma'nīnah), l'alignement rectiligne et le Salut final (As-Salām).",
-    explanation: [
-      "1. Takbirat Al-Ihram : Le fait de dire 'Allāhu Akbar' pour commencer la prière. La station debout (Al-Qiyam) lors de ce Takbir est elle-même un pilier pour la prière obligatoire.",
-      "2. La récitation de la Fatihah : Obligatoire dans chaque unité de prière (Rak'ah) pour l'imam et la personne priant seule (Al-Fard).",
-      "3. L'inclinaison (Rukū') et le redressement : S'incliner jusqu'à ce que les mains touchent les genoux et se redresser complètement.",
-      "4. La prosternation (Sujūd) : Se prosterner sur 7 membres (front/nez, les deux mains, les deux genoux, le dessous des orteils des deux pieds).",
-      "5. La Quiétude (Al-Ṭuma'nīnah) : Marquer un temps d'immobilité dans chaque position (Rukū', Sujūd, redressement). Une prière faite à la hâte sans sérénité est invalide.",
-      "6. Le Salut Final (As-Salām) : Prononcer 'As-Salāmu 'Alaykum' en étant assis à la fin de la prière."
-    ],
+    detailedCourse: {
+      intro: "Les Arkan sont les composants internes et indissociables de la prière.",
+      points: [
+        {
+          title: "1. Takbirat Al-Ihram et Al-Qiyam",
+          content: "Dire 'Allahu Akbar' debout au début de la prière."
+        },
+        {
+          title: "2. La Fatihah et l'Inclinaison (Ruku')",
+          content: "Réciter la Fatihah à chaque Rak'ah et accomplir le Ruku' avec le redressement."
+        },
+        {
+          title: "3. La Prosternation (Sujud) et la Tuma'ninah",
+          content: "Se prosterner sur les 7 membres avec sérénité et marquée de pause (Tuma'ninah)."
+        }
+      ],
+      practicalCases: [
+        "Cas 1 : Prier très rapidement sans marquer de pause au Ruku' -> Prière invalide (Manque la Tuma'ninah).",
+        "Cas 2 : Oublier la Fatihah dans une Rak'ah -> La Rak'ah est invalide."
+      ]
+    },
     quiz: [
       {
         question: "Lequel des éléments suivants est un PILIER (Rukn) fondamental de la prière ?",
@@ -700,8 +850,47 @@ export default function FiqhAppPage() {
           {/* ONGLET 1: COURS DÉTAILLÉ */}
           {activeTab === 'cours' && (
             <div className="space-y-6">
-              {/* Carte Audio + Texte Arabe */}
+              
+              {/* Carte Explication Détaillée & Structure du cours (Mise en avant au sommet) */}
+              <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-5">
+                <div className="border-b border-slate-100 pb-3">
+                  <h3 className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">
+                    EXPLICATIONS JURIDIQUES & EXPOSÉ DU COURS (SHARH)
+                  </h3>
+                  <p className="text-sm text-slate-700 leading-relaxed font-medium">
+                    {currentLesson.detailedCourse.intro}
+                  </p>
+                </div>
+
+                {/* Points clés du cours */}
+                <div className="space-y-4">
+                  {currentLesson.detailedCourse.points.map((pt, idx) => (
+                    <div key={idx} className="bg-slate-50 border border-slate-200/60 rounded-xl p-4">
+                      <h4 className="font-bold text-sm text-[#0b5c3a] mb-1">{pt.title}</h4>
+                      <p className="text-xs md:text-sm text-slate-700 leading-relaxed">{pt.content}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Cas pratiques d'application */}
+                <div className="bg-amber-50/60 border border-amber-200/80 rounded-xl p-4">
+                  <h4 className="font-bold text-xs uppercase text-amber-900 mb-2">💡 Cas pratiques & Jurisprudence appliquée</h4>
+                  <ul className="space-y-1.5">
+                    {currentLesson.detailedCourse.practicalCases.map((c, idx) => (
+                      <li key={idx} className="text-xs text-amber-950 flex items-start gap-2">
+                        <span>•</span>
+                        <span>{c}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Texte Arabe original + Récitation Audio */}
               <div className="bg-emerald-50/40 border border-emerald-200/60 rounded-2xl p-6 shadow-sm">
+                <h4 className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-3">
+                  TEXTE ORIGINAL DE MATN AL-AKHDARI
+                </h4>
                 <p
                   className="text-2xl md:text-3xl font-serif text-right leading-loose text-slate-900 font-medium mb-6"
                   lang="ar"
@@ -744,33 +933,20 @@ export default function FiqhAppPage() {
                 </div>
               </div>
 
-              {/* Traduction */}
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
-                <h4 className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2">
+              {/* Traduction littérale */}
+              <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm">
+                <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
                   TRADUCTION DU TEXTE (MATN)
                 </h4>
-                <p className="text-slate-700 text-sm md:text-base leading-relaxed italic">
+                <p className="text-slate-700 text-xs md:text-sm leading-relaxed italic">
                   {currentLesson.translation}
                 </p>
               </div>
 
-              {/* Explications approfondies (Sharh) */}
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
-                <h4 className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-4">
-                  COURS MAGISTRAL & EXPLICATIONS DÉTAILLÉES (SHARH)
-                </h4>
-                <div className="space-y-4">
-                  {currentLesson.explanation.map((item, idx) => (
-                    <div key={idx} className="p-4 bg-slate-50 rounded-xl border border-slate-200/60 leading-relaxed text-sm text-slate-800">
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           )}
 
-          {/* ONGLET 2: QUIZ (4 QUESTIONS) */}
+          {/* ONGLET 2: QUIZ */}
           {activeTab === 'quiz' && (
             <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b pb-4">
